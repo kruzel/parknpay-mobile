@@ -1,0 +1,151 @@
+<div data-role="view" id="settingsView" data-style="inset" data-title="Settings" data-init="rewardsViewInit" data-model="carsViewModel" >
+	<div id="settingsViewContent" data-role="content">
+        <!-- List of settings options -->
+            		<ul data-role="listview" id="signupView" data-style="inset" data-inset="true"  >
+    					<li>
+    						<a href="#modalview-signup" data-rel="modalview">Sign up</a>
+    					</li>                        
+    				</ul>
+            		<ul data-role="listview" id="loginView" data-style="inset" data-inset="true"  >
+    					<li>
+    						<a href="#modalview-signin" data-rel="modalview">Sign in</a>
+    					</li>                        
+    				</ul>
+   				    <ul data-role="listview" id="addCarView" data-style="inset" data-inset="false" >
+    					<li>
+    						<a href="#modalview-addCar" data-rel="modalview">Add Car</a>
+    					</li>
+    				</ul>
+                     <ul data-role="listview" id="settingsView" data-style="inset" data-inset="true" >
+    					<li>
+    						<a href="#settings" data-rel="modalview">Reminders</a>
+    					</li>
+    				</ul>
+                     <ul data-role="listview" id="settingsView" data-style="inset" data-inset="true" >
+    					<li>
+    						<a href="#settings" data-rel="modalview">Update Details</a>
+    					</li>
+    				</ul>
+                    <ul data-role="listview" id="settingsView" data-style="inset" data-inset="true" >
+    					<li>
+    						<a href="#settings" data-rel="modalview">Pre-paid</a>
+    					</li>
+    				</ul>
+        <!--
+                     <ul data-role="listview" id="settingsView" data-inset="true" data-theme="d">
+    					<li>
+    						<a href="#settings" data-rel="modalview">Advanced</a>
+    					</li>
+    				</ul>
+        -->
+        <!--
+                     <ul id="registeredCarsList" data-role="listview" data-style="inset" data-bind="source: cars" data-template="registeredCarsList-template"></ul>
+        -->
+                     <!-- <ul id="rewordsCardsList" data-role="listview" data-style="inset" data-bind="source: cards" data-template="rewordsCardsList-template"></ul> -->
+
+     </div>
+</div>
+<!--
+
+<script type="text/x-kendo-template" id="registeredCarsList-template">
+    <a href='views/registeredCarView.html?carNumber=${carNumber}&parkingActive=${parkingActive}' 
+        data-cardId="${carNumber}" class="listReswardsCard clear" data-role="listview-link">
+               <div 
+				#if(parkingActive==0){#
+					class="unknown_car_inactive"
+				#}else{#
+                    class="unknown_car_active"
+				#}
+				#></div>
+        <div class="cardInformationContainer">
+            <span>Car Number: </span>
+            <span class="cardNumberText">${carNumber}</span>
+            <div class="registeredDateText">Registered on ${registerDate}</div>
+        </div>
+        <div class="clear"></div>
+    </a>    
+</script>
+
+-->
+<!-- ========== SIGNUP STUFF ============= -->
+
+<div data-role="modalview" id="modalview-signup" style="width: 95%; height: 70%;">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span>Sign-Up</span>
+        </div>
+    </div>
+    <ul data-role="listview" data-style="inset">
+        <li><label for="firstname">Firstname:</label> <input type="text" id="firstname" /></li>
+        <li><label for="lastname">Lastname:</label> <input type="text" id="lastname" /></li>
+        <li><label for="phone">Phone:</label> <input type="tel" id="phone" /></li>
+        <li><label for="credit_card_number">Credit Card:</label> <input type="text" id="credit_card_number" /></li>
+        <li><label for="email">Email:</label> <input type="email" id="email" /></li>
+        <li><label for="password">Password:</label> <input type="password" id="password" /></li>
+    </ul>
+    <div data-role="footer">
+        <div data-role="navbar">
+            <span></span>
+            <a data-click="closeModalViewSignUp" data-role="button" data-align="right">Sign Up</a>
+            <a data-click="closeModalViewCancel" data-role="button" data-align="left">Cancel</a>
+        </div>
+    </div>
+
+</div>
+
+<!-- ========== SIGNIN STUFF ============= -->
+
+<div data-role="modalview" id="modalview-signin" style="width: 95%; height: 40%;">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span>Sign In</span>
+         </div>
+    </div>
+
+    <ul data-role="listview" data-style="inset">
+        <li><label for="username">Username:</label> <input type="text" id="username" /></li>
+        <li><label for="password">Password:</label> <input type="password" id="password" /></li>
+    </ul>
+    <div data-role="footer">
+        <div data-role="navbar">
+            <span></span>
+            <a data-click="closeModalViewSignIn" data-role="button" data-align="right">Sign In</a>
+            <a data-click="closeModalViewCancel" data-role="button" data-align="left">Cancel</a>
+        </div>
+    </div>
+</div>
+
+<!-- ========== ADD A CAR STUFF ============= -->
+
+
+<div data-role="modalview" id="modalview-addCar" style="width: 95%; height: 70%;">
+    
+    <div data-role="header">
+        <div data-role="navbar">
+            <span>Add Car</span>
+         </div>
+    </div>
+   
+	<div id='helloWorldInput'>		
+		<input type="text" id="txtName" value="Car Number" style="display:block;margin: 8% auto 0px auto;width:80%;"/>
+	</div>
+
+    <div>
+        <img style="display:block;margin: 10% auto 5% auto; width:50%; height:40%;" id="smallImage" src="images/car.png" />
+    </div>
+   <div data-role="footer">
+        <div data-role="navbar">
+            <span></span>
+            <a data-click="closeModalAddCar" data-role="button" data-align="left">Cancel</a>
+            <a data-click="closeModalAddCar" data-role="button" data-align="right">Done</a>
+       </div>
+    </div>
+    
+     
+</div>
+
+<script>
+ 
+    
+  
+</script>

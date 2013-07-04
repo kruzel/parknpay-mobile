@@ -5,6 +5,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 
 // PhoneGap is ready
 function onDeviceReady() {
+    onDeviceReadyCamera();
     getLocation();
     navigator.splashscreen.hide();
 }

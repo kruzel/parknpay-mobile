@@ -57,7 +57,36 @@
     <Resource Include="App_Resources\Android\drawable-nodpi\splashscreen.9.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="css\index.css" />
+    <Content Include="css\lior.css" />
+    <Content Include="css\main_page_list.css" />
+    <Content Include="css\mobiscroll-2.4.custom.min.css" />
+    <Content Include="css\mobiscroll_text_and_image.css" />
+    <Content Include="css\text_and_image.css" />
+    <Content Include="icons\card.png" />
+    <Content Include="icons\rewards.png" />
+    <Content Include="icons\stores.png" />
+    <Content Include="images\bgr_pattern.jpg" />
+    <Content Include="images\cancel-inv.png" />
+    <Content Include="images\car.png" />
+    <Content Include="images\cheers.png" />
+    <Content Include="images\City-Bank-icon.png" />
+    <Content Include="images\City-Church-icon.png" />
+    <Content Include="images\media-play-inv.png" />
+    <Content Include="images\media-stop-inv.png" />
+    <Content Include="images\p.png" />
+    <Content Include="images\parkcontrol_icon.png" />
+    <Content Include="images\Payment-Methods-Bank-cards-icon.png" />
+    <Content Include="images\photo-inv.png" />
+    <Content Include="images\poi.png" />
+    <Content Include="images\qrcode.png" />
+    <Content Include="images\unknown_car_active.png" />
+    <Content Include="images\unknown_car_inactive.png" />
+    <Content Include="img\cordova.png" />
+    <Content Include="img\logo.png" />
     <Content Include="index.html" />
+    <Content Include="js\index.js" />
+    <Content Include="js\mobiscroll-2.4.custom.min.js" />
     <Content Include="kendo\js\jquery.min.js" />
     <Content Include="kendo\js\kendo.mobile.min.js" />
     <Content Include="kendo\styles\images\back.png" />
@@ -66,7 +95,12 @@
     <Content Include="kendo\styles\images\wp8_icons.png" />
     <Content Include="kendo\styles\images\wp8_inverseicons.png" />
     <Content Include="kendo\styles\kendo.mobile.all.min.css" />
+    <Content Include="kendo\styles\kendo.parky.mobile.all.css" />
+    <Content Include="scripts\app.js" />
     <Content Include="scripts\hello-world.js" />
+    <Content Include="scripts\main.js" />
+    <Content Include="styles\button.css" />
+    <Content Include="styles\home_pannel.css" />
     <Content Include="styles\main.css" />
     <Content Include="cordova.ios.js">
       <Platform>iOS</Platform>
@@ -76,6 +110,20 @@
       <Platform>Android</Platform>
       <TargetName>cordova.js</TargetName>
     </Content>
+    <Content Include="styles\phone-1280.css" />
+    <Content Include="styles\phone-480.css" />
+    <Content Include="styles\phone-800.css" />
+    <Content Include="styles\tablet-1024-hdpi.css" />
+    <Content Include="styles\tablet-1024-ldpi.css" />
+    <Content Include="styles\tablet-1280.css" />
+    <Content Include="styles\tablet-600-1024.css" />
+    <Content Include="viewModels\carsViewModels.js" />
+    <Content Include="views\addCarView.html" />
+    <Content Include="views\carsView.html" />
+    <Content Include="views\parkingsView.html" />
+    <Content Include="views\registeredCarView.html" />
+    <Content Include="views\settingsView.html" />
+    <Content Include="views\singleCarView.html" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Telerik\ICE\Tools\Mobile\MobileTools.targets" />
 </Project>

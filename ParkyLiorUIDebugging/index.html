@@ -1,67 +1,500 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title></title>
-        <meta charset="utf-8" />
-        <script src="cordova.js"></script>
-        <script src="kendo/js/jquery.min.js"></script>
-        <script src="kendo/js/kendo.mobile.min.js"></script>
-        <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
-        <script src="scripts/hello-world.js"></script>
+	<head>
+		<title>Parky Mobile</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+ 
+		<!-- Styles -->
+		<link rel="stylesheet" href="kendo/styles/kendo.mobile.all.min.css" />
+		<link rel="stylesheet" href="kendo/styles/kendo.parky.mobile.all.css" />
+        
+		<script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+		<script type="text/javascript" src="kendo/js/jquery.min.js"></script>
+		<script type="text/javascript" src="kendo/js/kendo.mobile.min.js"></script>
+        
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
+        <link rel="stylesheet" href="css/main_page_list.css" />
+        
 
-        <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
-        <link href="styles/main.css" rel="stylesheet" />
-    </head>
-    <body>
-        <div data-role="view" id="tabstrip-home" data-title="Hello World!">
-            <h1>Welcome!</h1>
-            <p>
-                Icenium&trade; enables you to build cross-platform device applications regardless of your 
-                development platform by combining the convenience of a local development toolset with the 
-                power and flexibility of the cloud.
-            </p>
-        </div>
+        <!-- MOBISCROLL -->
+        <link rel="stylesheet" type="text/css" href="css/mobiscroll_text_and_image.css"  />
+   	 <script type="text/javascript" src="js/mobiscroll-2.4.custom.min.js" ></script> 
+   	 <script type="text/javascript" charset="utf-8" src="Plugins/Barcode Scanner/barcodescanner.js"></script>
 
-        <div data-role="view" id="tabstrip-uiinteraction" data-title="UI Interaction">
-            <h1>Say Hello!</h1>
-            <div id='helloWorldInput'>
-                <label for="txtName" style="display: inline-block;">Enter your name:</label>
-                <input type="text" id="txtName" value="" />
-            </div>
-            <div id='helloWorldText' style="display:block;"></div>
-            <div class="buttonArea">
-                <a id="resetButton" data-role="button" data-click="sayHelloReset" data-icon="refresh">Reset</a>
-                <a id="submitButton" data-role="button" data-click="sayHello" data-icon="compose">Submit</a>
-            </div>
-        </div>
+		<!-- Default Stylesheet -->
+		<link rel="stylesheet" href="styles/main.css" />
 
-        <div data-role="view" id="tabstrip-geolocation" data-title="Geolocation">
-            <h1>My Location</h1>
-            <div id="geoLocationContainer">
-                <div id="myLocation">Unable to get location information. Please check your network connection and try again.</div>
-                <a id="refreshMap" data-role="button" data-click="getLocation" data-icon="refresh">Refresh Location</a>
-                <div id="map_canvas"></div>
-            </div>
-        </div>
+		<!-- Phone 320x480 High DPI (aka Retina) -->
+		<link rel="stylesheet" media="only screen and (min-device-width: 320px) and (max-device-width: 480px) and (-webkit-device-pixel-ratio:2)" href="styles/phone-480.css" type="text/css" />
+		<!-- Phone 480x800 Medium DPI (aka Samsung Galaxy S II Skyrocket) -->
+		<link rel="stylesheet" media="only screen and (min-device-width: 320px) and (max-device-width: 508px) and (-webkit-device-pixel-ratio:1.5)" href="styles/phone-800.css" type="text/css" />
+		<!-- Tablet 768x1024 Low DPI (aka iPad 1 & 2") -->
+		<link rel="stylesheet" media="only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-device-pixel-ratio:1)" href="styles/tablet-1024-ldpi.css" type="text/css" />
+		<!-- Tablet 800x1280 Low DPI (aka Samsung Galaxy Tab 8.9" & Lenovo K1) -->
+		<link rel="stylesheet" media="only screen and (min-device-width: 800px) and (max-device-width: 1280px) and (-webkit-device-pixel-ratio:1)" href="styles/tablet-1280.css" type="text/css" />
+		<!-- Phone 720x1280 High DPI (aka Google Nexus) -->
+		<link rel="stylesheet" media="only screen and (min-device-width: 720px) and (max-device-width: 1280px) and (-webkit-device-pixel-ratio:2)" href="styles/phone-1280.css" type="text/css" />
+		<!-- Tablet 500x1024 Low DPI (aka Kindle Fire) -->
+		<link rel="stylesheet" media="only screen and (min-device-width: 600px) and (max-device-width: 1024px) and (-webkit-device-pixel-ratio:1)" href="styles/tablet-600-1024.css" type="text/css" />
+		<!-- Tablet 768x1024 High DPI (aka iPad3") -->
+		<link rel="stylesheet" media="only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-device-pixel-ratio:2)" href="styles/tablet-1024-hdpi.css" type="text/css" />
+        
+ 
+       
+	</head>
+    
+    
+	<body>
+       <!-- ============ -->
+	   <!-- Pages Layout -->
+       <!-- ============ -->
+		<div data-role="layout" data-id="jitterz-default">
+			<header data-role="header" data-id="jitterz-default-header">
+				<div data-role="navbar">
+					<span data-role="view-title"></span>
+				</div>
+			</header>
+			<div data-role="footer">
+				<div data-role="tabstrip" data-id="jitterz-tabstrip">
+					 <a href="#home" data-icon="play">Home</a>
+ 				    <a href="views/settingsView.html" data-icon="settings">Settings</a>
+					 <a href="views/parkingsView.html" data-icon="globe">Parkings</a>
+				</div>
+			</div>
+		</div>
 
-        <div data-role="layout" data-id="mobile-tabstrip">
-            <header data-role="header">
+        <!-- =========== -->
+        <!--  HOME PAGE  -->
+        <!-- =========== -->
+        
+
+        <div data-role="view" id="home" data-title="Parky" data-init="initPictureView">
+           <ul data-role="listview" data-style="inset" data-type="group" id="announcements-listview" >
+                 <li>
+                    <ul id="car_selection" class="ic">  
+                            <img id="car_selection_item_picture" class="item-photo" src="images/car.png"/>
+                            <h3 id="car_selection_item_title" class="item-title"></h3>
+                            <p id="car_selection_item_description"  class="item-info"></p>
+                    </ul>
+                    <ul id="region_selection" class="ic" >  
+                            <img id="region_selection_item_picture" class="item-photo" src="images/poi.png"/>
+                            <h3 id="region_selection_item_title" class="item-title">Location:</h3>
+                            <p id="region_selection_item_description" class="item-info">rate:</p>
+                    </ul>
+                     
+					<ul  id="parking_selection" class="ic">
+						<img class="item-photo" src="images/p.png"/>
+						<h3 id="parking_selection_item-title" class="item-title"></h3>
+						<p class="parking_selection_item-info" class="item-info"></p>
+                            <div>
+    							<table style="display:block; width: 20%; height: auto;" align="center" cellspacing="0" cellpadding="0" border="0">
+    								<td class="clock" id="dc"></td>
+    								<td>
+    									<table cellpadding="0" cellspacing="0" border="0">
+    										<tr>
+    											<td class="clocklg" id="dc_hour"></td>
+    										</tr> 
+    										<tr>
+    											<td class="clocklg" id="dc_second"></td>
+    										</tr> 										
+                                        </table>
+    								</td>
+    							</table> 
+                            </div>
+                        
+                            <div>
+							    <table style="display:box; width: 20%; height: auto;" align="left" cellspacing="0" cellpadding="0" border="0">
+                                	<td class="clock" id="dc"></td>
+    								<td>
+    									<table cellpadding="0" cellspacing="0" border="0">
+    										<tr>
+    											<td class="cost" id="cost"></td>
+    										</tr> 							
+                                        </table>
+    								</td>
+    							</table>   
+                            </div>
+
+                        
+                        
+                          
+					</ul>
+                 
+                </li>
+            </ul>            
+ 		</div>
+        
+        
+       
+        <!-- ============================== -->
+        <!--  Cars list  scroller template  -->
+        <!-- ============================== -->
+        <!-- DEBUG -->
+        <div id="CarsListScrollerTemplateResults"  style="display: none;"></div>
+        <!-- /DEBUG -->
+        <script id="CarsListScrollerTemplate" type="text/x-kendo-template">
+                <div class="icc">
+                    <div class="ic">
+                        <ul id="CarsListScroller">
+                         # for (var i = 0; i < data.length; i++) 
+                            { #
+                            <li data-val="#= data[i].ID #">
+                               <div class="car">
+                                  <div class="img-cont">
+                                      <img src="#= data[i].PictureUrl #" />                                      
+                                  </div>
+                                  <span>#= data[i].registration #</span>
+                              </div>
+                            </li>
+                          # } #
+                        </ul>
+                    </div>
+                </div>
+        </script> 
+        
+  
+        <!-- ============================== -->
+        <!--  regions list  scroller template  -->
+        <!-- ============================== -->
+        <!-- DEBUG -->
+        <div id="RegionsListScrollerTemplateResults"  style="display: none;"></div>
+        <!-- /DEBUG -->
+        <script id="RegionsListScrollerTemplate" type="text/x-kendo-template">
+                <div class="icc">
+                    <div class="ic">
+                        <ul id="RegionsListScroller">
+                         # for (var i = 0; i < data.length; i++) 
+                            { #
+                            <li data-val="#= data[i].City #">
+                                  #= data[i].City #
+                                  <ul>
+                                     # for (var j = 0; j < data[i].Suburb.length; j++) 
+                                        { #
+                                        <li data-val="#= data[i].Suburb[j].sub #">
+                                           #= data[i].Suburb[j].sub #
+                                        </li>
+                                      # } #       
+                                  </ul> 
+                            </li>
+                          # } #
+                        </ul>
+                    </div>
+                </div>
+        </script> 
+
+        
+        <!-- ============================== -->
+        <!--  parking actions               -->
+        <!-- ============================== -->
+       
+        <div data-role="modalview" id="modalview-parking-action" style="width: 95%; height: 20em;">
+            <!--
+            <div data-role="header">
                 <div data-role="navbar">
-                    <span data-role="view-title"></span>
-                </div>
-            </header>
-
-            <div data-role="footer">
-                <div data-role="tabstrip">
-                    <a href="#tabstrip-home" data-icon="home">Home</a>
-                    <a href="#tabstrip-uiinteraction" data-icon="share">UI Interaction</a>
-                    <a href="#tabstrip-geolocation" data-icon="globe">Geolocation</a>
+                    <span>Action</span>
+                    <a data-click="closeModalAddCar" data-role="button" data-align="right">Cancel</a>
+                    <a data-click="closeModalAddCar" data-role="button" data-align="left">Done</a>
                 </div>
             </div>
+            -->
+        
+            <div>
+                <img style="display:inline;margin: 2% 1% 1% 3% ; width:45%; height:45%;" id="modalview-parking-action-start" src="images/media-play-inv.png" />
+                <img style="display:inline;margin: 2% 1% 1% 2% ; width:45%; height:45%;" id="modalview-parking-action-stop" src="images/media-stop-inv.png" />
+            </div>
+             <div>
+                <img style="display:inline;margin: 2% 1% 1% 3% ; width:45%; height:45%;" id="qrcode" src="images/qrcode.png" />
+                <img style="display:inline;margin: 2% 1% 1% 2% ; width:45%; height:45%;" id="modalview-parking-action-close" src="images/cancel-inv.png" />
+            </div>
+            
+             
         </div>
+        
+		<!-- Scripts -->
+ 	   <script type="text/javascript" src="viewModels/carsViewModels.js"></script>
+		<script type="text/javascript" src="scripts/app.js"></script>
+		<!-- <script type="text/javascript" src="scripts/main.js"></script> -->
+    	<script type="text/javascript" src="scripts/hello-world.js" ></script> 
 
         <script>
-            var app = new kendo.mobile.Application(document.body, { transition: "slide", layout: "mobile-tabstrip" });
+  	      var app = new kendo.mobile.Application(document.body, { transition: "slide", layout: "jitterz-default" });
+            var ParkingActive;
+            
+            function redirectBack(e) 
+            {
+                e.preventDefault();
+                 //console.log(e.view);    
+                $("#modalview-addCar").kendoMobileModalView("close");
+                $("#modalview-login").kendoMobileModalView("close");
+                $("#modalview-signin").kendoMobileModalView("close");
+                
+            }
+                     
+            /* ===================== */
+            /* CAR SELECTION SCROLER */
+            /* ===================== */
+            var template = kendo.template($("#CarsListScrollerTemplate").html());
+            var data = 
+                [{ID: 0, registration: "12-234-11", PictureUrl: "https://dl.dropboxusercontent.com/u/1495669/car2.png", Name: "Car1"},
+                 {ID: 1, registration: "12-234-22", PictureUrl: "https://dl.dropboxusercontent.com/u/1495669/car1.png", Name: "Car2"}];
+            function prepare_template() 
+            {
+                /* OFER: insert here API call to get the user registered cars */
+                var result = template(data); //Execute the template
+                $("#CarsListScrollerTemplateResults").html(result);
+            }
+            prepare_template();
+           
+            /* this will put on the home screen the last chosen car*/
+            pid = localStorage.getItem("chosen_car");
+            if (pid != null )
+            {
+                document.getElementById("car_selection_item_title").innerHTML = data[pid].registration;
+                document.getElementById("car_selection_item_description").innerHTML = data[pid].Name;
+            }
+            else
+            {
+                document.getElementById("car_selection_item_title").innerHTML = "No Car"
+                document.getElementById("car_selection_item_description").innerHTML = "registered yet...";
+            }
+            
+             
+            $('#CarsListScroller').mobiscroll().image({
+                theme: 'android',
+                display: 'modal',
+                mode: 'scroller',
+                labels: ['My Car'],
+                inputClass: 'i-txt',
+                setText: 'OK',
+                onSelect: function (v, inst) 
+                          {
+                          },
+                onChange: function (v, inst) 
+                          {
+                              $("#car_selection_item_title").html(data[v].registration);
+                              $("#car_selection_item_description").html(data[v].Name);
+                              /* save the car selected in persistent storage */
+                              localStorage.setItem("chosen_car", v);
+                          },
+                /*
+                onBeforeShow: function (html, inst) 
+                        {
+                            
+                            pid = localStorage.getItem("chosen_car");
+                        },
+                */
+            });
+            
+            $('#CarsListScroller').mobiscroll('setValue', [pid, data[pid].registration , data[pid].PictureUrl ],true,.2); 
+            
+            $('#car_selection').click(function() {
+                prepare_template();
+                pid = localStorage.getItem("chosen_car");
+                $('#CarsListScroller').mobiscroll('show');
+				return false;
+			});
+            
+            /* ======================== */
+            /* REGION SELECTION SCROLER */
+            /* ======================== */
+            var regions_template = kendo.template($("#RegionsListScrollerTemplate").html());
+            function prepare_regions_scroller_template() 
+            {
+                /* OFER: insert here API call to get the user relevant regions */
+                
+                var regions_data = 
+                    [{ID: "1", City: "Sydney", Suburb: 
+                        [
+                        {sub: "Badgerys Creek", info: []},
+                        {sub: "Balgowlah", info: 0},
+                        {sub: "Balgowlah Heights", info: []},
+                        {sub: "Balmain", info: []},
+                        {sub: "Balmain East", info: []},
+                        {sub: "Banksia", info: []},
+                        {sub: "Banksmeadow", info: []},
+                        {sub: "Bankstown", info: []}
+                        ]},
+                    {ID: "2", City: "Newcastle", Suburb: 
+                        [
+                        {sub: "Adamstown", info: []},
+                        {sub: "Adamstown Heights", info: []},
+                        {sub: "Bar Beach", info: []},
+                        {sub: "Beresfield", info: []},
+                        {sub: "Birmingham Gardens", info: []},
+                        {sub: "Black Hill", info: []},
+                        {sub: "Banksmeadow", info: []},
+                        {sub: "Callaghan", info: []}
+                        ]}
+                ];
+                
+                var result = regions_template(regions_data); //Execute the template
+                /* console.log(result); */
+                $("#RegionsListScrollerTemplateResults").html(result);
+            }
+            prepare_regions_scroller_template();
+           
+            $('#RegionsListScroller').mobiscroll().treelist({
+                theme: 'android',
+                display: 'modal',
+                mode: 'scroller',
+                labels: ['City', 'Suburb'],
+                inputClass: 'i-txt',
+                setText: 'OK',
+                onSelect: function (v, inst) 
+                          {
+                           },
+                onChange: function (v, inst) 
+                          {
+                              $("#region_selection_item_title").html(v);
+                              $("#region_selection_item_description").html("What a nice location "+v+" is!");
+                          },
+            });   
+            
+            $('#region_selection').click(function() {
+                prepare_regions_scroller_template();
+				$('#RegionsListScroller').mobiscroll('show');
+				return false;
+			});
+            
+            /* ======================== */
+            /* PARKING SELECTION SCROLER */
+            /* ======================== */
+           
+            
+            $('#modalview-parking-action-close').click(function() 
+            {
+                $("#modalview-parking-action").kendoMobileModalView("close");
+				return false;
+			});
+
+            $('#parking_selection').click(function() 
+            {
+                $("#modalview-parking-action").kendoMobileModalView("open");
+                /*
+				window.plugins.barcodeScanner.scan(function(result) {
+					alert("We got a barcode\n" +
+						  "Result: " + result.text + "\n" +
+						  "Format: " + result.format + "\n" +
+						  "Cancelled: " + result.cancelled);
+				}, function(error) {
+					alert("Scanning failed: " + error);
+				}
+				);
+                */
+				return false;
+			});
+            
+            $('#qrcode').click(function() 
+            {
+ 				window.plugins.barcodeScanner.scan(function(result) {
+					alert("We got a barcode\n" +
+						  "Result: " + result.text + "\n" +
+						  "Format: " + result.format + "\n" +
+						  "Cancelled: " + result.cancelled);
+				}, function(error) {
+					alert("Scanning failed: " + error);
+				}
+				);
+
+				return false;
+			});
+
+            $('#modalview-parking-action-start').click(function() 
+            {
+                var dt = new Date(); 
+ 			   ParkingActive = true;
+                localStorage.setItem("ParkingActive", "1");
+                localStorage.setItem("ParkingStartTime", dt);
+ 			   digitized();
+                console.log('parking started');
+                document.getElementById('parking_selection_item-title').innerHTML = 'Parking Active';
+                $("#modalview-parking-action").kendoMobileModalView("close");
+				return false;
+			});
+            
+            $('#modalview-parking-action-stop').click(function() 
+            {
+ 			   ParkingActive = false;
+                localStorage.setItem("ParkingActive", "0");
+                console.log('parking stoped');
+                document.getElementById('parking_selection_item-title').innerHTML = 'Parking Inactive';
+                $("#modalview-parking-action").kendoMobileModalView("close");
+				return false;
+			});
+            
+           function digitized() 
+            {
+                var dt = new Date();    // DATE() CONSTRUCTOR FOR CURRENT SYSTEM DATE AND TIME.
+                var lt = new Date(localStorage.getItem("ParkingStartTime"));
+                var t2 = dt.getTime();
+                var t1 = lt.getTime();
+
+                   
+                var dys = parseInt((t2-t1)/(24*3600*1000));
+                var hrs = parseInt((t2-t1)/(3600*1000) % 24);
+                var min = parseInt((t2-t1)/(60*1000) % 60 );
+                var sec = parseInt((t2-t1)/1000 % 60);
+
+                /*
+                var hrs = dt.getHours();
+                var min = dt.getMinutes();
+                var sec = dt.getSeconds();
+                */
+                min = Ticking(min);
+                sec = Ticking(sec);
+
+                var el1 = document.getElementById('dc');
+                el1.innerHTML = hrs + ":" + min
+                document.getElementById('dc_second').innerHTML = sec;
+                document.getElementById('cost').innerHTML = parseInt(sec * 0.1)+'$';
+                /*
+                if (hrs > 12) 
+                { 
+                    document.getElementById('dc_hour').innerHTML = 'PM'; 
+                }
+                else 
+                { 
+                     document.getElementById('dc_hour').innerHTML = 'AM'; 
+                }
+                */
+                var time;
+                
+                // THE ALL IMPORTANT PRE DEFINED JAVASCRIPT METHOD.
+                if (ParkingActive)
+                {
+                    time = setTimeout('digitized()', 1000);      
+                }
+            }
+
+            function Ticking(ticVal) {
+                if (ticVal < 10) {
+                    ticVal = "0" + ticVal;
+                }
+                return ticVal;
+            }
+
+				if ((localStorage.getItem("ParkingActive") == undefined) || (localStorage.getItem("ParkingActive") == "0")) 
+                {
+                    document.getElementById('parking_selection_item-title').innerHTML = 'Parking Inactive';
+					ParkingActive = false;
+				}
+				else 
+                {
+                    document.getElementById('parking_selection_item-title').innerHTML = 'Parking Active';
+					ParkingActive = true;
+				}
+				
+                if (ParkingActive)
+                {
+                    
+                    digitized();
+                }            
+            
+			
+            
         </script>
-    </body>
+
+	</body>
 </html>
