@@ -40,6 +40,10 @@ function settingsViewInit() {
 
 		return false;
 	});
+    
+    $('#sign_out').click(function() {
+        closeModalViewSignOut();
+    });
 }
     
 ///////////////////////////
@@ -133,7 +137,6 @@ function closeModalViewSignIn()
 
 function closeModalViewSignOut() 
 {
-    alert('closeModalViewSignOut');
     auth_token = null;
     window.localStorage.removeItem("auth_token");
     $("#modalview-signout").kendoMobileModalView("close");
