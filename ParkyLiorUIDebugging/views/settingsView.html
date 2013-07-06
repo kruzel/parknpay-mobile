@@ -5,17 +5,17 @@
         <!-- List of settings options -->
             		<ul data-role="listview" id="signupView" data-style="inset" data-inset="true">
     					<li>
-    						<a  href="#" id="sign_up" data-rel="modalview">Sign Up</a>
+    						<a  href="#modalview-signup" id="sign_up" data-rel="modalview">Sign Up</a>
     					</li>                        
     				</ul>
                     <ul data-role="listview" id="signinView" data-style="inset" data-inset="true">
     					<li>
-    						<a  href="#" id="sign_in" data-rel="modalview">Sign In</a>
+    						<a  href="#modalview-signin" id="sign_in" data-rel="modalview">Sign In</a>
     					</li>                        
     				</ul>
                     <ul data-role="listview" id="signoutView" data-style="inset" data-inset="true">
     					<li>
-    						<a  href="#" id="sign_out" data-rel="modalview">Sign Out</a>
+    						<a  href="#" id="sign_out" data-rel="modalview" data-click="closeModalViewSignOut">Sign Out</a>
     					</li>                        
     				</ul>
                     <ul data-role="listview" id="updateView" data-style="inset" data-inset="true" >
@@ -128,26 +128,7 @@
     </div>
 </div>
 
-<!-- ========== SIGNOUT STUFF ============= -->
-
-<div data-role="modalview" id="modalview-signout" style="width: 95%; height: 40%;">
-    <div data-role="header">
-        <div data-role="navbar">
-            <span>Sign Out</span>
-         </div>
-    </div>
-
-    <div data-role="footer">
-        <div data-role="navbar">
-            <span></span>
-            <a data-click="closeModalViewSignOut" data-role="button" data-align="right">Sign Out</a>
-            <a data-click="closeModalViewCancel" data-role="button" data-align="left">Cancel</a>
-        </div>
-    </div>
-</div>
-
 <!-- ========== ADD A CAR STUFF ============= -->
-
 
 <div data-role="modalview" id="modalview-addCar" style="width: 95%; height: 70%;">
     

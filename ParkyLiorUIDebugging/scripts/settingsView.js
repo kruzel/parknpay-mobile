@@ -91,6 +91,7 @@ function closeModalViewSignUp()
             window.localStorage.setItem("auth_token",auth_token);
             console.log('auth_token: ' + auth_token);
             $("#modalview-signup").kendoMobileModalView("close");
+            settingsViewInit();
             
 		},
 		error: function(jqXHR, textStatus, errorThrown) 
@@ -116,10 +117,11 @@ function closeModalViewSignIn()
         data: {user:{email:email, password:password}},
         success: function(response) {
             console.log(response.session);
-            var auth_token = response.session.auth_token;
+            auth_token = response.session.auth_token;
             window.localStorage.setItem("auth_token",auth_token);
             console.log('auth_token: ' + auth_token);
             $("#modalview-signin").kendoMobileModalView("close");
+            settingsViewInit();
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.log(jqXHR, textStatus, errorThrown);
@@ -129,9 +131,11 @@ function closeModalViewSignIn()
     });
 }
 
-
 function closeModalViewSignOut() 
 {
+    alert('closeModalViewSignOut');
+    auth_token = null;
     window.localStorage.removeItem("auth_token");
     $("#modalview-signout").kendoMobileModalView("close");
+    settingsViewInit();
 }
