@@ -80,7 +80,7 @@ function closeModalViewSignUp()
     window.localStorage.setItem("user_data",user_data_str);
     
     $.ajax({
-		url: "http://192.168.1.126:3000/users.json",
+		url: "http://inigo.com.au/users.json",
 		dataType: "json",
 		type: "post",
 		cache: false,
@@ -110,7 +110,7 @@ function closeModalViewSignIn()
     
     //Get fresh data
 	$.ajax({
-        url: "http://192.168.1.126:3000/users/sign_in.json",
+        url: "http://inigo.com.au/users/sign_in.json",
         dataType: "json",
         type: "post",
         cache: false,
