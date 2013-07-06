@@ -68,7 +68,6 @@
         <!-- =========== -->
         <!--  HOME PAGE  -->
         <!-- =========== -->
-        
 
         <div data-role="view" id="home" data-title="Parky" data-init="initPictureView">
            <ul data-role="listview" data-style="inset" data-type="group" id="announcements-listview" >
@@ -87,43 +86,40 @@
                      
 					<ul  id="parking_selection" class="ic">
 						<img class="item-photo" src="images/p.png"/>
-						<h3 id="parking_selection_item-title" class="item-title"></h3>
-						<p id="parking_selection_item-info" class="item-info"></p>
-                            <div>
-    							<table style="display:block; width: 20%; height: auto;" align="center" cellspacing="0" cellpadding="0" border="0">
-    								<td class="clock" id="dc"></td>
-    								<td>
-    									<table cellpadding="0" cellspacing="0" border="0">
-    										<tr>
-    											<td class="clocklg" id="dc_hour"></td>
-    										</tr> 
-    										<tr>
-    											<td class="clocklg" id="dc_second"></td>
-    										</tr> 										
-                                        </table>
-    								</td>
-    							</table> 
-                            </div>
-                        
-                            <div>
-							    <table style="display:box; width: 20%; height: auto;" align="left" cellspacing="0" cellpadding="0" border="0">
-                                	<td class="clock" id="dc"></td>
-    								<td>
-    									<table cellpadding="0" cellspacing="0" border="0">
-    										<tr>
-    											<td class="cost" id="cost"></td>
-    										</tr> 							
-                                        </table>
-    								</td>
-    							</table>   
-                            </div>
-
-                        
-                        
-                          
-					</ul>
-                 
-                </li>
+						<h3 id="parking_selection_item-title" class="parking_total-time"></h3>
+						<p id="parking_selection_item-info" class="parking_total-cost"></p>
+                        <!--
+                        <div>
+							<table id="parking_time" class="item-title" style="display:box; width: 20%; height: auto;" align="left" cellspacing="0" cellpadding="0" border="0">
+								<td class="clock" id="dc"></td>
+								<td>
+									<table cellpadding="0" cellspacing="0" border="0">
+										<tr>
+											<td class="clocklg" id="dc_hour"></td>
+										</tr> 
+										<tr>
+											<td class="clocklg" id="dc_second"></td>
+										</tr> 										
+                                    </table>
+								</td>
+							</table> 
+                        </div>
+                   
+                        <div>
+						    <table id="parking_cost"  class="item-title"  style="display:box; width: 50%; height: auto;" align="left" cellspacing="0" cellpadding="0" border="0">
+                            	<td class="clock" id="dc"></td>
+								<td>
+									<table cellpadding="0" cellspacing="0" border="0">
+										<tr>
+											<td class="cost" id="cost"></td>
+										</tr> 							
+                                    </table>
+								</td>
+							</table>   
+                        </div>
+                        -->
+    			    </ul>
+                 </li>
             </ul>            
  		</div>
         
@@ -168,12 +164,12 @@
                         <ul id="RegionsListScroller">
                          # for (var i = 0; i < data.length; i++) 
                             { #
-                            <li data-val="#= data[i].City #">
+                            <li data-val="#= data[i].ID #">
                                   #= data[i].City #
                                   <ul>
                                      # for (var j = 0; j < data[i].Suburb.length; j++) 
                                         { #
-                                        <li data-val="#= data[i].Suburb[j].sub #">
+                                        <li data-val="#= data[i].Suburb[j].ID #">
                                            #= data[i].Suburb[j].sub #
                                         </li>
                                       # } #       
@@ -215,7 +211,7 @@
  	   <script type="text/javascript" src="viewModels/carsViewModels.js"></script>
 		<script type="text/javascript" src="scripts/app.js"></script>
 		<!-- <script type="text/javascript" src="scripts/main.js"></script> -->
-    	<script type="text/javascript" src="scripts/hello-world.js" ></script> 
+    	<!-- <script type="text/javascript" src="scripts/hello-world.js" ></script> -->
 
         <script>
   	      var app = new kendo.mobile.Application(document.body, { transition: "slide", layout: "jitterz-default" });
@@ -306,25 +302,25 @@
             var regions_data = 
                 [{ID: "0", City: "Sydney", Suburb: 
                     [
-                    {sub: "Badgerys Creek", info: []},
-                    {sub: "Balgowlah", info: 0},
-                    {sub: "Balgowlah Heights", info: []},
-                    {sub: "Balmain", info: []},
-                    {sub: "Balmain East", info: []},
-                    {sub: "Banksia", info: []},
-                    {sub: "Banksmeadow", info: []},
-                    {sub: "Bankstown", info: []}
+                    {ID: "0", sub: "Badgerys Creek", info:"", rate: 0.1},
+                    {ID: "1", sub: "Balgowlah", info:"", rate: 0.2},
+                    {ID: "2", sub: "Balgowlah Heights", info:"", rate: 0.3},
+                    {ID: "3", sub: "Balmain", info:"", rate: 0.4},
+                    {ID: "4", sub: "Balmain East", info:"", rate: 0.5},
+                    {ID: "5", sub: "Banksia", info:"", rate: 0.6},
+                    {ID: "6", sub: "Banksmeadow", info:"", rate: 0.7},
+                    {ID: "7", sub: "Bankstown",info:"", rate: 0.8}
                     ]},
                 {ID: "1", City: "Newcastle", Suburb: 
                     [
-                    {sub: "Adamstown", info: []},
-                    {sub: "Adamstown Heights", info: []},
-                    {sub: "Bar Beach", info: []},
-                    {sub: "Beresfield", info: []},
-                    {sub: "Birmingham Gardens", info: []},
-                    {sub: "Black Hill", info: []},
-                    {sub: "Banksmeadow", info: []},
-                    {sub: "Callaghan", info: []}
+                    {ID: "0", sub: "Adamstown", info:"", rate: 0.15},
+                    {ID: "1", sub: "Adamstown Heights",info:"", rate: 0.25},
+                    {ID: "2", sub: "Bar Beach", info:"", rate: 0.35},
+                    {ID: "3", sub: "Beresfield", info:"", rate: 0.45},
+                    {ID: "4", sub: "Birmingham Gardens", info:"", rate: 0.55},
+                    {ID: "5", sub: "Black Hill", info:"", rate: 0.65},
+                    {ID: "6", sub: "Banksmeadow",info:"", rate: 0.75},
+                    {ID: "7", sub: "Callaghan", info:"", rate: 0.85}
                     ]}
             ];
             var regions_template = kendo.template($("#RegionsListScrollerTemplate").html());
@@ -337,7 +333,8 @@
             }
             prepare_regions_scroller_template();
            
-            pid = localStorage.getItem("chosen_region");
+            pid1 = localStorage.getItem("chosen_region_city");
+            pid2 = localStorage.getItem("chosen_region_suburb");
  
             $('#RegionsListScroller').mobiscroll().treelist({
                 theme: 'android',
@@ -351,16 +348,21 @@
                            },
                 onChange: function (v, inst) 
                           {
-                              $("#region_selection_item_title").html(v);
+                              $("#region_selection_item_title").html(regions_data[inst.temp[0]].Suburb[inst.temp[1]].sub  + ", " + regions_data[inst.temp[0]].City);
                               /* $("#region_selection_item_description").html("What a nice location "+v+" is!"); */
-                              localStorage.setItem("chosen_region", v);
+                              localStorage.setItem("chosen_region_city", inst.temp[0]);
+                              localStorage.setItem("chosen_region_suburb", inst.temp[1]);
+                              localStorage.setItem("chosen_region_rate", regions_data[inst.temp[0]].Suburb[inst.temp[1]].rate);
+                              $("#region_selection_item_description").html(regions_data[inst.temp[0]].Suburb[inst.temp[1]].rate + "$/h");
                           },
             });   
             
-            if (pid != null)
+            if ((pid1 != null) && (pid2 != null))
             {
-                 /* $('#RegionsListScroller').mobiscroll('setValue', [pid, regions_data[pid].City , regions_data[pid].Suburb ],true,.2);    */
-                 $("#region_selection_item_title").html(pid);
+                 $("#region_selection_item_title").html(regions_data[pid1].Suburb[pid2].sub  + ", " + regions_data[pid1].City);
+                 //$("#region_selection_item_title").html(pid2 + ", " + pid1);
+                 $('#RegionsListScroller').mobiscroll('setValue', [pid1, pid2 ],true,.2);   
+                 $("#region_selection_item_description").html(regions_data[pid1].Suburb[pid2].rate + "$/h");
             }
             
            
@@ -417,6 +419,15 @@
             */
             $('#parking_selection').click(function() 
             {
+                pid = localStorage.getItem("chosen_car");
+                pid1 = localStorage.getItem("chosen_region_city");
+                pid2 = localStorage.getItem("chosen_region_suburb");
+                if ((pid == null) || (pid1 == null) || (pid2 == null))
+                {
+                    alert("Please set the can and the location first");
+                    return false;
+                }
+             
                 status = localStorage.getItem("ParkingActive");
                 if ((status == null) || (status == 0 ))
                 {
@@ -436,12 +447,12 @@
                    ParkingActive = false;
                     localStorage.setItem("ParkingActive", "0");
                     console.log('parking stoped');
-                    document.getElementById('parking_selection_item-title').innerHTML = 'Parking Inactive';
-                    /* $("#modalview-parking-action").kendoMobileModalView("close"); */
+                    document.getElementById('parking_selection_item-title').innerHTML = 'Inactive';
                     document.getElementById('parking_selection_item-info').innerHTML = '';
-                    document.getElementById('dc_second').innerHTML = '';
-                    document.getElementById('cost').innerHTML = '';
-                    document.getElementById('dc').innerHTML = '';
+                    //document.getElementById('parking_cost').innerHTML = '';
+                    //document.getElementById('dc_second').innerHTML = '';
+                    //document.getElementById('cost').innerHTML = '';
+                    
     				return false;  
                 }
 			});
@@ -468,12 +479,16 @@
                 min = Ticking(min);
                 sec = Ticking(sec);
 
-                var el1 = document.getElementById('dc');
+                //var el1 = document.getElementById('dc');
+                var el1 = document.getElementById('parking_selection_item-title');
+                
                 if (ParkingActive)
                 {
-                    el1.innerHTML = hrs + ":" + min
-                    document.getElementById('dc_second').innerHTML = sec;
-                    document.getElementById('cost').innerHTML = parseInt(sec * 0.1)+'$';        
+                    el1.innerHTML = hrs + ":" + min + ":" + sec; 
+                    //document.getElementById('dc_second').innerHTML = sec;
+                    var rate =  localStorage.getItem("chosen_region_rate");
+                    document.getElementById('parking_selection_item-info').innerHTML = parseInt( sec * rate / 3600)+'$';   
+                    //document.getElementById('cost').innerHTML = parseInt( sec * rate / 3600)+'$';        
                 }
                 /*
                 if (hrs > 12) 
@@ -505,9 +520,9 @@
 
 			if ((localStorage.getItem("ParkingActive") == undefined) || (localStorage.getItem("ParkingActive") == "0")) 
             {
-                document.getElementById('parking_selection_item-title').innerHTML = 'Parking Inactive';
-                document.getElementById('dc_second').innerHTML = '';
-                document.getElementById('cost').innerHTML = '';
+                document.getElementById('parking_selection_item-title').innerHTML = 'Inactive';
+                // document.getElementById('dc_second').innerHTML = '';
+                //document.getElementById('cost').innerHTML = '';
 				ParkingActive = false;
 			}
 			else 

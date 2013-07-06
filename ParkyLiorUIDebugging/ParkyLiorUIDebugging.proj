@@ -69,7 +69,6 @@
     <Content Include="images\bgr_pattern.jpg" />
     <Content Include="images\cancel-inv.png" />
     <Content Include="images\car.png" />
-    <Content Include="images\cheers.png" />
     <Content Include="images\City-Bank-icon.png" />
     <Content Include="images\City-Church-icon.png" />
     <Content Include="images\media-play-inv.png" />
@@ -80,8 +79,6 @@
     <Content Include="images\photo-inv.png" />
     <Content Include="images\poi.png" />
     <Content Include="images\qrcode.png" />
-    <Content Include="images\unknown_car_active.png" />
-    <Content Include="images\unknown_car_inactive.png" />
     <Content Include="img\cordova.png" />
     <Content Include="img\logo.png" />
     <Content Include="index.html" />
@@ -97,8 +94,9 @@
     <Content Include="kendo\styles\kendo.mobile.all.min.css" />
     <Content Include="kendo\styles\kendo.parky.mobile.all.css" />
     <Content Include="scripts\app.js" />
-    <Content Include="scripts\hello-world.js" />
-    <Content Include="scripts\main.js" />
+    <Content Include="scripts\hello-world.js.remove" />
+    <Content Include="scripts\main.js.remove" />
+    <Content Include="scripts\settingsView.js" />
     <Content Include="styles\button.css" />
     <Content Include="styles\home_pannel.css" />
     <Content Include="styles\main.css" />

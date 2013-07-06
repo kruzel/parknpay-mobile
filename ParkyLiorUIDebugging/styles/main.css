@@ -82,12 +82,11 @@
     text-shadow: white 0px 0px 0px;
 }
 
-
+/* for the first two panels */
 #parking_selection_item-title {
 	float: left;
 	font-size: 1.2em;
     line-height: 1.2em;
-    /*margin: 0 0 0 .8em;*/
     margin: 3.5% 0 0 .8em;
     width: 61%;
     text-shadow: white 0px 0px 0px;
@@ -95,13 +94,35 @@
 
 #announcements-listview .item-info {
 	float: left;
-	font-size: 1em;
+	font-size: 1.1em;
+    font-weight: 100;
+	line-height: 1em;
+    margin: 2% 0 0 1em;
+    width: 50%;
+    text-shadow: white 0px 0px 0px;
+}
+
+/* for the parking time/cost panel */
+
+#announcements-listview .parking_total-time {
+	float: left;
+	font-size: 3em;
+    line-height: 1.2em;
+    margin: 5.5% 0 0 .3em;
+    width: 40%;
+    text-shadow: white 0px 0px 0px;
+}
+#announcements-listview .parking_total-cost {
+	float: left;
+	font-size: 1.1em;
     font-weight: 100;
 	line-height: 1em;
     margin: 0 0 0 1em;
     width: 50%;
     text-shadow: white 0px 0px 0px;
 }
+
+
 
 #announcements-listview {
     margin: 0;

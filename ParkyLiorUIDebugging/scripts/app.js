@@ -1,5 +1,10 @@
 // JavaScript Document
-
+var auth_token = window.localStorage.getItem("auth_token");
+var user_data_str = window.localStorage.getItem("user_data");
+var user_data = null;
+if(user_data_str!=null) {
+    user_data = JSON.parse(user_data_str);
+}
 
  
 function id(element) {
@@ -199,76 +204,6 @@ function initPictureView(e)
     */
 
 }
-
-
-///////////////////////////
-//  CAR MANAGEMENT STUFF //
-///////////////////////////
-
-///////////////////////////
-//  SETTINGS RELATED STUFF //
-///////////////////////////
-
-
-function closeModalAddCar() 
-{
-    $("#modalview-addCar").kendoMobileModalView("close");
-}
-
-function closeModalViewCancel() 
-{
-        $("#modalview-signup").kendoMobileModalView("close");
-        $("#modalview-signin").kendoMobileModalView("close");
-}
-    
-        
-function closeModalViewSignUp() 
-{
-    /* OFER put here AJAX to do SIGNIN */        
-    var firstname = $("#firstname").val();
-    var lastname = $("#lastname").val();
-    var phone = $("#phone").val();
-    var credit_card_number = $("#credit_card_number").val();
-    var email = $("#email").val();
-    var password = $("#password").val();
-    
-    //TODO: add phone and credit_card_number to server, add as accessible attr
-    var jsonUser = {user: {email: email, password: password, password_confirmation: password, firstname: firstname, lastname: lastname } } //, phone: phone, credit_card_number: credit_card_number
-    
-    $.ajax({
-		url: "http://54.­252.­87.­58:­3000/users.json",
-		dataType: "json",
-		type: "post",
-		cache: false,
-		data: jsonUser,
-		success: function(response) 
-        {
-            console.log(response);
-            $("#modalview-signup").kendoMobileModalView("close");
-		},
-		error: function(jqXHR, textStatus, errorThrown) 
-        {
-			console.log(jqXHR, textStatus, errorThrown);
-            alert('Signup Failed');
-	   }
-	});
-    
-}
-$('#scanview').click(function() 
-            {
- 				window.plugins.barcodeScanner.scan(function(result) {
-					alert("We got a barcode\n" +
-						  "Result: " + result.text + "\n" +
-						  "Format: " + result.format + "\n" +
-						  "Cancelled: " + result.cancelled);
-				}, function(error) {
-					alert("Scanning failed: " + error);
-				}
-				);
-
-				return false;
-			});
-
 
 
 //////////////////////////
