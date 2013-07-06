@@ -71,8 +71,8 @@ function closeModalViewSignUp()
     var phone = $("#phone").val();
     var credit_card_number = $("#credit_card_number").val();
     var id_card_number = $("#id_card_number").val();
-    var email = $("#email").val();
-    var password = $("#password").val();
+    var email = $("#email-signup").val();
+    var password = $("#password-signup").val();
     
     //TODO: add phone and credit_card_number to server, add as accessible attr
     user_data = {user: {email: email, password: password, password_confirmation: password, firstname: firstname, lastname: lastname } } //, phone: phone, credit_card_number: credit_card_number, id_card_number: id_card_number
@@ -80,7 +80,7 @@ function closeModalViewSignUp()
     window.localStorage.setItem("user_data",user_data_str);
     
     $.ajax({
-		url: "http://inigo.com.au/users.json",
+		url: "http://192.168.1.126:3000/users.json",
 		dataType: "json",
 		type: "post",
 		cache: false,
@@ -105,12 +105,12 @@ function closeModalViewSignUp()
 
 function closeModalViewSignIn() 
 {
-    var email = $("#email").val();
-    var password = $("#password").val();
+    var email = $("#email-signin").val();
+    var password = $("#password-signin").val();
     
     //Get fresh data
 	$.ajax({
-        url: "http://inigo.com.au/users/sign_in.json",
+        url: "http://192.168.1.126:3000/users/sign_in.json",
         dataType: "json",
         type: "post",
         cache: false,
