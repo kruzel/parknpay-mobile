@@ -5,12 +5,12 @@
         <!-- List of settings options -->
             		<ul data-role="listview" id="signupView" data-style="inset" data-inset="true">
     					<li>
-    						<a  href="#modalview-signup" id="sign_up" data-rel="modalview">Sign Up</a>
+    						<a  href="#view-signup" id="sign_up" data-rel="view">Sign Up</a>
     					</li>                        
     				</ul>
                     <ul data-role="listview" id="signinView" data-style="inset" data-inset="true">
     					<li>
-    						<a  href="#modalview-signin" id="sign_in" data-rel="modalview">Sign In</a>
+    						<a  href="#view-signin" id="sign_in" data-rel="view">Sign In</a>
     					</li>                        
     				</ul>
                     <ul data-role="listview" id="signoutView" data-style="inset" data-inset="true" data-click="closeModalViewSignOut">
@@ -82,12 +82,14 @@
 -->
 <!-- ========== SIGNUP STUFF ============= -->
 
-<div data-role="modalview" id="modalview-signup" style="width: 95%; height: 70%;">
+<div data-role="view" id="view-signup">
+    
     <div data-role="header">
         <div data-role="navbar">
             <span>Sign-Up</span>
         </div>
     </div>
+    
     <ul data-role="listview" data-style="inset">
         <li><label for="firstname">Firstname:</label> <input type="text" id="firstname" /></li>
         <li><label for="lastname">Lastname:</label> <input type="text" id="lastname" /></li>
@@ -96,11 +98,12 @@
         <li><label for="email-signup">Email:</label> <input type="email" id="email-signup" /></li>
         <li><label for="password-signup">Password:</label> <input type="password" id="password-signup" /></li>
     </ul>
+    
     <div data-role="footer">
         <div data-role="navbar">
             <span></span>
-            <a data-click="closeModalViewSignUp" data-role="button" data-align="right">Sign Up</a>
-            <a data-click="closeModalViewCancel" data-role="button" data-align="left">Cancel</a>
+            <a data-click="closeViewSignUp" data-role="button" data-align="right">Sign Up</a>
+            <a href="#settingsView" data-role="button" data-align="left">Cancel</a>
         </div>
     </div>
 
@@ -108,7 +111,7 @@
 
 <!-- ========== SIGNIN STUFF ============= -->
 
-<div data-role="modalview" id="modalview-signin" style="width: 95%; height: 40%;">
+<div data-role="view" id="view-signin">
     <div data-role="header">
         <div data-role="navbar">
             <span>Sign In</span>
@@ -122,8 +125,8 @@
     <div data-role="footer">
         <div data-role="navbar">
             <span></span>
-            <a data-click="closeModalViewSignIn" data-role="button" data-align="right">Sign In</a>
-            <a data-click="closeModalViewCancel" data-role="button" data-align="left">Cancel</a>
+            <a data-click="closeViewSignIn" data-role="button" data-align="right">Sign In</a>
+            <a href="#settingsView" data-role="button" data-align="left">Cancel</a>
         </div>
     </div>
 </div>
@@ -148,7 +151,7 @@
    <div data-role="footer">
         <div data-role="navbar">
             <span></span>
-            <a data-click="closeModalAddCar" data-role="button" data-align="left">Cancel</a>
+            <a href="#settingsView" data-role="button" data-align="left">Cancel</a>
             <a data-click="closeModalAddCar" data-role="button" data-align="right">Done</a>
        </div>
     </div>

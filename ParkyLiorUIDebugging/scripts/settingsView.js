@@ -1,3 +1,4 @@
+// JavaScript Document
 function settingsViewInit() {  
     if (auth_token==null)
     {
@@ -57,18 +58,19 @@ function settingsViewInit() {
 
 function closeModalAddCar() 
 {
-    $("#modalview-addCar").kendoMobileModalView("close");
+    $("#modalview-addCar").kendoMobileView("close");
 }
 
-function closeModalViewCancel() 
-{
-        $("#modalview-signup").kendoMobileModalView("close");
-        $("#modalview-signin").kendoMobileModalView("close");
-        $("#modalview-signout").kendoMobileModalView("close");
-}
     
+function closeViewSignOut() 
+{
+    auth_token = null;
+    window.localStorage.removeItem("auth_token");
+    $("#modalview-signout").kendoMobileModalView("close");
+    settingsViewInit();
+}
         
-function closeModalViewSignUp() 
+function closeViewSignUp() 
 {
     var firstname = $("#firstname").val();
     var lastname = $("#lastname").val();
@@ -94,7 +96,7 @@ function closeModalViewSignUp()
             auth_token = response.data.auth_token;
             window.localStorage.setItem("auth_token",auth_token);
             console.log('auth_token: ' + auth_token);
-            $("#modalview-signup").kendoMobileModalView("close");
+            $("#modalview-signup").kendoMobileView("close");
             settingsViewInit();
             
 		},
@@ -102,12 +104,12 @@ function closeModalViewSignUp()
         {
 			console.log(jqXHR, textStatus, errorThrown);
             window.localStorage.removeItem("auth_token");
-            alert('Signup Failed');
+            alert('Signup Failed');  
 	   }
 	});
 }
 
-function closeModalViewSignIn() 
+function closeViewSignIn() 
 {
     var email = $("#email-signin").val();
     var password = $("#password-signin").val();
@@ -131,14 +133,10 @@ function closeModalViewSignIn()
             console.log(jqXHR, textStatus, errorThrown);
             window.localStorage.removeItem("auth_token");
             alert('Sign in failed');
+            $("#view-signin").close();
+            settingsViewInit();
        }
     });
 }
 
-function closeModalViewSignOut() 
-{
-    auth_token = null;
-    window.localStorage.removeItem("auth_token");
-    $("#modalview-signout").kendoMobileModalView("close");
-    settingsViewInit();
-}
+
