@@ -3,17 +3,7 @@
 <div data-role="view" id="settingsView" data-style="inset" data-title="Settings" data-init="settingsViewInit" data-model="carsViewModel" >
 	<div id="settingsViewContent" data-role="content">
         <!-- List of settings options -->
-            		<ul data-role="listview" id="signupView" data-style="inset" data-inset="true">
-    					<li>
-    						<a  href="#view-signup" id="sign_up" data-rel="view">Sign Up</a>
-    					</li>                        
-    				</ul>
-                    <ul data-role="listview" id="signinView" data-style="inset" data-inset="true">
-    					<li>
-    						<a  href="#view-signin" id="sign_in" data-rel="view">Sign In</a>
-    					</li>                        
-    				</ul>
-                    <ul data-role="listview" id="signoutView" data-style="inset" data-inset="true" data-click="closeModalViewSignOut">
+                    <ul data-role="listview" id="signoutView" data-style="inset" data-inset="true" data-click="closeViewSignOut">
     					<li>
     						<a href="#settings" id="sign_out" data-rel="modalview">Sign Out</a>
     					</li>                        
@@ -38,24 +28,11 @@
     						<a href="#settings" data-rel="modalview">Reminders</a>
     					</li>
     				</ul>
-                     
                     <ul data-role="listview" id="prepaidView" data-style="inset" data-inset="true" >
     					<li>
     						<a href="#settings" data-rel="modalview">Pre-paid</a>
     					</li>
     				</ul>
-        <!--
-                     <ul data-role="listview" id="settingsView" data-inset="true" data-theme="d">
-    					<li>
-    						<a href="#settings" data-rel="modalview">Advanced</a>
-    					</li>
-    				</ul>
-        -->
-        <!--
-                     <ul id="registeredCarsList" data-role="listview" data-style="inset" data-bind="source: cars" data-template="registeredCarsList-template"></ul>
-        -->
-                     <!-- <ul id="rewordsCardsList" data-role="listview" data-style="inset" data-bind="source: cards" data-template="rewordsCardsList-template"></ul> -->
-
      </div>
 </div>
 <!--
@@ -80,56 +57,6 @@
 </script>
 
 -->
-<!-- ========== SIGNUP STUFF ============= -->
-
-<div data-role="view" id="view-signup">
-    
-    <div data-role="header">
-        <div data-role="navbar">
-            <span>Sign-Up</span>
-        </div>
-    </div>
-    
-    <ul data-role="listview" data-style="inset">
-        <li><label for="firstname">Firstname:</label> <input type="text" id="firstname" /></li>
-        <li><label for="lastname">Lastname:</label> <input type="text" id="lastname" /></li>
-        <li><label for="phone">Phone:</label> <input type="tel" id="phone" /></li>
-        <li><label for="credit_card_number">Credit Card:</label> <input type="text" id="credit_card_number" /></li>
-        <li><label for="email-signup">Email:</label> <input type="email" id="email-signup" /></li>
-        <li><label for="password-signup">Password:</label> <input type="password" id="password-signup" /></li>
-    </ul>
-    
-    <div data-role="footer">
-        <div data-role="navbar">
-            <span></span>
-            <a data-click="closeViewSignUp" data-role="button" data-align="right">Sign Up</a>
-            <a href="#settingsView" data-role="button" data-align="left">Cancel</a>
-        </div>
-    </div>
-
-</div>
-
-<!-- ========== SIGNIN STUFF ============= -->
-
-<div data-role="view" id="view-signin">
-    <div data-role="header">
-        <div data-role="navbar">
-            <span>Sign In</span>
-         </div>
-    </div>
-
-    <ul data-role="listview" data-style="inset">
-        <li><label for="emailemail-signin">Email:</label> <input type="email" id="email-signin" /></li>
-        <li><label for="password-signin">Password:</label> <input type="password" id="password-signin" /></li>
-    </ul>
-    <div data-role="footer">
-        <div data-role="navbar">
-            <span></span>
-            <a data-click="closeViewSignIn" data-role="button" data-align="right">Sign In</a>
-            <a href="#settingsView" data-role="button" data-align="left">Cancel</a>
-        </div>
-    </div>
-</div>
 
 <!-- ========== ADD A CAR STUFF ============= -->
 

@@ -613,3 +613,38 @@ input::-webkit-inner-spin-button {
     font-weight: normal;
     color: #fff;
 }
+/*
+html 
+{ 
+  background: url(../images/blured.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+*/
+
+#login .km-content{
+ 
+background-image:  url(../images/1.png);
+background-size: cover;
+background-repeat: repeat;
+color : white;
+ 
+}
+#settingsView .km-content{
+ 
+background-image:  url(../images/2.png);
+background-size: cover;
+background-repeat: repeat;
+color : white;
+ 
+}
+#places .km-content{
+ 
+background-image:  url(../images/3.png);
+background-size: cover;
+background-repeat: repeat;
+color : white;
+ 
+}
