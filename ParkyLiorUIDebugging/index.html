@@ -22,9 +22,9 @@
         <link rel="stylesheet" type="text/css" href="css/mobiscroll_text_and_image.css"  />
    	 <script type="text/javascript" src="js/mobiscroll-2.4.custom.min.js" ></script> 
    	 <script type="text/javascript" charset="utf-8" src="Plugins/Barcode Scanner/barcodescanner.js"></script>
-
-        <!-- parky app -->
-        <!-- <script type="text/javascript" src="scripts/settingsView.js" ></script> -->
+        
+        <!-- app globals -->
+        <script type="text/javascript" src="../scripts/app.js"></script>
         
 		<!-- Default Stylesheet -->
 		<link rel="stylesheet" href="styles/main.css" />
@@ -119,15 +119,13 @@
             </div>
         </div>     
         
-        
-		<!-- Scripts 
- 	   <script type="text/javascript" src="viewModels/carsViewModels.js"></script>
-		<script type="text/javascript" src="scripts/app.js"></script> -->
 		
         <script>
+            
   	      var app = new kendo.mobile.Application(document.body, { transition: "slide", layout: "jitterz-default" });
-            auth_token = window.localStorage.getItem("auth_token");
-            //app.showLoading();
+            var ParkingActive;
+            
+           
             if (auth_token != null ) 
             {
                 app.navigate("views/homeView.html");
@@ -139,9 +137,10 @@
                 document.getElementById("password-signin").value = "kellogskellogs";
                 app.navigate("#login");
             }
+           
             
   	      //var app = new kendo.mobile.Application(document.body, { transition: "slide", layout: "" });
-            var ParkingActive;
+            
             /*
             function redirectBack(e) 
             {
