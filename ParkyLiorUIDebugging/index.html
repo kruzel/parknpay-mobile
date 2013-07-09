@@ -43,15 +43,13 @@
 		<link rel="stylesheet" media="only screen and (min-device-width: 600px) and (max-device-width: 1024px) and (-webkit-device-pixel-ratio:1)" href="styles/tablet-600-1024.css" type="text/css" />
 		<!-- Tablet 768x1024 High DPI (aka iPad3") -->
 		<link rel="stylesheet" media="only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-device-pixel-ratio:2)" href="styles/tablet-1024-hdpi.css" type="text/css" />
-        
- 
        
 	</head>
     
     
 	<body>
         
-        <div data-role="view" id="login" data-title="Parky">
+        <div data-role="view" id="login" data-title="Parky" data-after-show="after_show">
             
             <ul data-role="listview" id="signupView" data-style="inset" data-inset="true" >
             	<li>
@@ -125,19 +123,20 @@
   	      var app = new kendo.mobile.Application(document.body, { transition: "slide", layout: "jitterz-default" });
             var ParkingActive;
             
-           
-            if (auth_token != null ) 
-            {
-                app.navigate("views/homeView.html");
+            function after_show() {
+                
+                if (auth_token != null ) 
+                {
+                    app.navigate("views/homeView.html");
+                }
+                else
+                {
+                    // TODOD change to take from local storage
+                    document.getElementById("email-signin").value = "alior101@gmail.com";
+                    document.getElementById("password-signin").value = "kellogskellogs";
+                    app.navigate("#login");
+                }
             }
-            else
-            {
-                // TODOD change to take from local storage
-                document.getElementById("email-signin").value = "alior101@gmail.com";
-                document.getElementById("password-signin").value = "kellogskellogs";
-                app.navigate("#login");
-            }
-           
             
   	      //var app = new kendo.mobile.Application(document.body, { transition: "slide", layout: "" });
             
