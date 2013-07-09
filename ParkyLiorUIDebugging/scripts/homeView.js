@@ -3,19 +3,26 @@
 /* CAR SELECTION SCROLER */
 /* ===================== */
 var template = kendo.template($("#CarsListScrollerTemplate").html());
+
+console.assert(1);
+
+
 var data = 
     [{ID: 0, registration: "12-234-11", PictureUrl: "https://dl.dropboxusercontent.com/u/1495669/car2.png", Name: "Car1"},
      {ID: 1, registration: "12-234-22", PictureUrl: "https://dl.dropboxusercontent.com/u/1495669/car1.png", Name: "Car2"}];
+
 function prepare_template() 
 {
     /* OFER: insert here API call to get the user registered cars */
     var result = template(data); //Execute the template
     $("#CarsListScrollerTemplateResults").html(result);
 }
+
 prepare_template();
 
 /* this will put on the home screen the last chosen car*/
 pid = localStorage.getItem("chosen_car");
+
 if (pid != null )
 {
     document.getElementById("car_selection_item_title").innerHTML = data[pid].registration;

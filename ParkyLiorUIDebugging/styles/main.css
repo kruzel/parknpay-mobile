@@ -632,6 +632,15 @@ background-repeat: repeat;
 color : white;
  
 }
+
+#home .km-content{
+ 
+background-image:  url(../images/1.png);
+background-size: cover;
+background-repeat: repeat;
+color : white;
+ 
+}
 #settingsView .km-content{
  
 background-image:  url(../images/2.png);

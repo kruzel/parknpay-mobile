@@ -24,7 +24,7 @@
    	 <script type="text/javascript" charset="utf-8" src="Plugins/Barcode Scanner/barcodescanner.js"></script>
         
         <!-- app globals -->
-        <script type="text/javascript" src="../scripts/app.js"></script>
+        <script type="text/javascript" src="scripts/app.js"></script>
         
 		<!-- Default Stylesheet -->
 		<link rel="stylesheet" href="styles/main.css" />
@@ -67,7 +67,7 @@
                 
          <!-- ========== SIGNUP STUFF ============= -->
         
-        <div data-role="view" id="view-signup"  data-after-show="after_show_signup">
+        <div data-role="view" id="view-signup"  data-show="afterShowSignup">
             
             <div data-role="header">
                 <div data-role="navbar">
@@ -97,7 +97,7 @@
          
         <!-- ========== SIGNIN STUFF ============= -->
         
-        <div data-role="view" id="view-signin" data-after-show="after_show_signin">
+        <div data-role="view" id="view-signin" data-show="afterShowSignin">
             <div data-role="header">
                 <div data-role="navbar">
                     <span>Sign In</span>
@@ -123,23 +123,29 @@
   	      var app = new kendo.mobile.Application(document.body, { transition: "slide", layout: "jitterz-default" });
             var ParkingActive;
             
-            function after_show_signin() {
-                alert('im here');
+            window.localStorage.setItem("last_email_signin","alior101@gmail.com" );
+            window.localStorage.setItem("last_password_signin", "kellogskellogs");
+            
+            function afterShowSignin(e) 
+            {
+               
+                console.log(e.view);
+                var auth_token = window.localStorage.getItem("auth_token");
                 if (auth_token != null ) 
                 {
-                    app.navigate("views/homeView.html");
+                    app.navigate("views/homeView.html"); // I'm not sure we want to directly signin - maybe the user wants to put another user id ...
                 }
                 else
                 {
                     
                     // TODOD change to take from local storage
-                    document.getElementById("email-signin").value = "alior101@gmail.com";
-                    document.getElementById("password-signin").value = "kellogskellogs";
+                    document.getElementById("email-signin").value = window.localStorage.getItem("last_email_signin");
+                    document.getElementById("password-signin").value = window.localStorage.getItem("last_password_signin");
                     //app.navigate("#login");
                 }
             }
             
-            function after_show_signup() {
+            function afterShowSignup(e) {
             }
             
   	      //var app = new kendo.mobile.Application(document.body, { transition: "slide", layout: "" });
@@ -208,6 +214,9 @@
                 var email = $("#email-signin").val();
                 var password = $("#password-signin").val();
                 
+                window.localStorage.setItem("last_email_signin",email );
+                window.localStorage.setItem("last_password_signin", password);
+
                 //Get fresh data
             	$.ajax({
                     url: "http://inigo.com.au/users/sign_in.json",
