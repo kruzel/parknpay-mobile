@@ -49,9 +49,9 @@
     
 	<body>
         
-        <div data-role="view" id="login" data-title="Parky" data-after-show="after_show">
+        <div data-role="view" id="login" data-title="Parky">
             
-            <ul data-role="listview" id="signupView" data-style="inset" data-inset="true" >
+            <ul data-role="listview" id="signupView" data-style="inset" data-inset="true">
             	<li>
             		<a  href="#view-signup" id="sign_up" data-rel="view">Sign Up</a>
             	</li>                        
@@ -67,7 +67,7 @@
                 
          <!-- ========== SIGNUP STUFF ============= -->
         
-        <div data-role="view" id="view-signup">
+        <div data-role="view" id="view-signup"  data-after-show="after_show_signup">
             
             <div data-role="header">
                 <div data-role="navbar">
@@ -97,7 +97,7 @@
          
         <!-- ========== SIGNIN STUFF ============= -->
         
-        <div data-role="view" id="view-signin">
+        <div data-role="view" id="view-signin" data-after-show="after_show_signin">
             <div data-role="header">
                 <div data-role="navbar">
                     <span>Sign In</span>
@@ -123,19 +123,23 @@
   	      var app = new kendo.mobile.Application(document.body, { transition: "slide", layout: "jitterz-default" });
             var ParkingActive;
             
-            function after_show() {
-                
+            function after_show_signin() {
+                alert('im here');
                 if (auth_token != null ) 
                 {
                     app.navigate("views/homeView.html");
                 }
                 else
                 {
+                    
                     // TODOD change to take from local storage
                     document.getElementById("email-signin").value = "alior101@gmail.com";
                     document.getElementById("password-signin").value = "kellogskellogs";
-                    app.navigate("#login");
+                    //app.navigate("#login");
                 }
+            }
+            
+            function after_show_signup() {
             }
             
   	      //var app = new kendo.mobile.Application(document.body, { transition: "slide", layout: "" });
