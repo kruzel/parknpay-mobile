@@ -105,7 +105,7 @@
             </div>
         
             <ul data-role="listview" data-style="inset">
-                <li><label for="emailemail-signin">Email:</label> <input type="email" id="email-signin" /></li>
+                <li><label for="email-signin">Email:</label> <input type="email" id="email-signin" /></li>
                 <li><label for="password-signin">Password:</label> <input type="password" id="password-signin" /></li>
             </ul>
             <div data-role="footer">
@@ -129,19 +129,26 @@
             function afterShowSignin(e) 
             {
                
+                window.localStorage.setItem("last_email_signin","alior101@gmail.com" );
+                window.localStorage.setItem("last_password_signin", "kellogskellogs");
+            
                 console.log(e.view);
+                
                 var auth_token = window.localStorage.getItem("auth_token");
+                console.log("auth_token = "+ auth_token);
                 if (auth_token != null ) 
                 {
-                    app.navigate("views/homeView.html"); // I'm not sure we want to directly signin - maybe the user wants to put another user id ...
+                    console.log("(auth_token != null )");
+                    app.navigate("views/homeView.html"); 
                 }
                 else
                 {
                     
                     // TODOD change to take from local storage
+                    
                     document.getElementById("email-signin").value = window.localStorage.getItem("last_email_signin");
                     document.getElementById("password-signin").value = window.localStorage.getItem("last_password_signin");
-                    //app.navigate("#login");
+                    
                 }
             }
             
@@ -214,9 +221,13 @@
                 var email = $("#email-signin").val();
                 var password = $("#password-signin").val();
                 
-                window.localStorage.setItem("last_email_signin",email );
-                window.localStorage.setItem("last_password_signin", password);
+                //window.localStorage.setItem("last_email_signin",email );
+                //window.localStorage.setItem("last_password_signin", password);
 
+                //DEBUG: use for skipping server call
+                //app.navigate("views/homeView.html");
+                //return;
+                
                 //Get fresh data
             	$.ajax({
                     url: "http://inigo.com.au/users/sign_in.json",
@@ -232,6 +243,8 @@
                         app.hideLoading();
                         console.log('auth_token: ' + auth_token);
                         app.navigate("views/homeView.html");
+                        //app.navigate("#start");
+                        console.log('navigate: ' + auth_token);
                     },
                     error: function(jqXHR, textStatus, errorThrown) 
                     {

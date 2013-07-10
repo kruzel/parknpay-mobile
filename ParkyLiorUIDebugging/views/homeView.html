@@ -1,49 +1,7 @@
+<!-- MOBISCROLL -->
+<link rel="stylesheet" type="text/css" href="css/mobiscroll_text_and_image.css"  />
+<script type="text/javascript" src="js/mobiscroll-2.4.custom.min.js" ></script> 
 
-<!-- ============ -->
-<!-- Pages Layout -->
-<!-- ============ -->
-<div id="start" data-role="layout" data-id="jitterz-default">
-	<header data-role="header" data-id="jitterz-default-header">
-		<div data-role="navbar">
-			<span data-role="view-title"></span>
-		</div>
-	</header>
-	<div data-role="footer">
-		<div data-role="tabstrip" data-id="jitterz-tabstrip">
-			 <a href="views/homeView.html" data-icon="play">Home</a>
-			 <a href="views/settingsView.html" data-icon="settings">Settings</a>
-			 <a href="views/placesView.html" data-icon="globe">Parkings</a>
-		</div>
-	</div>
-</div>
-
-<!-- =========== -->
-<!--  HOME PAGE  -->
-<!-- =========== -->
-
-<div data-role="view" id="home" data-title="Parky" data-init="initPictureView">
-       <ul data-role="listview" data-style="inset" data-type="group" id="announcements-listview" >
-             <li>
-                <ul id="car_selection" class="ic">  
-                        <img id="car_selection_item_picture" class="item-photo" src="images/car.png"/>
-                        <h3 id="car_selection_item_title" class="item-title"></h3>
-                        <p id="car_selection_item_description"  class="item-info"></p>
-                </ul>
-                <ul id="region_selection" class="ic" > 
-                    
-                        <img id="region_selection_item_picture" class="item-photo" src="images/poi.png"/>
-                        <h3 id="region_selection_item_title" class="item-title">Location:</h3>
-                        <p id="region_selection_item_description" class="item-info">rate:</p>
-                </ul>
-                 
-				<ul  id="parking_selection" class="ic">
-					<img class="item-photo" src="images/p.png"/>
-					<h3 id="parking_selection_item-title" class="parking_total-time"></h3>
-					<p id="parking_selection_item-info" class="parking_total-cost"></p>
-			    </ul>
-             </li>
-        </ul>            
-  </div>
 
 
 
@@ -72,6 +30,321 @@
             </div>
         </div>
 </script> 
+
+<script>
+    var cars_data;
+    var regions_data;
+    
+    function digitized() 
+    {
+		var dt = new Date();    // DATE() CONSTRUCTOR FOR CURRENT SYSTEM DATE AND TIME.
+		var lt = new Date(localStorage.getItem("ParkingStartTime"));
+		var t2 = dt.getTime();
+		var t1 = lt.getTime();
+		
+		var dys = parseInt((t2 - t1) / (24 * 3600 * 1000));
+		var hrs = parseInt((t2 - t1) / (3600 * 1000) % 24);
+		var min = parseInt((t2 - t1) / (60 * 1000) % 60);
+		var sec = parseInt((t2 - t1) / 1000 % 60);
+		
+		/*
+		var hrs = dt.getHours();
+		var min = dt.getMinutes();
+		var sec = dt.getSeconds();
+		*/
+		min = Ticking(min);
+		sec = Ticking(sec);
+		
+		//var el1 = document.getElementById('dc');
+		var el1 = document.getElementById('parking_selection_item-title');
+		
+		if (ParkingActive) {
+			el1.innerHTML = hrs + ":" + min + ":" + sec; 
+			//document.getElementById('dc_second').innerHTML = sec;
+			var rate = localStorage.getItem("chosen_region_rate");
+			document.getElementById('parking_selection_item-info').innerHTML = parseInt(sec * rate / 3600) + '$';   
+			//document.getElementById('cost').innerHTML = parseInt( sec * rate / 3600)+'$';        
+		}
+
+		var time;
+		
+		// THE ALL IMPORTANT PRE DEFINED JAVASCRIPT METHOD.
+		if (ParkingActive) {
+			time = setTimeout('digitized()', 1000);      
+		}
+	}
+	
+	function Ticking(ticVal) {
+		if (ticVal < 10) {
+			ticVal = "0" + ticVal;
+		}
+		return ticVal;
+	}
+	
+	function homeBeforShow(e) {
+		console.log(e.view);
+	}
+	
+	function init_home_view() 
+    {
+                 
+    	/* ===================== */
+    	/* CAR SELECTION SCROLER */
+    	/* ===================== */
+        
+        /*
+            var template = kendo.template($("#template").html());
+    
+        function preview() {
+            $("#blog-preview").html(template({
+                title: $("#blog-title").val(),
+                twitter: $("#blog-twitter").val(),
+                content: $("#blog-content").val()
+            }));
+        }
+        */
+        
+    
+		/* OFER: insert here API call to get the user registered cars */
+		cars_data = [
+			{ID: 0, registration: "12-234-11", PictureUrl: "https://dl.dropboxusercontent.com/u/1495669/car2.png", Name: "Car1"},
+			{ID: 1, registration: "12-234-22", PictureUrl: "https://dl.dropboxusercontent.com/u/1495669/car1.png", Name: "Car2"}
+		];
+
+        var template = kendo.template($("#CarsListScrollerTemplate").html());        
+		var result = template({data:cars_data}); //Execute the template  
+        console.log("template result = " + result);
+		$("#CarsListScrollerTemplateResults").html(result);
+        
+
+		/* this will put on the home screen the last chosen car*/
+		pid = localStorage.getItem("chosen_car");
+    
+		if (pid != null) 
+        {
+			document.getElementById("car_selection_item_title").innerHTML = cars_data[pid].registration;
+			document.getElementById("car_selection_item_description").innerHTML = cars_data[pid].Name;
+		}
+		else 
+        {
+			document.getElementById("car_selection_item_title").innerHTML = "No Car"
+			document.getElementById("car_selection_item_description").innerHTML = "registered yet...";
+		}
+        
+       
+		
+		$('#car_selection').click(function() 
+        {     
+             
+    		$('#CarsListScroller').mobiscroll().image({
+    			theme: 'android',
+    			display: 'modal',
+    			mode: 'scroller',
+    			labels: ['My Car'],
+    			inputClass: 'i-txt',
+    			setText: 'OK',
+    			onSelect: function (v, inst) {
+    			},
+    			onChange: function (v, inst) {
+    				$("#car_selection_item_title").html(cars_data[v].registration);
+    				$("#car_selection_item_description").html(cars_data[v].Name);
+    				/* save the car selected in persistent storage */
+    				localStorage.setItem("chosen_car", v);
+    			},
+    		});
+        
+            console.log("chosen car pid = "+pid);
+    		if (cars_data[pid] != null) 
+            {
+    			$('#CarsListScroller').mobiscroll('setValue', [pid, cars_data[pid].registration , cars_data[pid].PictureUrl ], true, .2);    
+    		}
+            console.log($('#CarsListScroller'));
+    	    $('#CarsListScroller').mobiscroll('show');
+            
+			return false;
+		});
+		
+		/* ======================== */
+		/* REGION SELECTION SCROLER */
+		/* ======================== */
+		/* OFER: insert here API call to get the user relevant regions */
+	
+		regions_data = [
+			{
+				ID: "0", City: "Sydney", Suburb:[
+					{ID: "0", sub: "Badgerys Creek", info:"", rate: 0.1},
+					{ID: "1", sub: "Balgowlah", info:"", rate: 0.2},
+					{ID: "2", sub: "Balgowlah Heights", info:"", rate: 0.3},
+					{ID: "3", sub: "Balmain", info:"", rate: 0.4},
+					{ID: "4", sub: "Balmain East", info:"", rate: 0.5},
+					{ID: "5", sub: "Banksia", info:"", rate: 0.6},
+					{ID: "6", sub: "Banksmeadow", info:"", rate: 0.7},
+					{ID: "7", sub: "Bankstown",info:"", rate: 0.8}
+				]
+			},{
+				ID: "1", City: "Newcastle", Suburb:[
+					{ID: "0", sub: "Adamstown", info:"", rate: 0.15},
+					{ID: "1", sub: "Adamstown Heights",info:"", rate: 0.25},
+					{ID: "2", sub: "Bar Beach", info:"", rate: 0.35},
+					{ID: "3", sub: "Beresfield", info:"", rate: 0.45},
+					{ID: "4", sub: "Birmingham Gardens", info:"", rate: 0.55},
+					{ID: "5", sub: "Black Hill", info:"", rate: 0.65},
+					{ID: "6", sub: "Banksmeadow",info:"", rate: 0.75},
+					{ID: "7", sub: "Callaghan", info:"", rate: 0.85}
+				]
+			}
+		];
+		var regions_template = kendo.template($("#RegionsListScrollerTemplate").html());
+		result = regions_template(regions_data); //Execute the template
+        
+
+		$("#RegionsListScrollerTemplateResults").html(result);
+		pid1 = localStorage.getItem("chosen_region_city");
+		pid2 = localStorage.getItem("chosen_region_suburb");
+		
+		$('#RegionsListScroller').mobiscroll().treelist({
+			theme: 'android',
+			display: 'modal',
+			mode: 'scroller',
+			labels: ['City', 'Suburb'],
+			inputClass: 'i-txt',
+			setText: 'OK',
+			onSelect: function (v, inst) {
+			},
+			onChange: function (v, inst) {
+				$("#region_selection_item_title").html(regions_data[inst.temp[0]].Suburb[inst.temp[1]].sub + ", " + regions_data[inst.temp[0]].City);
+				localStorage.setItem("chosen_region_city", inst.temp[0]);
+				localStorage.setItem("chosen_region_suburb", inst.temp[1]);
+				localStorage.setItem("chosen_region_rate", regions_data[inst.temp[0]].Suburb[inst.temp[1]].rate);
+				$("#region_selection_item_description").html(regions_data[inst.temp[0]].Suburb[inst.temp[1]].rate + "$/h");
+			},
+		}); 
+		
+		if ((pid1 != null) && (pid2 != null)) {
+			$("#region_selection_item_title").html(regions_data[pid1].Suburb[pid2].sub + ", " + regions_data[pid1].City);
+			//$("#region_selection_item_title").html(pid2 + ", " + pid1);
+			$('#RegionsListScroller').mobiscroll('setValue', [pid1, pid2 ], true, .2);   
+			$("#region_selection_item_description").html(regions_data[pid1].Suburb[pid2].rate + "$/h");
+		}
+
+        
+        $('#region_selection').click(function() 
+        {
+    		var result = regions_template(regions_data); //Execute the template
+    		// console.log(result);
+    		$("#RegionsListScrollerTemplateResults").html(result);
+    		$('#RegionsListScroller').mobiscroll('show');
+    		return false;
+    	});
+      
+    	// ======================== 
+    	// PARKING SELECTION SCROLER 
+    	// ======================== 
+    
+        
+    	$('#parking_selection').click(function() 
+        {
+    	
+    	    status = localStorage.getItem("ParkingActive");
+            pid = localStorage.getItem("chosen_car");
+    		pid1 = localStorage.getItem("chosen_region_city");
+    		pid2 = localStorage.getItem("chosen_region_suburb");
+    		if ((pid == null) || (pid1 == null) || (pid2 == null)) 
+            {
+    			alert("Please set the car and the location first");
+    			return false;
+    		}
+    		
+    		status = localStorage.getItem("ParkingActive");
+    		if ((status == null) || (status == 0)) 
+            {
+    			var dt = new Date(); 
+    			ParkingActive = true;
+    			localStorage.setItem("ParkingActive", "1");
+    			localStorage.setItem("ParkingStartTime", dt);
+    			digitized();
+    			console.log('parking started');
+    			document.getElementById('parking_selection_item-title').innerHTML = '';
+    			return false;
+    		}
+    		else 
+            {
+    			ParkingActive = false;
+    			localStorage.setItem("ParkingActive", "0");
+    			console.log('parking stoped');
+    			document.getElementById('parking_selection_item-title').innerHTML = 'Inactive';
+    			document.getElementById('parking_selection_item-info').innerHTML = '';
+    			return false;  
+    		}
+    		
+    		if ((localStorage.getItem("ParkingActive") == undefined) || (localStorage.getItem("ParkingActive") == "0")) 
+            {
+    			document.getElementById('parking_selection_item-title').innerHTML = 'Inactive';
+    			// document.getElementById('dc_second').innerHTML = '';
+    			//document.getElementById('cost').innerHTML = '';
+    			ParkingActive = false;
+    		}
+    		else 
+            {
+    			ParkingActive = true;
+    		}
+            
+    		if (ParkingActive) 
+            {
+    			digitized();
+    		} 
+        });	
+	}
+	
+
+</script>
+
+<!-- ============ -->
+<!-- Pages Layout -->
+<!-- ============ -->
+<div id="start" data-role="layout" data-id="jitterz-default">
+	<header data-role="header" data-id="jitterz-default-header">
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+		</div>
+	</header>
+	<div data-role="footer">
+		<div data-role="tabstrip" data-id="jitterz-tabstrip">
+			 <a href="views/homeView.html" data-icon="play">Home</a>
+			 <a href="views/settingsView.html" data-icon="settings">Settings</a>
+			 <a href="views/placesView.html" data-icon="globe">Parkings</a>
+		</div>
+	</div>
+</div>
+
+<!-- =========== -->
+<!--  HOME PAGE  -->
+<!-- =========== -->
+
+<div data-role="view" id="home" data-title="Parky" data-init="init_home_view" data-before-show="homeBeforShow" >
+       <ul data-role="listview" data-style="inset" data-type="group" id="announcements-listview" >
+             <li>
+                <ul id="car_selection" class="ic">  
+                        <img id="car_selection_item_picture" class="item-photo" src="images/car.png"/>
+                        <h3 id="car_selection_item_title" class="item-title"></h3>
+                        <p id="car_selection_item_description"  class="item-info"></p>
+                </ul>
+                <ul id="region_selection" class="ic" > 
+                    
+                        <img id="region_selection_item_picture" class="item-photo" src="images/poi.png"/>
+                        <h3 id="region_selection_item_title" class="item-title">Location:</h3>
+                        <p id="region_selection_item_description" class="item-info">rate:</p>
+                </ul>
+                 
+				<ul  id="parking_selection" class="ic">
+					<img class="item-photo" src="images/p.png"/>
+					<h3 id="parking_selection_item-title" class="parking_total-time"></h3>
+					<p id="parking_selection_item-info" class="parking_total-cost"></p>
+			    </ul>
+             </li>
+        </ul>            
+  </div>
+
 
 
 <!-- ============================== -->
@@ -103,11 +376,10 @@
         </div>
 </script> 
 
-
 <!-- ============================== -->
 <!--  parking actions               -->
 <!-- ============================== -->
-
+<!--
 <div data-role="modalview" id="modalview-parking-action" style="width: 95%; height: 20em;">
     <div data-role="header">
         <div data-role="navbar">
@@ -122,13 +394,8 @@
     </div>
      <div>
         <img style="display:inline;margin: 2% 1% 1% 3% ; width:45%; height:45%;" id="qrcode" src="images/qrcode.png" />
-        <!-- <img style="display:inline;margin: 2% 1% 1% 2% ; width:45%; height:45%;" id="modalview-parking-action-close" src="images/cancel-inv.png" /> -->
     </div>
 </div>
+-->
 
-<script type="text/javascript" src="scripts/homeView.js" ></script>
-<script type="text/javascript" src="viewModels/carsViewModels.js"></script>
-
-
-<!-- Scripts -->
 

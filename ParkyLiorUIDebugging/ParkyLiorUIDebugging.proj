@@ -122,7 +122,7 @@
     <Content Include="styles\tablet-1024-ldpi.css" />
     <Content Include="styles\tablet-1280.css" />
     <Content Include="styles\tablet-600-1024.css" />
-    <Content Include="scripts\carsViewModels.js" />
+    <Content Include="scripts\carsViewModels.js.remove" />
     <Content Include="views\addCarView.html" />
     <Content Include="views\carsView.html" />
     <Content Include="views\homeView.html" />

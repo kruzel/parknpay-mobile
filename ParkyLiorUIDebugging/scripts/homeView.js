@@ -316,3 +316,9 @@ if (ParkingActive)
     digitized();
 }            
 
+
+function homeBeforShow(e)
+{
+    console.log(e.view);
+   
+}
