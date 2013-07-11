@@ -1,35 +1,77 @@
-<!-- MOBISCROLL -->
-<link rel="stylesheet" type="text/css" href="css/mobiscroll_text_and_image.css"  />
-<script type="text/javascript" src="js/mobiscroll-2.4.custom.min.js" ></script> 
 
+<!-- ============ -->
+<!-- Pages Layout -->
+<!-- ============ -->
+<div id="start" data-role="layout" data-id="jitterz-default">
+	<header data-role="header" data-id="jitterz-default-header">
+		<div data-role="navbar">
+			<span data-role="view-title"></span>
+		</div>
+	</header>
+	<div data-role="footer">
+		<div data-role="tabstrip" data-id="jitterz-tabstrip">
+			 <a href="views/homeView.html" data-icon="play">Home</a>
+			 <a href="views/settingsView.html" data-icon="settings">Settings</a>
+			 <a href="views/placesView.html" data-icon="globe">Parkings</a>
+		</div>
+	</div>
+</div>
 
+<!-- =========== -->
+<!--  HOME PAGE  -->
+<!-- =========== -->
 
-
-<!-- ============================== -->
-<!--  Cars list  scroller template  -->
-<!-- ============================== -->
-<!-- DEBUG -->
-<div id="CarsListScrollerTemplateResults"  style="display: none;"></div>
-<!-- /DEBUG -->
-<script id="CarsListScrollerTemplate" type="text/x-kendo-template">
-        <div class="icc">
-            <div class="ic">
-                <ul id="CarsListScroller">
-                 # for (var i = 0; i < data.length; i++) 
-                    { #
-                    <li data-val="#= data[i].ID #">
-                       <div class="car">
-                          <div class="img-cont">
-                              <img src="#= data[i].PictureUrl #" />                                      
-                          </div>
-                          <span>#= data[i].registration #</span>
-                      </div>
-                    </li>
-                  # } #
+<div data-role="view" id="home" data-title="Parky" data-init="init_home_view" data-before-show="homeBeforShow" >
+       <ul data-role="listview" data-style="inset" data-type="group" id="announcements-listview" >
+             <li>
+                <ul id="car_selection" class="ic">  
+                        <img id="car_selection_item_picture" class="item-photo" src="images/car.png"/>
+                        <h3 id="car_selection_item_title" class="item-title"></h3>
+                        <p id="car_selection_item_description"  class="item-info"></p>
                 </ul>
-            </div>
+                <ul id="region_selection" class="ic" > 
+                    
+                        <img id="region_selection_item_picture" class="item-photo" src="images/poi.png"/>
+                        <h3 id="region_selection_item_title" class="item-title">Location:</h3>
+                        <p id="region_selection_item_description" class="item-info">rate:</p>
+                </ul>
+                 
+				<ul  id="parking_selection" class="ic">
+					<img class="item-photo" src="images/p.png"/>
+					<h3 id="parking_selection_item-title" class="parking_total-time"></h3>
+					<p id="parking_selection_item-info" class="parking_total-cost"></p>
+			    </ul>
+             </li>
+        </ul>            
+  </div>
+
+
+
+
+<!-- ============================== -->
+<!--  parking actions               -->
+<!-- ============================== -->
+
+<div data-role="modalview" id="modalview-parking-action" style="width: 95%; height: 20em;">
+    <div data-role="header">
+        <div data-role="navbar">
+            <span>Action</span>
+            <a data-click="closeModalParkingAction" data-role="button" data-align="right">Cancel</a>
         </div>
-</script> 
+    </div>
+            
+    <div>
+        <img style="display:inline;margin: 2% 1% 1% 3% ; width:45%; height:45%;" id="modalview-parking-action"  />
+        
+    </div>
+     <div>
+        <img style="display:inline;margin: 2% 1% 1% 3% ; width:45%; height:45%;" id="qrcode" src="images/qrcode.png" />
+    </div>
+</div>
+
+
+        
+
 
 <script>
     var cars_data;
@@ -87,7 +129,7 @@
 	
 	function init_home_view() 
     {
-                 
+         console.log("calling init_home_view");        
     	/* ===================== */
     	/* CAR SELECTION SCROLER */
     	/* ===================== */
@@ -113,7 +155,7 @@
 
         var template = kendo.template($("#CarsListScrollerTemplate").html());        
 		var result = template({data:cars_data}); //Execute the template  
-        console.log("template result = " + result);
+        //console.log("template result = " + result);
 		$("#CarsListScrollerTemplateResults").html(result);
         
 
@@ -131,34 +173,31 @@
 			document.getElementById("car_selection_item_description").innerHTML = "registered yet...";
 		}
         
-       
-		
+		$('#CarsListScroller').mobiscroll().image({
+			theme: 'android',
+			display: 'modal',
+			mode: 'scroller',
+			labels: ['My Car'],
+			inputClass: 'i-txt',
+			setText: 'OK',
+			onSelect: function (v, inst) {
+			},
+			onChange: function (v, inst) {
+				$("#car_selection_item_title").html(cars_data[v].registration);
+				$("#car_selection_item_description").html(cars_data[v].Name);
+				/* save the car selected in persistent storage */
+				localStorage.setItem("chosen_car", v);
+			},
+		});
+     
+	
 		$('#car_selection').click(function() 
-        {     
-             
-    		$('#CarsListScroller').mobiscroll().image({
-    			theme: 'android',
-    			display: 'modal',
-    			mode: 'scroller',
-    			labels: ['My Car'],
-    			inputClass: 'i-txt',
-    			setText: 'OK',
-    			onSelect: function (v, inst) {
-    			},
-    			onChange: function (v, inst) {
-    				$("#car_selection_item_title").html(cars_data[v].registration);
-    				$("#car_selection_item_description").html(cars_data[v].Name);
-    				/* save the car selected in persistent storage */
-    				localStorage.setItem("chosen_car", v);
-    			},
-    		});
-        
-            console.log("chosen car pid = "+pid);
+        {                 
     		if (cars_data[pid] != null) 
             {
     			$('#CarsListScroller').mobiscroll('setValue', [pid, cars_data[pid].registration , cars_data[pid].PictureUrl ], true, .2);    
     		}
-            console.log($('#CarsListScroller'));
+            
     	    $('#CarsListScroller').mobiscroll('show');
             
 			return false;
@@ -264,7 +303,7 @@
     			localStorage.setItem("ParkingStartTime", dt);
     			digitized();
     			console.log('parking started');
-    			document.getElementById('parking_selection_item-title').innerHTML = '';
+    			document.getElementById('parking_selection_item-title').innerHTML = 'Starting...';
     			return false;
     		}
     		else 
@@ -298,104 +337,3 @@
 	
 
 </script>
-
-<!-- ============ -->
-<!-- Pages Layout -->
-<!-- ============ -->
-<div id="start" data-role="layout" data-id="jitterz-default">
-	<header data-role="header" data-id="jitterz-default-header">
-		<div data-role="navbar">
-			<span data-role="view-title"></span>
-		</div>
-	</header>
-	<div data-role="footer">
-		<div data-role="tabstrip" data-id="jitterz-tabstrip">
-			 <a href="views/homeView.html" data-icon="play">Home</a>
-			 <a href="views/settingsView.html" data-icon="settings">Settings</a>
-			 <a href="views/placesView.html" data-icon="globe">Parkings</a>
-		</div>
-	</div>
-</div>
-
-<!-- =========== -->
-<!--  HOME PAGE  -->
-<!-- =========== -->
-
-<div data-role="view" id="home" data-title="Parky" data-init="init_home_view" data-before-show="homeBeforShow" >
-       <ul data-role="listview" data-style="inset" data-type="group" id="announcements-listview" >
-             <li>
-                <ul id="car_selection" class="ic">  
-                        <img id="car_selection_item_picture" class="item-photo" src="images/car.png"/>
-                        <h3 id="car_selection_item_title" class="item-title"></h3>
-                        <p id="car_selection_item_description"  class="item-info"></p>
-                </ul>
-                <ul id="region_selection" class="ic" > 
-                    
-                        <img id="region_selection_item_picture" class="item-photo" src="images/poi.png"/>
-                        <h3 id="region_selection_item_title" class="item-title">Location:</h3>
-                        <p id="region_selection_item_description" class="item-info">rate:</p>
-                </ul>
-                 
-				<ul  id="parking_selection" class="ic">
-					<img class="item-photo" src="images/p.png"/>
-					<h3 id="parking_selection_item-title" class="parking_total-time"></h3>
-					<p id="parking_selection_item-info" class="parking_total-cost"></p>
-			    </ul>
-             </li>
-        </ul>            
-  </div>
-
-
-
-<!-- ============================== -->
-<!--  regions list  scroller template  -->
-<!-- ============================== -->
-<!-- DEBUG -->
-<div id="RegionsListScrollerTemplateResults"  style="display: none;"></div>
-<!-- /DEBUG -->
-<script id="RegionsListScrollerTemplate" type="text/x-kendo-template">
-        <div class="icc">
-            <div class="ic">
-                <ul id="RegionsListScroller">
-                 # for (var i = 0; i < data.length; i++) 
-                    { #
-                    <li data-val="#= data[i].ID #">
-                          #= data[i].City #
-                          <ul>
-                             # for (var j = 0; j < data[i].Suburb.length; j++) 
-                                { #
-                                <li data-val="#= data[i].Suburb[j].ID #">
-                                   #= data[i].Suburb[j].sub #
-                                </li>
-                              # } #       
-                          </ul> 
-                    </li>
-                  # } #
-                </ul>
-            </div>
-        </div>
-</script> 
-
-<!-- ============================== -->
-<!--  parking actions               -->
-<!-- ============================== -->
-<!--
-<div data-role="modalview" id="modalview-parking-action" style="width: 95%; height: 20em;">
-    <div data-role="header">
-        <div data-role="navbar">
-            <span>Action</span>
-            <a data-click="closeModalParkingAction" data-role="button" data-align="right">Cancel</a>
-        </div>
-    </div>
-            
-    <div>
-        <img style="display:inline;margin: 2% 1% 1% 3% ; width:45%; height:45%;" id="modalview-parking-action"  />
-        
-    </div>
-     <div>
-        <img style="display:inline;margin: 2% 1% 1% 3% ; width:45%; height:45%;" id="qrcode" src="images/qrcode.png" />
-    </div>
-</div>
--->
-
-

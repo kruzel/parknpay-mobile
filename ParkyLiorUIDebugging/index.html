@@ -14,15 +14,15 @@
 		<script type="text/javascript" src="kendo/js/jquery.min.js"></script>
 		<script type="text/javascript" src="kendo/js/kendo.mobile.min.js"></script>
         
-        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
         <link rel="stylesheet" href="css/main_page_list.css" />
         
 
         <!-- MOBISCROLL -->
+
         <link rel="stylesheet" type="text/css" href="css/mobiscroll_text_and_image.css"  />
    	 <script type="text/javascript" src="js/mobiscroll-2.4.custom.min.js" ></script> 
    	 <script type="text/javascript" charset="utf-8" src="Plugins/Barcode Scanner/barcodescanner.js"></script>
-        
+
         <!-- app globals -->
         <script type="text/javascript" src="scripts/app.js"></script>
         
@@ -62,6 +62,9 @@
             		<a  href="#view-signin" id="sign_in" data-rel="view">Sign In</a>
             	</li>                        
             </ul>
+            
+            
+             
             
         </div>               
                 
@@ -116,13 +119,91 @@
                 </div>
             </div>
         </div>     
+        <!--
+         <ul id="hei">
+             
+                <li data-val="0">
+                   <div class="car">
+                      <div class="img-cont">
+                          <img src="https://dl.dropboxusercontent.com/u/1495669/car2.png" />                                      
+                      </div>
+                      <span>12-234-11</span>
+                  </div>
+                </li>
+              
+                <li data-val="1">
+                   <div class="car">
+                      <div class="img-cont">
+                          <img src="https://dl.dropboxusercontent.com/u/1495669/car1.png" />                                      
+                      </div>
+                      <span>12-234-22</span>
+                  </div>
+                </li>
+              
+         </ul>
+	    -->
         
-		
+        <!-- ============================== -->
+        <!--  Cars list  scroller template  -->
+        <!-- ============================== -->
+        <!-- DEBUG -->
+        <div id="CarsListScrollerTemplateResults"  style="display: none;"></div>
+        <!-- /DEBUG -->
+        <script id="CarsListScrollerTemplate" type="text/x-kendo-template">
+                <div class="icc">
+                    <div class="ic">
+                        <ul id="CarsListScroller">
+                         # for (var i = 0; i < data.length; i++) 
+                            { #
+                            <li data-val="#= data[i].ID #">
+                               <div class="car">
+                                  <div class="img-cont">
+                                      <img src="#= data[i].PictureUrl #" />                                      
+                                  </div>
+                                  <span>#= data[i].registration #</span>
+                              </div>
+                            </li>
+                          # } #
+                        </ul>
+                    </div>
+                </div>
+        </script> 
+
+        <!-- ============================== -->
+        <!--  regions list  scroller template  -->
+        <!-- ============================== -->
+        <!-- DEBUG -->
+        <div id="RegionsListScrollerTemplateResults"  style="display: none;"></div>
+        <!-- /DEBUG -->
+        <script id="RegionsListScrollerTemplate" type="text/x-kendo-template">
+                <div class="icc">
+                    <div class="ic">
+                        <ul id="RegionsListScroller">
+                         # for (var i = 0; i < data.length; i++) 
+                            { #
+                            <li data-val="#= data[i].ID #">
+                                  #= data[i].City #
+                                  <ul>
+                                     # for (var j = 0; j < data[i].Suburb.length; j++) 
+                                        { #
+                                        <li data-val="#= data[i].Suburb[j].ID #">
+                                           #= data[i].Suburb[j].sub #
+                                        </li>
+                                      # } #       
+                                  </ul> 
+                            </li>
+                          # } #
+                        </ul>
+                    </div>
+                </div>
+        </script>                 
         <script>
             
   	      var app = new kendo.mobile.Application(document.body, { transition: "slide", layout: "jitterz-default" });
-            var ParkingActive;
             
+            var ParkingActive;
+
+            // TODO: remove when in production - this is good for debugging since web browser typically clear the storage on app restart
             window.localStorage.setItem("last_email_signin","alior101@gmail.com" );
             window.localStorage.setItem("last_password_signin", "kellogskellogs");
             
