@@ -1,13 +1,15 @@
-
+<link rel="stylesheet" href="styles/home_pannls.css" />
 <!-- ============ -->
 <!-- Pages Layout -->
 <!-- ============ -->
 <div id="start" data-role="layout" data-id="jitterz-default">
+    <!--
 	<header data-role="header" data-id="jitterz-default-header">
 		<div data-role="navbar">
 			<span data-role="view-title"></span>
 		</div>
 	</header>
+    -->
 	<div data-role="footer">
 		<div data-role="tabstrip" data-id="jitterz-tabstrip">
 			 <a href="views/homeView.html" data-icon="play">Home</a>
@@ -127,6 +129,29 @@
 		console.log(e.view);
 	}
 	
+    
+    function handle_parking_panel()
+    {
+        
+        var status = localStorage.getItem("ParkingActive");
+		if (status == 1)
+        {
+			ParkingActive = true;
+			digitized();
+			document.getElementById('parking_selection_item-title').innerHTML = 'Active';
+			return false;
+		}
+		else 
+        {
+			ParkingActive = false;
+			localStorage.setItem("ParkingActive", "0");
+			console.log('parking stoped');
+			document.getElementById('parking_selection_item-title').innerHTML = 'Inactive';
+			document.getElementById('parking_selection_item-info').innerHTML = '';
+			return false;  
+		}
+    } 
+    
 	function init_home_view() 
     {
          console.log("calling init_home_view");        
@@ -280,6 +305,7 @@
     	// PARKING SELECTION SCROLER 
     	// ======================== 
     
+        handle_parking_panel();
         
     	$('#parking_selection').click(function() 
         {
