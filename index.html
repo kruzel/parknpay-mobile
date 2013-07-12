@@ -309,31 +309,28 @@
             var ParkingActive;
 
             // TODO: remove when in production - this is good for debugging since web browser typically clear the storage on app restart
-            window.localStorage.setItem("last_email_signin","alior101@gmail.com" );
-            window.localStorage.setItem("last_password_signin", "kellogskellogs");
+            //window.localStorage.setItem("last_email_signin","alior101@gmail.com" );
+            //window.localStorage.setItem("last_password_signin", "kellogskellogs");
             
             function afterShowSignin(e) 
             {
                
-                window.localStorage.setItem("last_email_signin","alior101@gmail.com" );
-                window.localStorage.setItem("last_password_signin", "kellogskellogs");
+                //window.localStorage.setItem("last_email_signin","alior101@gmail.com" );
+                //window.localStorage.setItem("last_password_signin", "kellogskellogs");
             
                 console.log(e.view);
                 
-                var auth_token = window.localStorage.getItem("auth_token");
+                //var auth_token = window.localStorage.getItem("auth_token");
                 console.log("auth_token = "+ auth_token);
                 if (auth_token != null ) 
                 {
                     console.log("(auth_token != null )");
                     app.navigate("views/homeView.html"); 
                 }
-                else
+                else if (user_data!=null)
                 {
-                    
-                    // TODOD change to take from local storage
-                    
-                    document.getElementById("email-signin").value = window.localStorage.getItem("last_email_signin");
-                    document.getElementById("password-signin").value = window.localStorage.getItem("last_password_signin");
+                     document.getElementById("email-signin").value = user_data.email; // window.localStorage.getItem("last_email_signin");
+                    document.getElementById("password-signin").value = user_data.password; //window.localStorage.getItem("last_password_signin");
                     
                 }
             }
@@ -374,7 +371,7 @@
                 window.localStorage.setItem("user_data",user_data_str);
                 
                 $.ajax({
-            		url: "http://inigo.com.au/users.json",
+            		url: serverUrl + "/users.json",
             		dataType: "json",
             		type: "post",
             		cache: false,
@@ -407,16 +404,9 @@
                 var email = $("#email-signin").val();
                 var password = $("#password-signin").val();
                 
-                //window.localStorage.setItem("last_email_signin",email );
-                //window.localStorage.setItem("last_password_signin", password);
-
-                //DEBUG: use for skipping server call
-                //app.navigate("views/homeView.html");
-                //return;
-                
                 //Get fresh data
             	$.ajax({
-                    url: "http://inigo.com.au/users/sign_in.json",
+                    url: serverUrl + "/users/sign_in.json",
                     dataType: "json",
                     type: "post",
                     cache: false,
@@ -426,6 +416,9 @@
                         console.log(response.session);
                         auth_token = response.session.auth_token;
                         window.localStorage.setItem("auth_token",auth_token);
+                        user_data = {user: {email: email, password: password, password_confirmation: password} } //, firstname: firstname, lastname: lastname , phone: phone, credit_card_number: credit_card_number, id_card_number: id_card_number
+                        user_data_str = JSON.stringify(user_data);
+                        window.localStorage.setItem("user_data",user_data_str);
                         app.hideLoading();
                         console.log('auth_token: ' + auth_token);
                         app.navigate("views/homeView.html");
@@ -473,12 +466,12 @@
                 
                     console.log("prefill");
                     // OFER - get account details from server or from local storage ?
-                    document.getElementById("update_email-signin").value = window.localStorage.getItem("last_email_signin");
-                    document.getElementById("update_password-signin").value = window.localStorage.getItem("last_password_signin");
-                    document.getElementById("update_lastname").value = window.localStorage.getItem("last_lastname");
-                    document.getElementById("update_phone").value = window.localStorage.getItem("last_phone");
-                    document.getElementById("update_credit_card_number").value = window.localStorage.getItem("last_credit_card_number");
-                    document.getElementById("update_password-signin").value = window.localStorage.getItem("last_password_signin");
+                    document.getElementById("update_email-signin").value = user_data.email; // window.localStorage.getItem("last_email_signin");
+                    document.getElementById("update_password-signin").value = user_data.password; // window.localStorage.getItem("last_password_signin");
+                    document.getElementById("update_firstname").value = user_data.firstname; //window.localStorage.getItem("last_lastname");
+                    document.getElementById("update_lastname").value = user_data.lastname; //window.localStorage.getItem("last_lastname");
+                    document.getElementById("update_phone").value = user_data.phone; // window.localStorage.getItem("last_phone");
+                    document.getElementById("update_credit_card_number").value = user_data.credit_card_number; // window.localStorage.getItem("last_credit_card_number");
             }
             
                 

@@ -1,4 +1,5 @@
 // JavaScript Document
+var serverUrl = "http://ozpark.com.au";
 var auth_token = window.localStorage.getItem("auth_token");
 var user_data_str = window.localStorage.getItem("user_data");
 var user_data = null;
