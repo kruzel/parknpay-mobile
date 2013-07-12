@@ -467,12 +467,12 @@
                 
                     console.log("prefill");
                     // OFER - get account details from server or from local storage ?
-                    document.getElementById("update_email-signin").value = user_data.email; // window.localStorage.getItem("last_email_signin");
-                    document.getElementById("update_password-signin").value = user_data.password; // window.localStorage.getItem("last_password_signin");
-                    document.getElementById("update_firstname").value = user_data.firstname; //window.localStorage.getItem("last_lastname");
-                    document.getElementById("update_lastname").value = user_data.lastname; //window.localStorage.getItem("last_lastname");
-                    document.getElementById("update_phone").value = user_data.phone; // window.localStorage.getItem("last_phone");
-                    document.getElementById("update_credit_card_number").value = user_data.credit_card_number; // window.localStorage.getItem("last_credit_card_number");
+                    document.getElementById("update_email-signin").value = user_data['user']['email']; // window.localStorage.getItem("last_email_signin");
+                    document.getElementById("update_password-signin").value = user_data['user']['password']; // window.localStorage.getItem("last_password_signin");
+                    document.getElementById("update_firstname").value = user_data['user']['firstname']; //window.localStorage.getItem("last_lastname");
+                    document.getElementById("update_lastname").value = user_data['user']['lastname']; //window.localStorage.getItem("last_lastname");
+                    document.getElementById("update_phone").value = user_data['user']['phone']; // window.localStorage.getItem("last_phone");
+                    document.getElementById("update_credit_card_number").value = user_data['user']['credit_card_number']; // window.localStorage.getItem("last_credit_card_number");
             }
             
                 
