@@ -8,9 +8,14 @@
     <IsRunnable>true</IsRunnable>
     <TemplateAppName>Cordova270</TemplateAppName>
     <AndroidPermissions>android.permission.CAMERA;android.permission.VIBRATE;android.permission.ACCESS_COARSE_LOCATION;android.permission.ACCESS_FINE_LOCATION;android.permission.ACCESS_LOCATION_EXTRA_COMMANDS;android.permission.READ_PHONE_STATE;android.permission.INTERNET;android.permission.RECEIVE_SMS;android.permission.RECORD_AUDIO;android.permission.MODIFY_AUDIO_SETTINGS;android.permission.READ_CONTACTS;android.permission.WRITE_CONTACTS;android.permission.WRITE_EXTERNAL_STORAGE;android.permission.ACCESS_NETWORK_STATE;android.permission.ACCOUNT_MANAGER;android.permission.GET_ACCOUNTS;android.permission.MANAGE_ACCOUNTS;android.permission.BROADCAST_STICKY</AndroidPermissions>
-    <DeviceOrientations>Portrait;Landscape</DeviceOrientations>
+    <DeviceOrientations>Portrait</DeviceOrientations>
     <iOSStatusBarStyle>Default</iOSStatusBarStyle>
     <AndroidHardwareAcceleration>false</AndroidHardwareAcceleration>
+    <BundleVersion>1.0</BundleVersion>
+    <iOSDisplayName />
+    <iOSDeviceFamily>1;2</iOSDeviceFamily>
+    <iOSBackgroundMode />
+    <AndroidVersionCode>1</AndroidVersionCode>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="App_Resources" />
@@ -33,6 +38,7 @@
     <Folder Include="App_Resources\Android\drawable-nodpi">
       <Platform>Android</Platform>
     </Folder>
+    <Folder Include="old" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="App_Resources\Android\xml\config.xml" />
@@ -100,9 +106,9 @@
     <Content Include="kendo\styles\kendo.mobile.all.min.css" />
     <Content Include="kendo\styles\kendo.parky.mobile.all.css" />
     <Content Include="scripts\app.js" />
-    <Content Include="scripts\hello-world.js.remove" />
+    <Content Include="scripts\hello-world.js" />
     <Content Include="scripts\homeView.js" />
-    <Content Include="scripts\main.js.remove" />
+    <Content Include="old\main.js.remove" />
     <Content Include="scripts\settingsView.js" />
     <Content Include="styles\button.css" />
     <Content Include="styles\home_pannel.css" />
@@ -122,15 +128,15 @@
     <Content Include="styles\tablet-1024-ldpi.css" />
     <Content Include="styles\tablet-1280.css" />
     <Content Include="styles\tablet-600-1024.css" />
-    <Content Include="scripts\carsViewModels.js.remove" />
-    <Content Include="views\addCarView.html" />
-    <Content Include="views\carsView.html" />
+    <Content Include="old\carsViewModels.js.remove" />
+    <Content Include="old\addCarView.html" />
+    <Content Include="old\carsView.html" />
     <Content Include="views\homeView.html" />
     <Content Include="views\placesView.html" />
-    <Content Include="views\parkingsView.html" />
-    <Content Include="views\registeredCarView.html" />
+    <Content Include="old\parkingsView.html" />
+    <Content Include="old\registeredCarView.html" />
     <Content Include="views\settingsView.html" />
-    <Content Include="views\singleCarView.html" />
+    <Content Include="old\singleCarView.html" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Telerik\ICE\Tools\Mobile\MobileTools.targets" />
 </Project>

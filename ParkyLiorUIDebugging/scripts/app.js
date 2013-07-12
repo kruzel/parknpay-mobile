@@ -39,7 +39,7 @@ cameraApp.prototype=
     run: function(){
       
         var that=this;
-        
+        console.log("cameraApp.run!!");
 	    that._pictureSource = navigator.camera.PictureSourceType;
 	    that._destinationType = navigator.camera.DestinationType;
 /*
@@ -48,9 +48,10 @@ cameraApp.prototype=
 */        
 	          
          $('#smallImage').click(function() {
+                
+                console.log("click!!");
                 /*
-                  console.log("click!!");
-                alert('bubu');
+                     alert('bubu');
                  */
                 that._capturePhoto.apply(that,arguments);
              
