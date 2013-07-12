@@ -329,8 +329,8 @@
                 }
                 else if (user_data!=null)
                 {
-                     document.getElementById("email-signin").value = user_data.email; // window.localStorage.getItem("last_email_signin");
-                    document.getElementById("password-signin").value = user_data.password; //window.localStorage.getItem("last_password_signin");
+                     document.getElementById("email-signin").value = user_data['user']['email']; // window.localStorage.getItem("last_email_signin");
+                    document.getElementById("password-signin").value = user_data['user']['password']; //window.localStorage.getItem("last_password_signin");
                     
                 }
             }
@@ -403,6 +403,10 @@
                 
                 var email = $("#email-signin").val();
                 var password = $("#password-signin").val();
+
+                user_data = {user: {email: email, password: password} } //, firstname: firstname, lastname: lastname , phone: phone, credit_card_number: credit_card_number, id_card_number: id_card_number
+                user_data_str = JSON.stringify(user_data);
+                window.localStorage.setItem("user_data",user_data_str);
                 
                 //Get fresh data
             	$.ajax({
@@ -416,9 +420,6 @@
                         console.log(response.session);
                         auth_token = response.session.auth_token;
                         window.localStorage.setItem("auth_token",auth_token);
-                        user_data = {user: {email: email, password: password, password_confirmation: password} } //, firstname: firstname, lastname: lastname , phone: phone, credit_card_number: credit_card_number, id_card_number: id_card_number
-                        user_data_str = JSON.stringify(user_data);
-                        window.localStorage.setItem("user_data",user_data_str);
                         app.hideLoading();
                         console.log('auth_token: ' + auth_token);
                         app.navigate("views/homeView.html");
