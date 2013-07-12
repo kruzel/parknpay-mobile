@@ -694,3 +694,8 @@ border-radius: 0px;
 
 -webkit-box-shadow: 0 0px 0 0 rgba(0, 0, 0, 0),inset 0 1px 0 rgba(236, 218, 218, 0.0);
 }
+
+.km-ios, .km-ios .km-content {
+background: rgb(255, 255, 255);
+color: rgb(255, 255, 255);
+}

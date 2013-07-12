@@ -64,11 +64,7 @@
             	<li>
             		<a  href="#view-signin" id="sign_in" data-rel="view">Sign In</a>
             	</li>                        
-            </ul>
-            
-            
-             
-            
+            </ul>            
         </div>               
                 
          
@@ -125,7 +121,7 @@
         
         
   
-        <div data-role="view" id="settingsView" data-style="inset" data-title="Settings" data-init="settingsViewInit" data-model="carsViewModel" >
+        <div data-role="view" id="settingsView" data-style="inset" data-title="Settings" data-init="settingsViewInit" >
         	<div id="settingsViewContent" data-role="content">
                 <ul data-role="listview" id="signoutView" data-style="inset" data-inset="true" data-click="closeViewSignOut">
         			<li>
@@ -154,17 +150,18 @@
         		</ul>
             </div>
         </div>
-                
+            
+        <!-- ========== SETTINGS|ACCOUNT VIEW ============= -->
         
         <div data-role="view" id="accountSettingsView" data-style="inset" >
-            <!--
+            
             <div data-role="header">
                 <div data-role="navbar">
                     <span>accountSettingsView</span>
                  </div>
             </div>
-            -->
-                <ul data-role="listview" id="signoutView" data-style="inset" data-inset="true" data-click="closeViewSignOut">
+            
+            <ul data-role="listview" id="signoutView" data-style="inset" data-inset="true" data-click="updateAccountDetails">
         			<li>
         				<a id="#view-update-account" data-rel="view">Update account</a>
         			</li>                        
@@ -179,44 +176,44 @@
         				<a  data-click="chooseCarToDelete" >Delete a car</a>
         			</li>
         		</ul>
-            <!--
+            
             <div data-role="footer">
                 <div data-role="navbar">
                     <span></span>
-                    <a data-click="closeModalAddCarCancel" data-role="button" data-align="left">Cancel</a>
-                    <a data-click="closeModalAddCar" data-role="button" data-align="right">Done</a>
+                    <!-- <a data-click="#settingsView" data-role="button" data-align="left">Cancel</a> -->
+                    <a href="#settingsView" data-role="button" data-align="right">Done</a>
                </div>
             </div>
-            -->
+           
         </div>
                
-        <!-- ========== ACCOUNT UPDATE STUFF ============= -->
+        <!-- ========== SETTINGS|ACCOUNT|ACCOUNT UPDATE STUFF ============= -->
         
-        <div data-role="view" id="view-update-account"  data-show="">
-            <!--
+        <div data-role="view" id="view-update-account"  data-show="prefillAccountDetails">
+            
             <div data-role="header">
                 <div data-role="navbar">
                     <span>Update Account</span>
                 </div>
             </div>
-            -->
+           
             <ul data-role="listview" data-style="inset">
-                <li><label for="firstname">Firstname:</label> <input type="text" id="firstname" /></li>
-                <li><label for="lastname">Lastname:</label> <input type="text" id="lastname" /></li>
-                <li><label for="phone">Phone:</label> <input type="tel" id="phone" /></li>
-                <li><label for="credit_card_number">Credit Card:</label> <input type="text" id="credit_card_number" /></li>
-                <li><label for="email-signup">Email:</label> <input type="email" id="email-signup" /></li>
-                <li><label for="password-signup">Password:</label> <input type="password" id="password-signup" /></li>
+                <li><label for="firstname">Firstname:</label> <input type="text" id="update_firstname" /></li>
+                <li><label for="lastname">Lastname:</label> <input type="text" id="update_lastname" /></li>
+                <li><label for="phone">Phone:</label> <input type="tel" id="update_phone" /></li>
+                <li><label for="credit_card_number">Credit Card:</label> <input type="text" id="update_credit_card_number" /></li>
+                <li><label for="email-signup">Email:</label> <input type="email" id="update_email-signin" /></li>
+                <li><label for="password-signup">Password:</label> <input type="password" id="update_password-signin" /></li>
             </ul>
-            <!--
+            
             <div data-role="footer">
                 <div data-role="navbar">
                     <span></span>
                     <a data-click="closeViewUpdateAccount" data-role="button" data-align="right">Update</a>
-                    <a href="#login" data-role="button" data-align="left">Cancel</a>
+                    <a href="#accountSettingsView" data-role="button" data-align="left">Cancel</a>
                 </div>
             </div>
-            -->
+           
         </div>
          
 
@@ -466,7 +463,25 @@
         	    $('#CarsListScroller').mobiscroll('show');
                 
     			return false;
-    		};
+    		}
+            
+            function updateAccountDetails()
+            {
+                app.navigate("#view-update-account");
+            }
+            
+            function prefillAccountDetails()
+            {
+                
+                    console.log("prefill");
+                    // OFER - get account details from server or from local storage ?
+                    document.getElementById("update_email-signin").value = window.localStorage.getItem("last_email_signin");
+                    document.getElementById("update_password-signin").value = window.localStorage.getItem("last_password_signin");
+                    document.getElementById("update_lastname").value = window.localStorage.getItem("last_lastname");
+                    document.getElementById("update_phone").value = window.localStorage.getItem("last_phone");
+                    document.getElementById("update_credit_card_number").value = window.localStorage.getItem("last_credit_card_number");
+                    document.getElementById("update_password-signin").value = window.localStorage.getItem("last_password_signin");
+            }
                         
         </script>
 
