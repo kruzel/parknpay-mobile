@@ -8,7 +8,7 @@
 		<!-- Styles -->
 		<link rel="stylesheet" href="kendo/styles/kendo.mobile.all.min.css" />
 		<link rel="stylesheet" href="kendo/styles/kendo.parky.mobile.all.css" />
-        
+ 
 		<script type="text/javascript" src="cordova.js"></script>
 		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
 		<script type="text/javascript" src="kendo/js/jquery.min.js"></script>
@@ -25,6 +25,7 @@
 
         <!-- app globals -->
         <script type="text/javascript" src="scripts/app.js"></script>
+        <!-- <script type="text/javascript" src="scripts/hello-world.js"></script> -->
         
 		<!-- Default Stylesheet -->
 		<link rel="stylesheet" href="styles/main.css" />
@@ -49,6 +50,8 @@
     
 	<body>
         
+        <!-- ========== LOGIN/STARTUP PAGE ============= -->
+
         <div data-role="view" id="login" data-title="Parky">
             
             <ul data-role="listview" id="signupView" data-style="inset" data-inset="true">
@@ -61,15 +64,10 @@
             	<li>
             		<a  href="#view-signin" id="sign_in" data-rel="view">Sign In</a>
             	</li>                        
-            </ul>
-            
-            
-             
-            
+            </ul>            
         </div>               
                 
-         <!-- ========== SIGNUP STUFF ============= -->
-        
+         
         <div data-role="view" id="view-signup"  data-show="afterShowSignup">
             
             <div data-role="header">
@@ -97,8 +95,7 @@
         
         </div>
         
-         
-        <!-- ========== SIGNIN STUFF ============= -->
+         <!-- ========== SIGNIN STUFF ============= -->
         
         <div data-role="view" id="view-signin" data-show="afterShowSignin">
             <div data-role="header">
@@ -119,29 +116,134 @@
                 </div>
             </div>
         </div>     
-        <!--
-         <ul id="hei">
+        
+        <!-- ========== SETTINGS VIEW ============= -->
+          
+        <div data-role="view" id="settingsView" data-style="inset" data-title="Settings" data-init="settingsViewInit" >
+        	<div id="settingsViewContent" data-role="content">
+                <ul data-role="listview" id="signoutView" data-style="inset" data-inset="true" data-click="closeViewSignOut">
+        			<li>
+        				<a id="sign_out" data-rel="modalview">Sign Out</a>
+        			</li>                        
+        		</ul>
+                <ul data-role="listview" id="updateView" data-style="inset" data-inset="true" >
+        			<li>
+        				<a href="#accountSettingsView" data-rel="view">Account</a>
+        			</li>
+        		</ul>
+        		<ul data-role="listview" id="scanView" data-style="inset" data-inset="true"  >
+        			<li>
+        				<a href="#modalview-scan" data-rel="modalview">Scan</a>
+        			</li>                        
+        		</ul>
+                 <ul data-role="listview" id="remindersView" data-style="inset" data-inset="true" >
+        			<li>
+        				<a href="#settings" data-rel="modalview">Reminders</a>
+        			</li>
+        		</ul>
+                <ul data-role="listview" id="prepaidView" data-style="inset" data-inset="true" >
+        			<li>
+        				<a href="#settings" data-rel="modalview">Pre-paid</a>
+        			</li>
+        		</ul>
+            </div>
+        </div>
+            
+        <!-- ========== SETTINGS|ACCOUNT VIEW ============= -->
+        
+        <div data-role="view" id="accountSettingsView" data-style="inset" >
+            
+            <div data-role="header">
+                <div data-role="navbar">
+                    <span>accountSettingsView</span>
+                 </div>
+            </div>
+            
+            <ul data-role="listview" id="signoutView" data-style="inset" data-inset="true" data-click="updateAccountDetails">
+        			<li>
+        				<a id="#view-update-account" data-rel="view">Update account</a>
+        			</li>                        
+        		</ul>
+                <ul data-role="listview" id="addACarView" data-style="inset" data-inset="true" >
+        			<li>
+        				<a href="#modalview-addCar" data-rel="modalview">Add a car</a>
+        			</li>
+        		</ul>
+        		<ul data-role="listview" id="delACarView" data-style="inset" data-inset="false"   data-click="chooseCarToDelete">
+        			<li>
+        				<a>Delete a car</a>
+        			</li>
+        		</ul>
+            
+            <div data-role="footer">
+                <div data-role="navbar">
+                    <span></span>
+                    <!-- <a data-click="#settingsView" data-role="button" data-align="left">Cancel</a> -->
+                    <a href="#settingsView" data-role="button" data-align="right">Done</a>
+               </div>
+            </div>
+           
+        </div>
+               
+        <!-- ========== SETTINGS|ACCOUNT|ACCOUNT UPDATE STUFF ============= -->
+        
+        <div data-role="view" id="view-update-account"  data-show="prefillAccountDetails">
+            
+            <div data-role="header">
+                <div data-role="navbar">
+                    <span>Update Account</span>
+                </div>
+            </div>
+           
+            <ul data-role="listview" data-style="inset">
+                <li><label for="firstname">Firstname:</label> <input type="text" id="update_firstname" /></li>
+                <li><label for="lastname">Lastname:</label> <input type="text" id="update_lastname" /></li>
+                <li><label for="phone">Phone:</label> <input type="tel" id="update_phone" /></li>
+                <li><label for="credit_card_number">Credit Card:</label> <input type="text" id="update_credit_card_number" /></li>
+                <li><label for="email-signup">Email:</label> <input type="email" id="update_email-signin" /></li>
+                <li><label for="password-signup">Password:</label> <input type="password" id="update_password-signin" /></li>
+            </ul>
+            
+            <div data-role="footer">
+                <div data-role="navbar">
+                    <span></span>
+                    <a data-click="closeViewUpdateAccount" data-role="button" data-align="right">Update</a>
+                    <a href="#accountSettingsView" data-role="button" data-align="left">Cancel</a>
+                </div>
+            </div>
+           
+        </div>
+         
+
+        <!-- ========== ADD A CAR STUFF ============= -->
+        
+        <div data-role="modalview" id="modalview-addCar" style="width: 95%; height: 70%;">
+            
+            <div data-role="header">
+                <div data-role="navbar">
+                    <span>Add Car</span>
+                 </div>
+            </div>
+           
+        	<div id='helloWorldInput'>		
+        		<input type="text" id="txtName" value="Car Number" style="display:block;margin: 8% auto 0px auto;width:80%;"/>
+        	</div>
+        
+            <div>
+                <img style="display:block;margin: 10% auto 5% auto; width:50%; height:40%;" id="smallImage" src="images/car.png" />
+            </div>
+            <div data-role="footer">
+                <div data-role="navbar">
+                    <span></span>
+                    <a data-click="closeModalAddCarCancel" data-role="button" data-align="left">Cancel</a>
+                    <a data-click="closeModalAddCar" data-role="button" data-align="right">Done</a>
+               </div>
+            </div>
+            
              
-                <li data-val="0">
-                   <div class="car">
-                      <div class="img-cont">
-                          <img src="https://dl.dropboxusercontent.com/u/1495669/car2.png" />                                      
-                      </div>
-                      <span>12-234-11</span>
-                  </div>
-                </li>
-              
-                <li data-val="1">
-                   <div class="car">
-                      <div class="img-cont">
-                          <img src="https://dl.dropboxusercontent.com/u/1495669/car1.png" />                                      
-                      </div>
-                      <span>12-234-22</span>
-                  </div>
-                </li>
-              
-         </ul>
-	    -->
+        </div>
+        
+     
         
         <!-- ============================== -->
         <!--  Cars list  scroller template  -->
@@ -196,10 +298,13 @@
                         </ul>
                     </div>
                 </div>
-        </script>                 
+        </script> 
+        
         <script>
             
   	      var app = new kendo.mobile.Application(document.body, { transition: "slide", layout: "jitterz-default" });
+            
+            onDeviceReadyCamera()
             
             var ParkingActive;
 
@@ -339,7 +444,53 @@
             }
             
 
+            function closeModalAddCar() 
+            {
+                console.log("closeModalAddCar");
+                $("#modalview-addCar").data("kendoMobileModalView").close();
+            }
+            function closeModalAddCarCancel() 
+            {
+                console.log("closeModalAddCarCancel");
+                $("#modalview-addCar").data("kendoMobileModalView").close();
+            }
             
+            function chooseCarToDelete() 
+            {                 
+                console.log("chooseCarToDelete");
+        	    $('#CarsListScroller').mobiscroll('show');
+                // ofer delete the car 
+    			return false;
+    		}
+            
+            function updateAccountDetails()
+            {
+                app.navigate("#view-update-account");
+            }
+            
+            function prefillAccountDetails()
+            {
+                
+                    console.log("prefill");
+                    // OFER - get account details from server or from local storage ?
+                    document.getElementById("update_email-signin").value = window.localStorage.getItem("last_email_signin");
+                    document.getElementById("update_password-signin").value = window.localStorage.getItem("last_password_signin");
+                    document.getElementById("update_lastname").value = window.localStorage.getItem("last_lastname");
+                    document.getElementById("update_phone").value = window.localStorage.getItem("last_phone");
+                    document.getElementById("update_credit_card_number").value = window.localStorage.getItem("last_credit_card_number");
+                    document.getElementById("update_password-signin").value = window.localStorage.getItem("last_password_signin");
+            }
+            
+                
+            function closeViewSignOut() 
+            {
+                console.log("closeViewSignOut");
+                auth_token = null;
+                window.localStorage.removeItem("auth_token");
+                app.navigate("#login");
+                //app.navigate("../index.html");
+            }
+                        
         </script>
 
 	</body>
