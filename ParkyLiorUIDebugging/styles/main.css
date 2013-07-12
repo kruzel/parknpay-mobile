@@ -658,6 +658,42 @@ color : white;
  
 }
 
+#view-signup .km-content{
+ 
+background-image:  url(../images/1.png);
+background-size: cover;
+background-repeat: repeat;
+color : white;
+ 
+}
+
+#view-signin .km-content{
+ 
+background-image:  url(../images/1.png);
+background-size: cover;
+background-repeat: repeat;
+color : white;
+ 
+}
+
+#accountSettingsView .km-content{
+ 
+background-image:  url(../images/1.png);
+background-size: cover;
+background-repeat: repeat;
+color : white;
+ 
+}
+
+#view-update-account .km-content{
+ 
+background-image:  url(../images/1.png);
+background-size: cover;
+background-repeat: repeat;
+color : white;
+ 
+}
+
 /* override pannel transparency in ios */
 .km-ios .km-list>li {
 display: block;

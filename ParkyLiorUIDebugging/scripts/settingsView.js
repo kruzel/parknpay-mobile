@@ -46,15 +46,4 @@ function settingsViewInit() {
 ///////////////////////////
 
 
-    
-function closeViewSignOut() 
-{
-    auth_token = null;
-    window.localStorage.removeItem("auth_token");
-    //$("#modalview-signout").kendoMobileModalView("close");
-    app.navigate("#login");
-    //app.navigate("../index.html");
-}
-        
-
 
