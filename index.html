@@ -19,14 +19,15 @@
 
         <!-- MOBISCROLL -->
 
-       <link rel="stylesheet" type="text/css" href="css/mobiscroll_text_and_image.css"  />
-   	 <script type="text/javascript" src="js/mobiscroll-2.4.custom.min.js" ></script> 
-   	 <script type="text/javascript" charset="utf-8" src="Plugins/Barcode Scanner/barcodescanner.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/mobiscroll_text_and_image.css"  />
+   	<script type="text/javascript" src="js/mobiscroll-2.4.custom.min.js" ></script> 
+   	<script type="text/javascript" charset="utf-8" src="Plugins/Barcode Scanner/barcodescanner.js"></script>
 
         <!-- app globals -->
         <script type="text/javascript" src="scripts/serverApi.js"></script>
+        <script type="text/javascript" src="scripts/geolocation.js"></script> 
+        <script type="text/javascript" src="scripts/camera.js"></script> 
         <script type="text/javascript" src="scripts/app.js"></script>
-        <script type="text/javascript" src="scripts/camera_and_geolocation.js"></script> 
         
 		<!-- Default Stylesheet -->
 		<link rel="stylesheet" href="styles/main.css" />
@@ -227,8 +228,11 @@
                  </div>
             </div>
            
-        	<div id='helloWorldInput'>		
-        		<input type="text" id="txtName" value="Car Number" style="display:block;margin: 8% auto 0px auto;width:80%;"/>
+        	<div id='registration'>		
+        		<input type="text" id="license_registration_number" value="Car Number" style="display:block;margin: 8% auto 0px auto;width:80%;"/>
+        	</div>
+        	<div id='description'>		
+        		<input type="text" id="car_description" value="car description" style="display:block;margin: 8% auto 0px auto;width:80%;"/>
         	</div>
         
             <div>
@@ -304,12 +308,7 @@
         
         <script>
             
-  	      var app = new kendo.mobile.Application(document.body, { transition: "slide", layout: "jitterz-default" });
-            
-  				function onLoad() 
-  				{ 
-  					document.addEventListener("deviceready", onDeviceReady, false); 
-  				}           
+  	      var app = new kendo.mobile.Application(document.body, { transition: "slide", layout: "jitterz-default" });        
             
             var ParkingActive;
 
@@ -418,12 +417,7 @@
             }
             
 
-            function closeModalAddCar() 
-            {
-                console.log("closeModalAddCar");
-                $("#modalview-addCar").data("kendoMobileModalView").close();
-            }
-            function closeModalAddCarCancel() 
+             function closeModalAddCarCancel() 
             {
                 console.log("closeModalAddCarCancel");
                 $("#modalview-addCar").data("kendoMobileModalView").close();
@@ -463,7 +457,48 @@
                 app.navigate("#login");
                 //app.navigate("../index.html");
             }
-                        
+               
+         $('#smallImage').click(function() 
+         {
+                
+                console.log("click!!");
+		if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) 
+		{
+
+		        that._capturePhoto.apply(that,arguments);
+			return false;
+		}
+		else
+		{
+			var smallImage = document.getElementById('smallImage');
+			smallImage.style.display = 'block';
+		    
+			// Show the captured photo.
+			smallImage.src = "";
+		}
+	});
+
+           function closeModalAddCar() 
+            {
+                console.log("closeModalAddCar");
+		app.showLoading();
+		var smallImage = document.getElementById('smallImage');
+		var registration = $('#license_registration_number').val();
+		var car_description = $('#car_description').val();
+		var data = {car: {license_plate: registration, car_description: car_description}};
+		_serverApi.add_cars({ data: data, 
+			success: function(response) {
+				console.log(response);
+				app.hideLoading();
+				$("#modalview-addCar").data("kendoMobileModalView").close();	
+			},
+			error: function(error) 
+			{
+				console.log(error);
+				app.hideLoading();
+			}});
+            }
+         
         </script>
 
 	</body>

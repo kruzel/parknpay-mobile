@@ -163,9 +163,23 @@
             }));
         }
         */
-        
+       		app.showLoading();
+		_serverApi.get_cars({ 
+			success: function(response) {
+				console.log(response);
+				_cars_data = response; //JSON.stringify(response);
+				app.hideLoading();
+				
+			},
+			error: function(error) 
+			{
+				console.log(error);
+				app.hideLoading();
+			}});
+
     
 		/* OFER: insert here API call to get the user registered cars */
+		
 		cars_data = [
 			{ID: 0, registration: "12-234-11", PictureUrl: "https://dl.dropboxusercontent.com/u/1495669/car2.png", Name: "Car1"},
 			{ID: 1, registration: "12-234-22", PictureUrl: "https://dl.dropboxusercontent.com/u/1495669/car1.png", Name: "Car2"}

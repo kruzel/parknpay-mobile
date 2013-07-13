@@ -88,33 +88,11 @@ serverApi.prototype = {
     },
 
     // params should include success, error callback function
-    // params['data']                                                                               may be needed later:  include {user_id: user_id }
-    // returned value on success: nested json with cities->areas->rates
-    get_cars: function(params) {
-        $.ajax({
-            url: this.serverUrl + "api/v1/users/0/cars.json?auth_token=" + this.auth_token,
-            dataType: "json",
-            type: "get",
-            cache: false,
-            success: function(response, textStatus, jqXHR)
-            {
-                var cities = response;
-                params['success'](cities); //callback function
-            },
-            error: function(jqXHR, textStatus, errorThrown)
-            {
-                console.log(jqXHR, textStatus, errorThrown);
-                params['error'](errorThrown);  //callback function
-            }
-        });
-    },
-
-    // params should include success, error callback function
     // params['data']  include {car: {license_plate: license_plate, car_description: car_description, car_image: car_image}}    car_image is optional
     // returned value on success: nested json with cities->areas->rates
     add_cars: function(params) {
         $.ajax({
-            url: server_url + "/api/v1/users/0/cars.json?auth_token=" + this.auth_token,
+            url: this.serverUrl + "/api/v1/users/0/cars.json?auth_token=" + this.auth_token,
             dataType: "json",
             type: "post",
             data: params['data'],
@@ -132,7 +110,7 @@ serverApi.prototype = {
 
     get_cars: function(params) {
         $.ajax({
-            url: server_url + "/api/v1/users/0/cars.json?auth_token=" + this.auth_token,
+            url: this.serverUrl + "/api/v1/users/0/cars.json?auth_token=" + this.auth_token,
             dataType: "json",
             type: "get",
             cache: false,
