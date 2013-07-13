@@ -47,8 +47,8 @@ serverApi.prototype = {
             success: function(response, textStatus, jqXHR)
             {
                 this.auth_token = response.data.auth_token;
-                window.localStorage.setItem("auth_token",auth_token);
-                console.log('auth_token: ' + auth_token);
+                window.localStorage.setItem("auth_token",this.auth_token);
+                console.log('auth_token: ' + this.auth_token);
                 params['success'](this.auth_token); //callback function
             },
             error: function(jqXHR, textStatus, errorThrown)
