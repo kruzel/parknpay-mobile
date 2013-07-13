@@ -14,19 +14,19 @@
 		<script type="text/javascript" src="kendo/js/jquery.min.js"></script>
 		<script type="text/javascript" src="kendo/js/kendo.mobile.min.js"></script>
         
-        <link rel="stylesheet" href="css/main_page_list.css" />
+       <link rel="stylesheet" href="css/main_page_list.css" />
         
 
         <!-- MOBISCROLL -->
 
-        <link rel="stylesheet" type="text/css" href="css/mobiscroll_text_and_image.css"  />
+       <link rel="stylesheet" type="text/css" href="css/mobiscroll_text_and_image.css"  />
    	 <script type="text/javascript" src="js/mobiscroll-2.4.custom.min.js" ></script> 
    	 <script type="text/javascript" charset="utf-8" src="Plugins/Barcode Scanner/barcodescanner.js"></script>
 
         <!-- app globals -->
         <script type="text/javascript" src="scripts/serverApi.js"></script>
         <script type="text/javascript" src="scripts/app.js"></script>
-        <!-- <script type="text/javascript" src="scripts/hello-world.js"></script> -->
+        <script type="text/javascript" src="scripts/camera_and_geolocation.js"></script> 
         
 		<!-- Default Stylesheet -->
 		<link rel="stylesheet" href="styles/main.css" />
@@ -45,7 +45,8 @@
 		<link rel="stylesheet" media="only screen and (min-device-width: 600px) and (max-device-width: 1024px) and (-webkit-device-pixel-ratio:1)" href="styles/tablet-600-1024.css" type="text/css" />
 		<!-- Tablet 768x1024 High DPI (aka iPad3") -->
 		<link rel="stylesheet" media="only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-device-pixel-ratio:2)" href="styles/tablet-1024-hdpi.css" type="text/css" />
-       
+		
+
 	</head>
     
     
@@ -305,7 +306,10 @@
             
   	      var app = new kendo.mobile.Application(document.body, { transition: "slide", layout: "jitterz-default" });
             
-            onDeviceReadyCamera()
+  				function onLoad() 
+  				{ 
+  					document.addEventListener("deviceready", onDeviceReady, false); 
+  				}           
             
             var ParkingActive;
 

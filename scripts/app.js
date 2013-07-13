@@ -18,9 +18,9 @@ function id(element) {
 // ================== //
 
 
-function onDeviceReadyCamera() {
-    
-	//InitUI();
+function onDeviceReadyCamera() 
+{
+
     cameraApp = new cameraApp();
     cameraApp.run();
 }
@@ -28,8 +28,8 @@ function onDeviceReadyCamera() {
 
 function cameraApp(){}
 
-cameraApp.prototype=
-    {
+cameraApp.prototype =
+{
         
     _pictureSource: null,
     
@@ -41,14 +41,12 @@ cameraApp.prototype=
       
         var that=this;
         console.log("cameraApp.run!!");
+        
 	    that._pictureSource = navigator.camera.PictureSourceType;
 	    that._destinationType = navigator.camera.DestinationType;
-/*
-	    document.getElementById("photoButton").addEventListener("click", 
-                function(){ that._capturePhoto.apply(that,arguments);});
-*/        
 	          
-         $('#smallImage').click(function() {
+         $('#smallImage').click(function() 
+         {
                 
                 console.log("click!!");
                 /*
@@ -62,9 +60,10 @@ cameraApp.prototype=
     
     _capturePhoto: function() {
         var that = this;
-        /* alert("YEAYEA!!"); */
+        alert("YEAYEA!!"); 
         /* Take picture using device camera and retrieve image as base64-encoded string. */
-        navigator.camera.getPicture(function(){
+        navigator.camera.getPicture(function()
+	{
             that._onPhotoDataSuccess.apply(that,arguments);
         },function(){
             that._onFail.apply(that,arguments);

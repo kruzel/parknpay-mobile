@@ -139,7 +139,7 @@
 			ParkingActive = false;
 			localStorage.setItem("ParkingActive", "0");
 			console.log('parking stoped');
-			document.getElementById('parking_selection_item-title').innerHTML = 'Inactive';
+			document.getElementById('parking_selection_item-title').innerHTML = 'Start';
 			document.getElementById('parking_selection_item-info').innerHTML = '';
 			return false;  
 		}
@@ -330,14 +330,14 @@
     			ParkingActive = false;
     			localStorage.setItem("ParkingActive", "0");
     			console.log('parking stoped');
-    			document.getElementById('parking_selection_item-title').innerHTML = 'Inactive';
+    			document.getElementById('parking_selection_item-title').innerHTML = 'Start';
     			document.getElementById('parking_selection_item-info').innerHTML = '';
     			return false;  
     		}
     		
     		if ((localStorage.getItem("ParkingActive") == undefined) || (localStorage.getItem("ParkingActive") == "0")) 
             {
-    			document.getElementById('parking_selection_item-title').innerHTML = 'Inactive';
+    			document.getElementById('parking_selection_item-title').innerHTML = 'Start';
     			// document.getElementById('dc_second').innerHTML = '';
     			//document.getElementById('cost').innerHTML = '';
     			ParkingActive = false;
