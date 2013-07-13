@@ -1,13 +1,13 @@
 // JavaScript Document
-var serverUrl = "http://ozpark.com.au";
-var auth_token = window.localStorage.getItem("auth_token");
+var _serverApi = new serverApi();
+
 var user_data_str = window.localStorage.getItem("user_data");
 var user_data = null;
 if(user_data_str!=null) {
     user_data = JSON.parse(user_data_str);
 }
 
- 
+
 function id(element) {
     return document.getElementById(element);
 }

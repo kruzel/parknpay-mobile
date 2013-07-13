@@ -24,6 +24,7 @@
    	 <script type="text/javascript" charset="utf-8" src="Plugins/Barcode Scanner/barcodescanner.js"></script>
 
         <!-- app globals -->
+        <script type="text/javascript" src="scripts/serverApi.js"></script>
         <script type="text/javascript" src="scripts/app.js"></script>
         <!-- <script type="text/javascript" src="scripts/hello-world.js"></script> -->
         
@@ -321,8 +322,8 @@
                 console.log(e.view);
                 
                 //var auth_token = window.localStorage.getItem("auth_token");
-                console.log("auth_token = "+ auth_token);
-                if (auth_token != null ) 
+                console.log("auth_token = "+ _serverApi.auth_token);
+                if (_serverApi.auth_token != null )
                 {
                     console.log("(auth_token != null )");
                     app.navigate("views/homeView.html"); 
@@ -364,37 +365,25 @@
                 var password = $("#password-signup").val();
                 
                 app.showLoading();
-                
+
                 //TODO: add phone and credit_card_number to server, add as accessible attr
                 user_data = {user: {email: email, password: password, password_confirmation: password, firstname: firstname, lastname: lastname } } //, phone: phone, credit_card_number: credit_card_number, id_card_number: id_card_number
                 user_data_str = JSON.stringify(user_data);
                 window.localStorage.setItem("user_data",user_data_str);
-                
-                $.ajax({
-            		url: serverUrl + "/users.json",
-            		dataType: "json",
-            		type: "post",
-            		cache: false,
-            		data: user_data,
-            		success: function(response) 
-                    {
+
+                _serverApi.sign_up({
+                    data: user_data,
+                    success: function(response)  {
                         app.hideLoading();
-                        auth_token = response.data.auth_token;
-                        window.localStorage.setItem("auth_token",auth_token);
-                        console.log('auth_token: ' + auth_token);
                         $("#modalview-signup").kendoMobileView("close");
                         app.navigate("views/homeView.html");
-            		},
-            		error: function(jqXHR, textStatus, errorThrown) 
-                    {
-                        
+                    },
+                    error: function(errorThrown)  {
                         app.hideLoading();
-            			console.log(jqXHR, textStatus, errorThrown);
-                        window.localStorage.removeItem("auth_token");
-                        alert('Signup Failed');  
+                        alert('Signup Failed');
                         app.navigate("#login");
-            	    }
-            	});
+                    }
+                });
             }
             
             function closeViewSignIn() 
@@ -404,34 +393,21 @@
                 var email = $("#email-signin").val();
                 var password = $("#password-signin").val();
 
-                user_data = {user: {email: email, password: password} } //, firstname: firstname, lastname: lastname , phone: phone, credit_card_number: credit_card_number, id_card_number: id_card_number
+                user_data = {user: {email: email, password: password} }
                 user_data_str = JSON.stringify(user_data);
                 window.localStorage.setItem("user_data",user_data_str);
-                
-                //Get fresh data
-            	$.ajax({
-                    url: serverUrl + "/users/sign_in.json",
-                    dataType: "json",
-                    type: "post",
-                    cache: false,
-                    data: {user:{email:email, password:password}},
-                    success: function(response) 
-                    {
-                        console.log(response.session);
-                        auth_token = response.session.auth_token;
-                        window.localStorage.setItem("auth_token",auth_token);
+
+                _serverApi.sign_in({
+                    data: user_data,
+                    success: function(response)  {
                         app.hideLoading();
-                        console.log('auth_token: ' + auth_token);
                         app.navigate("views/homeView.html");
                         //app.navigate("#start");
-                        console.log('navigate: ' + auth_token);
+                        console.log('navigate: ' + _serverApi.auth_token);
                     },
-                    error: function(jqXHR, textStatus, errorThrown) 
-                    {
-                        console.log(jqXHR, textStatus, errorThrown);
-                        window.localStorage.removeItem("auth_token");
+                    error: function(errorThrown)  {
                         app.hideLoading();
-                        alert('Sign in failed'); 
+                        alert('Sign in failed');
                         app.navigate("#login");
                     }
                 });
@@ -479,8 +455,7 @@
             function closeViewSignOut() 
             {
                 console.log("closeViewSignOut");
-                auth_token = null;
-                window.localStorage.removeItem("auth_token");
+                _serverApi.sign_out();
                 app.navigate("#login");
                 //app.navigate("../index.html");
             }
