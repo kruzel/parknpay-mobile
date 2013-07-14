@@ -312,23 +312,14 @@
             
             var ParkingActive;
 
-            // TODO: remove when in production - this is good for debugging since web browser typically clear the storage on app restart
-            //window.localStorage.setItem("last_email_signin","alior101@gmail.com" );
-            //window.localStorage.setItem("last_password_signin", "kellogskellogs");
-            
             function afterShowSignin(e) 
             {
-               
-                //window.localStorage.setItem("last_email_signin","alior101@gmail.com" );
-                //window.localStorage.setItem("last_password_signin", "kellogskellogs");
-            
                 console.log(e.view);
-                
-                //var auth_token = window.localStorage.getItem("auth_token");
-                console.log("auth_token = "+ _serverApi.auth_token);
-                if (_serverApi.auth_token != null )
+
+                console.log("auth_token = "+ _serverApi.get_token());
+                if (_serverApi.is_signed_in() )
                 {
-                    console.log("(auth_token != null )");
+                    console.log("user signed in");
                     app.navigate("views/homeView.html"); 
                 }
                 else if (user_data!=null)
@@ -406,7 +397,21 @@
                         app.hideLoading();
                         app.navigate("views/homeView.html");
                         //app.navigate("#start");
-                        console.log('navigate: ' + _serverApi.auth_token);
+                        console.log('navigate: ' + _serverApi.get_token());
+
+                        //get the full user info and store locally
+                        _serverApi.get_user({
+                            success: function(response)  {
+                                console.log('_serverApi.get_user: response' + response);
+                                user_data = response;
+                                user_data_str = JSON.stringify(user_data);
+                                window.localStorage.setItem("user_data",user_data_str);
+                            },
+                            error: function(errorThrown)  {
+                                console.log('_serverApi.get_user failed: ' + errorThrown);
+                            }
+                        });
+
                     },
                     error: function(errorThrown)  {
                         app.hideLoading();
@@ -441,12 +446,12 @@
                 
                     console.log("prefill");
                     // OFER - get account details from server or from local storage ?
-                    document.getElementById("update_email-signin").value = user_data['user']['email']; // window.localStorage.getItem("last_email_signin");
-                    document.getElementById("update_password-signin").value = user_data['user']['password']; // window.localStorage.getItem("last_password_signin");
-                    document.getElementById("update_firstname").value = user_data['user']['firstname']; //window.localStorage.getItem("last_lastname");
-                    document.getElementById("update_lastname").value = user_data['user']['lastname']; //window.localStorage.getItem("last_lastname");
-                    document.getElementById("update_phone").value = user_data['user']['phone']; // window.localStorage.getItem("last_phone");
-                    document.getElementById("update_credit_card_number").value = user_data['user']['credit_card_number']; // window.localStorage.getItem("last_credit_card_number");
+                    document.getElementById("update_email-signin").value = user_data['user']['email'];
+                    document.getElementById("update_password-signin").value = user_data['user']['password'];
+                    document.getElementById("update_firstname").value = user_data['user']['firstname'];
+                    document.getElementById("update_lastname").value = user_data['user']['lastname'];
+                    document.getElementById("update_phone").value = user_data['user']['phone'];
+                    document.getElementById("update_credit_card_number").value = user_data['user']['credit_card_number'];
             }
             
                 
@@ -481,23 +486,23 @@
            function closeModalAddCar() 
             {
                 console.log("closeModalAddCar");
-		app.showLoading();
-		var smallImage = document.getElementById('smallImage');
-		var registration = $('#license_registration_number').val();
-		var car_description = $('#car_description').val();
-		var data = {car: {license_plate: registration, car_description: car_description}};
-		_serverApi.add_cars({ data: data, 
-			success: function(response) {
-				console.log(response);
-				app.hideLoading();
-				$("#modalview-addCar").data("kendoMobileModalView").close();	
-			},
-			error: function(error) 
-			{
-				console.log(error);
-				app.hideLoading();
-			}});
-            }
+                app.showLoading();
+                var smallImage = document.getElementById('smallImage');
+                var registration = $('#license_registration_number').val();
+                var car_description = $('#car_description').val();
+                var data = {car: {license_plate: registration, car_description: car_description}};
+                _serverApi.add_cars({ data: data,
+                    success: function(response) {
+                        console.log(response);
+                        app.hideLoading();
+                        $("#modalview-addCar").data("kendoMobileModalView").close();
+                    },
+                    error: function(error)
+                    {
+                        console.log(error);
+                        app.hideLoading();
+                    }});
+                    }
          
         </script>
 
