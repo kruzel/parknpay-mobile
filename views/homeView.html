@@ -168,6 +168,15 @@
 			success: function(response) {
 				console.log(response);
 				_cars_data = response; //JSON.stringify(response);
+				/*
+				var jsonObj = [];
+				var i = 0;
+				for (i=0; i< response.length; i++)
+				{
+					jsonObj.push({ID: i, registration: response[i].license_plate, PictureUrl: response[i].car_image_file_name, Name: response[i].car_description});
+					//localStorage.setItem("car"+ID, response[i].);
+				}
+				*/
 				app.hideLoading();
 				
 			},
@@ -179,15 +188,14 @@
 
     
 		/* OFER: insert here API call to get the user registered cars */
-		
 		cars_data = [
 			{ID: 0, registration: "12-234-11", PictureUrl: "https://dl.dropboxusercontent.com/u/1495669/car2.png", Name: "Car1"},
 			{ID: 1, registration: "12-234-22", PictureUrl: "https://dl.dropboxusercontent.com/u/1495669/car1.png", Name: "Car2"}
 		];
 
-        var template = kendo.template($("#CarsListScrollerTemplate").html());        
+        	var template = kendo.template($("#CarsListScrollerTemplate").html());        
 		var result = template({data:cars_data}); //Execute the template  
-        //console.log("template result = " + result);
+        	//console.log("template result = " + result);
 		$("#CarsListScrollerTemplateResults").html(result);
         
 
