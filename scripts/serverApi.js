@@ -1,13 +1,22 @@
 function serverApi() {
+    this.serverUrl = "http://ozpark.com.au";
+    this.auth_token = null;
+
     this.init();
 };
 
 serverApi.prototype = {
-    serverUrl: "http://ozpark.com.au",
-    auth_token: null,
 
     init: function() {
         this.auth_token = window.localStorage.getItem("auth_token");
+    },
+
+    get_token: function() {
+        return this.auth_token;
+    },
+
+    is_signed_in: function() {
+        return this.auth_token != null;
     },
 
     // params should include success, error callback function
@@ -22,9 +31,9 @@ serverApi.prototype = {
             success: function(response, textStatus, jqXHR)
             {
                 console.log(response.session);
-                this.auth_token = response.session.auth_token;
-                window.localStorage.setItem("auth_token",this.auth_token);
-                params['success'](this.auth_token); //callback function
+                _serverApi.auth_token = response.session.auth_token;
+                window.localStorage.setItem("auth_token",_serverApi.auth_token);
+                params['success'](_serverApi.auth_token); //callback function
             },
             error: function(jqXHR, textStatus, errorThrown)
             {
@@ -46,10 +55,10 @@ serverApi.prototype = {
             data: params['data'],
             success: function(response, textStatus, jqXHR)
             {
-                this.auth_token = response.data.auth_token;
-                window.localStorage.setItem("auth_token",this.auth_token);
-                console.log('auth_token: ' + this.auth_token);
-                params['success'](this.auth_token); //callback function
+                _serverApi.auth_token = response.data.auth_token;
+                window.localStorage.setItem("auth_token",_serverApi.auth_token);
+                console.log('auth_token: ' + _serverApi.auth_token);
+                params['success'](_serverApi.auth_token); //callback function
             },
             error: function(jqXHR, textStatus, errorThrown)
             {
@@ -64,6 +73,27 @@ serverApi.prototype = {
     sign_out: function () {
         this.auth_token = null;
         window.localStorage.removeItem("auth_token");
+    },
+
+    // params should include success, error callback function only
+    // response: {user: {firstname: firstname, lastname: lastname ,email: email,......} }
+    get_user: function(params) {
+        $.ajax({
+            url: this.serverUrl + "/api/v1/users/0.json?auth_token=" + this.auth_token,
+            dataType: "json",
+            type: "get",
+            cache: false,
+            success: function(response, textStatus, jqXHR)
+            {
+                var user = response;
+                params['success'](user); //callback function
+            },
+            error: function(jqXHR, textStatus, errorThrown)
+            {
+                console.log(jqXHR, textStatus, errorThrown);
+                params['error'](errorThrown);  //callback function
+            }
+        });
     },
 
     // params should include only success, error callback function
