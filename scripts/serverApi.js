@@ -137,6 +137,25 @@ serverApi.prototype = {
             }
         });
     },
+    
+    upload_car_image: function(car_id, imageURI, win, fail) {
+    	var url = this.serverUrl + "/api/v1/users/0/cars/" + car_id + "/upload_image.json?auth_token=" + this.auth_token;
+    	
+    	var options = new FileUploadOptions();
+	 options.chunkedMode = false;
+	 options.fileKey="file";
+	 options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
+	 options.mimeType="image/jpeg";
+
+	 var params = new Object();
+	 params.value1 = "test";
+	 params.value2 = "param";
+
+	 options.params = params;
+
+	 var ft = new FileTransfer();
+	 ft.upload(imageURI, url ,win, fail, options);
+    },
 
     get_cars: function(params) {
         $.ajax({

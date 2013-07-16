@@ -5,7 +5,7 @@ var _serverApi;
 var user_data_str;
 var user_data;
 var ParkingActive;
-
+var uriOfImageOfCarToAdd;
 function OnDocumentReady() 
 {
 	_serverApi = new serverApi();
@@ -62,7 +62,7 @@ function onDeviceReady()
 		        var smallImage = document.getElementById('smallImage');
 			smallImage.style.display = 'block';
 			// Show the captured photo.
-			//smallImage.src = ;
+			smallImage.src = "images/car123456.jpg";
 			return false;
 		});
 	}
@@ -81,7 +81,7 @@ function id(element)
 // ================== //
         
 
-     
+ 
 
 function cameraApp(){}
 
@@ -106,7 +106,6 @@ cameraApp.prototype =
 		$('#smallImage').click(function() 
 		{
 			console.log("click!!");
-			//alert('bubu');
 			cameraApp._capturePhoto.apply(that,arguments);
 			return false;
 		});
@@ -117,10 +116,23 @@ cameraApp.prototype =
 	}
           
     },
+    _capturePhoto: function() {
+        var that = this;
+        // Take picture using device camera and retrieve image as base64-encoded string.
+        navigator.camera.getPicture(function(){
+            that._onPhotoURISuccess.apply(that,arguments);
+        },function(){
+            that._onFail.apply(that,arguments);
+        },{
+            quality: 20,
+            destinationType: that._destinationType.FILE_URI
+        });
+    },
+    
+    /*
      _capturePhoto: function() {
         var that = this;
-        /* alert("YEAYEA!!"); */
-        /* Take picture using device camera and retrieve image as base64-encoded string. */
+        // Take picture using device camera and retrieve image as base64-encoded string.
         navigator.camera.getPicture(function(){
             that._onPhotoDataSuccess.apply(that,arguments);
         },function(){
@@ -130,22 +142,7 @@ cameraApp.prototype =
             destinationType: that._destinationType.DATA_URL
         });
     },
-   /*
-    _capturePhoto: function() {
-        var that = this;
-        console.log("YEAYEA!!"); 
-        // Take picture using device camera and retrieve image as base64-encoded string.
-        navigator.camera.getPicture(function()
-	{
-            that._onPhotoDataSuccess.apply(that,arguments);
-        },function(){
-            that._onFail.apply(that,arguments);
-        },{
-            quality: 50,
-            destinationType: that._destinationType.DATA_URL
-        });
-    },
-    */
+  */
     _capturePhotoEdit: function() {
         var that = this;
         // Take picture using device camera, allow edit, and retrieve image as base64-encoded string. 
@@ -197,15 +194,46 @@ cameraApp.prototype =
     },
     
     _onPhotoURISuccess: function(imageURI) {
-        var smallImage = document.getElementById('smallImage');
-        smallImage.style.display = 'block';
-         
-        // Show the captured photo.
-        smallImage.src = imageURI;
+ 
+        uriOfImageOfCarToAdd = imageURI;
+        
+        // keep the absolute path in this tag - this will be needed for the upload function at the modal close
+        var smallImage_url = document.getElementById('smallImage_url');
+        smallImage_url.style.display = 'block';
+        smallImage_url.src = imageURI;
+
+	// display the image ... 
+        window.resolveLocalFileSystemURI(uriOfImageOfCarToAdd, cameraApp._onResolveSuccess, cameraApp._onFail);
     },
     
-    _onFail: function(message) {
+    _onFail: function(message) 
+    {
         alert('Failed! Error: ' + message);
+    },
+    _onResolveSuccess: function(fileEntry) 
+    {
+	function win(file) 
+	{
+	    var reader = new FileReader();
+	    reader.onloadend = function (evt) 
+	    {
+		console.log("read success");
+		console.log(evt.target.result);
+		
+		var dataUri = evt.target.result;
+        	var smallImage = document.getElementById('smallImage');
+        	smallImage.style.display = 'block';
+	        smallImage.src = dataUri;
+	    };
+	    reader.readAsDataURL(file);
+	};
+
+	var fail = function (evt) 
+	{
+	    console.log(error.code);
+	};
+	fileEntry.file(win, fail);
+        console.log(fileEntry.name);
     }
 }
 
@@ -215,8 +243,8 @@ cameraApp.prototype =
 function afterShowSignin(e) 
 {
 
-	//window.localStorage.setItem("last_email_signin","alior101@gmail.com" );
-	//window.localStorage.setItem("last_password_signin", "kellogskellogs");
+	window.localStorage.setItem("last_email_signin","alior101@gmail.com" );
+	window.localStorage.setItem("last_password_signin", "kellogskellogs");
 
 	console.log(e.view);
 
@@ -338,21 +366,43 @@ function closeViewSignIn()
         //app.navigate("../index.html");
     }
        
+         function win(r) 
+         {
+		 console.log("Code = " + r.responseCode);
+		 console.log("Response = " + r.response);
+		 console.log("Sent = " + r.bytesSent);
+		 app.hideLoading();
+         }
 
-
+         function fail(error) {
+		 console.log("An error has occurred: Code = " = error.code);
+		 console.log("upload error source " + error.source);
+		 console.log("upload error target " + error.target);
+		 app.hideLoading();
+         }
+         
+	function uploadPhoto(car_id, imageURI) 
+	{
+		 _serverApi.upload_car_image(car_id, imageURI, win, fail);
+	}
+         
    function closeModalAddCar() 
     {
         console.log("closeModalAddCar");
 	app.showLoading();
-	var smallImage = document.getElementById('smallImage');
+	var smallImage = document.getElementById('smallImage_url');
 	var registration = $('#license_registration_number').val();
 	var car_description = $('#car_description').val();
 	var car_image_data = smallImage.src;
-	var data = {car: {license_plate: registration, car_description: car_description, car_:car_image_data}};
+	var data = {car: {license_plate: registration, car_description: car_description}};
+	
 	_serverApi.add_cars({ data: data, 
-		success: function(response) {
+		success: function(response) 
+		{
+			var car_id = response.id;
+			//alert("uploadPhoto:"+car_image_data);
+			uploadPhoto(car_id, car_image_data);
 			console.log(response);
-			app.hideLoading();
 			$("#modalview-addCar").data("kendoMobileModalView").close();	
 		},
 		error: function(error) 
