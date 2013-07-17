@@ -172,5 +172,64 @@ serverApi.prototype = {
                 params['error'](errorThrown);  //callback function
             }
         });
+    },
+
+    // params should include success, error callback function
+    // params['data']  include { payment: { x_pos: x_pos, y_pos: y_pos, area_id: area_id, rate_id: rate_id, user_id: user_id, start_time: start_time}}
+    // returned value on success: { payment: { id: id, x_pos: x_pos, y_pos: y_pos, area_id: area_id, rate_id: rate_id, user_id: user_id, start_time: start_time}}
+    add_payment: function(params) {
+        $.ajax({
+            url: this.serverUrl + "/api/v1/payments.json?auth_token=" + this.auth_token,
+            dataType: "json",
+            type: "post",
+            data: params['data'],
+            cache: false,
+            success: function(response, textStatus, jqXHR) {
+                var car = response;
+                params['success'](car); //callback function
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR, textStatus, errorThrown);
+                params['error'](errorThrown);  //callback function
+            }
+        });
+    },
+    // params should include success, error callback function
+    // params['data']  include { payment: { id: id, end_time: end_time}}
+    // returned value on success:
+    update_payment: function(params) {
+        $.ajax({
+            url: this.serverUrl + "/api/v1/payments.json?auth_token=" + this.auth_token,
+            dataType: "json",
+            type: "put",
+            data: params['data'],
+            cache: false,
+            success: function(response, textStatus, jqXHR) {
+                var car = response;
+                params['success'](car); //callback function
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR, textStatus, errorThrown);
+                params['error'](errorThrown);  //callback function
+            }
+        });
+    },
+    // params should include success, error callback function only
+    // returned value on success: array of current user payments
+    get_payments: function(params) {
+        $.ajax({
+            url: this.serverUrl + "/api/v1/payments/users_payments.json?auth_token=" + this.auth_token,
+            dataType: "json",
+            type: "get",
+            cache: false,
+            success: function(response, textStatus, jqXHR) {
+                var cars = response;
+                params['success'](cars); //callback function
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR, textStatus, errorThrown);
+                params['error'](errorThrown);  //callback function
+            }
+        });
     }
 }
