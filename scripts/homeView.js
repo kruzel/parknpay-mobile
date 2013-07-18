@@ -13,9 +13,19 @@ var data =
 
 function prepare_template() 
 {
-    /* OFER: insert here API call to get the user registered cars */
-    var result = template(data); //Execute the template
-    $("#CarsListScrollerTemplateResults").html(result);
+	var data = {};
+	_serverApi.get_cars({ data: data, 
+		success: function(response) 
+		{
+			var cars_list = respons;
+		},
+		error: function(error) 
+		{
+			console.log(error);
+			app.hideLoading();
+	}});
+	var result = template(data); //Execute the template
+	$("#CarsListScrollerTemplateResults").html(result);
 }
 
 prepare_template();

@@ -16,8 +16,8 @@ function OnDocumentReady()
 	    user_data = JSON.parse(user_data_str);
 	}
     
-    // are we running in native app or in browser?
-    window.isphone = false;
+	// are we running in native app or in browser?
+	window.isphone = false;
     
 	if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) 
 	{
@@ -128,21 +128,7 @@ cameraApp.prototype =
             destinationType: that._destinationType.FILE_URI
         });
     },
-    
-    /*
-     _capturePhoto: function() {
-        var that = this;
-        // Take picture using device camera and retrieve image as base64-encoded string.
-        navigator.camera.getPicture(function(){
-            that._onPhotoDataSuccess.apply(that,arguments);
-        },function(){
-            that._onFail.apply(that,arguments);
-        },{
-            quality: 50,
-            destinationType: that._destinationType.DATA_URL
-        });
-    },
-  */
+   
     _capturePhotoEdit: function() {
         var that = this;
         // Take picture using device camera, allow edit, and retrieve image as base64-encoded string. 
@@ -243,8 +229,8 @@ cameraApp.prototype =
 function afterShowSignin(e) 
 {
 
-	window.localStorage.setItem("last_email_signin","alior101@gmail.com" );
-	window.localStorage.setItem("last_password_signin", "kellogskellogs");
+	//window.localStorage.setItem("last_email_signin","alior101@gmail.com" );
+	//window.localStorage.setItem("last_password_signin", "kellogskellogs");
 
 	console.log(e.view);
 
@@ -335,7 +321,7 @@ function closeViewSignIn()
     {                 
         console.log("chooseCarToDelete");
 	    $('#CarsListScroller').mobiscroll('show');
-        // ofer delete the car 
+        // ofer delete the car denoted by chosen car in the local storage 
 		return false;
 	}
     
@@ -402,7 +388,8 @@ function closeViewSignIn()
 			var car_id = response.id;
 			//alert("uploadPhoto:"+car_image_data);
 			uploadPhoto(car_id, car_image_data);
-			console.log(response);
+			//console.log(response);
+			app.hideLoading();
 			$("#modalview-addCar").data("kendoMobileModalView").close();	
 		},
 		error: function(error) 
