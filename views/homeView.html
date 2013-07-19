@@ -145,25 +145,16 @@
 		}
     } 
     
-	function init_home_view() 
+    function init_home_view() 
     {
-	   // debugger;
-         console.log("calling init_home_view");        
+	 
+         console.log("calling init_home_view");   
+             
+     
     	/* ===================== */
     	/* CAR SELECTION SCROLER */
     	/* ===================== */
-        
-        /*
-            var template = kendo.template($("#template").html());
     
-        function preview() {
-            $("#blog-preview").html(template({
-                title: $("#blog-title").val(),
-                twitter: $("#blog-twitter").val(),
-                content: $("#blog-content").val()
-            }));
-        }
-        */
        		app.showLoading();
 		_serverApi.get_cars({ 
 			success: function(response) {
@@ -183,7 +174,7 @@
 							"Name": response[i].car_description});
 					}
 				}
-				localStorage.setItem('carsJSON', JSON.stringify(jsonObj) );
+				localStorage.setItem('cars_data', JSON.stringify(jsonObj) );
 				app.hideLoading();
 				
 			},
@@ -193,24 +184,23 @@
 				app.hideLoading();
 			}});
 
-		cars_data = JSON.parse(localStorage.getItem('carsJSON'));
-		/* OFER: insert here API call to get the user registered cars */
-		if (cars_data == 'undefined')
+		cars_data = JSON.parse(localStorage.getItem('cars_data'));
+
+		if (cars_data == null)
 		{
 			cars_data = [];
 		}
-		cars_data1 = [
-			{ID: 0, registration: "12-234-11", PictureUrl: "https://dl.dropboxusercontent.com/u/1495669/car2.png", Name: "Car1"},
-			{ID: 1, registration: "12-234-22", PictureUrl: "https://dl.dropboxusercontent.com/u/1495669/car1.png", Name: "Car2"}
-		];
-		
 
         	var template = kendo.template($("#CarsListScrollerTemplate").html());        
 		var result = template({data:cars_data}); //Execute the template  
-        	//console.log("template result = " + result);
-		$("#CarsListScrollerTemplateResults").html(result);
-        
-
+        	$("#CarsListScrollerTemplateResults").html(result);
+		
+        	// do the same for the list of cars to e deleted - inside there is the tag #DelCarsListScroller which is being shown 
+        	// when the relvant view is navigated to 
+       		template = kendo.template($("#DelCarsListScrollerTemplate").html());        
+		result = template({data:cars_data}); //Execute the template  
+        	$("#DelCarsListScrollerTemplateResults").html(result);
+ 
 		/* this will put on the home screen the last chosen car*/
 		pid = localStorage.getItem("chosen_car");
     
@@ -245,7 +235,25 @@
 			},
 		});
      
-	
+		$('#DelCarsListScroller').mobiscroll().image({
+			theme: 'android',
+			display: 'inline',
+			mode: 'scroller',
+			inputClass: 'i-txt',
+			setText: 'OK',
+			onSelect: function (v, inst) 
+			{
+			},
+			onChange: function (v, inst) 
+			{
+				//$("#car_selection_item_title").html(cars_data[v].registration);
+				//$("#car_selection_item_description").html(cars_data[v].Name);
+				/* save the car selected in persistent storage */
+				//localStorage.setItem("chosen_car", v);
+			},
+		});	
+
+		
 		$('#car_selection').click(function() 
         	{                 
     			if (cars_data[pid] != null) 

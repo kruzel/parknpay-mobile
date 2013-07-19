@@ -29,7 +29,7 @@
 		<!-- app globals -->
 		<script type="text/javascript" src="scripts/serverApi.js"></script>
 		<!-- <script type="text/javascript" src="scripts/geolocation.js"></script>  -->
-		<script type="text/javascript" src="scripts/camera.js"></script> 
+		<!-- <script type="text/javascript" src="scripts/camera.js"></script>  -->
 		<script type="text/javascript" src="scripts/app.js"></script>
         
 		<!-- Default Stylesheet -->
@@ -119,7 +119,8 @@
                 <div data-role="navbar">
                     <span></span>
                     <a data-click="closeViewSignIn" data-role="button" data-align="right">Sign In</a>
-                    <a href="#login" data-role="button" data-align="left">Cancel</a>
+                    <a data-click="cancellViewSignIn" data-role="button" data-align="left">Cancel</a>
+                    <!-- <a href="#login" data-role="button" data-align="left">Cancel</a> -->
                 </div>
             </div>
         </div>     
@@ -158,7 +159,7 @@
             
         <!-- ========== SETTINGS|ACCOUNT VIEW ============= -->
         
-        <div data-role="view" id="accountSettingsView" data-style="inset" >
+        <div data-role="view" id="accountSettingsView" data-title="Account" data-style="inset" >
             
             <div data-role="header">
                 <div data-role="navbar">
@@ -167,18 +168,18 @@
             </div>
             
             <ul data-role="listview" id="signoutView" data-style="inset" data-inset="true" data-click="updateAccountDetails">
-        			<li>
-        				<a id="#view-update-account" data-rel="view">Update account</a>
-        			</li>                        
+			<li>
+				<a id="#view-update-account" data-rel="view">Update account</a>
+			</li>                        
         		</ul>
-                <ul data-role="listview" id="addACarView" data-style="inset" data-inset="true" >
+                	<ul data-role="listview" id="addACarView" data-style="inset" data-inset="true" >
         			<li>
         				<a href="#modalview-addCar" data-rel="modalview">Add a car</a>
         			</li>
         		</ul>
-        		<ul data-role="listview" id="delACarView" data-style="inset" data-inset="false"   data-click="chooseCarToDelete">
+        		<ul data-role="listview" id="delACarView" data-style="inset" data-inset="true" >
         			<li>
-        				<a>Delete a car</a>
+        				<a href="#view-delCar" data-rel="view">Remove a car</a>
         			</li>
         		</ul>
             
@@ -223,7 +224,6 @@
          
 
         <!-- ========== ADD A CAR STUFF ============= -->
-        
         <div data-role="modalview" id="modalview-addCar" style="width: 95%; height: 70%;">
             
             <div data-role="header">
@@ -231,14 +231,12 @@
                     <span>Add Car</span>
                  </div>
             </div>
-           
         	<div id='registration'>		
         		<input type="text" id="license_registration_number" value="Car Number" style="display:block;margin: 8% auto 0px auto;width:80%;"/>
         	</div>
         	<div id='description'>		
         		<input type="text" id="car_description" value="car description" style="display:block;margin: 8% auto 0px auto;width:80%;"/>
         	</div>
-        
             <div id='car_image_placeholder'>
                 <img style="display:block;margin: 10% auto 5% auto; width:50%; height:40%;" id="smallImage" src="images/car.png"  /> 
             </div>
@@ -252,18 +250,32 @@
                     <a data-click="closeModalAddCar" data-role="button" data-align="right">Done</a>
                </div>
             </div>
-            
-             
-        </div>
-        
+         </div>
+         
+         <!-- ========== DEL A CAR STUFF ============= -->
+        <div data-role="view" id="view-delCar" data-init="init_del_car_view">
+           <div data-role="header">
+                <div data-role="navbar">
+                    <span>Remove Car</span>
+                 </div>
+           </div>
+           <h3 id="car_del_title">Choose a car to remove from account</h3>
+	   <div id="DelCarsListScrollerTemplateResults"  style="center_div"></div>
+           <div data-role="footer">
+                <div data-role="navbar">
+                    <span></span>
+                    <a data-click="closeDelCarCancel" data-role="button" data-align="left">Cancel</a>
+                    <a data-click="closeDelCar" data-role="button" data-align="right">Done</a>
+               </div>
+            </div>
+         </div>
+       
      
         
         <!-- ============================== -->
         <!--  Cars list  scroller template  -->
         <!-- ============================== -->
-        <!-- DEBUG -->
         <div id="CarsListScrollerTemplateResults"  style="display: none;"></div>
-        <!-- /DEBUG -->
         <script id="CarsListScrollerTemplate" type="text/x-kendo-template">
                 <div class="icc">
                     <div class="ic">
@@ -283,6 +295,25 @@
                     </div>
                 </div>
         </script> 
+	<script id="DelCarsListScrollerTemplate" type="text/x-kendo-template">
+	        <div class="icc">
+	            <div class="ic">
+	                <ul id="DelCarsListScroller">
+	                 # for (var i = 0; i < data.length; i++) 
+	                    { #
+	                    <li data-val="#= data[i].ID #">
+	                       <div class="car">
+	                          <div class="img-cont">
+	                              <img src="#= data[i].PictureUrl #" />                                      
+	                          </div>
+	                          <span>#= data[i].registration #</span>
+	                      </div>
+	                    </li>
+	                  # } #
+	                </ul>
+	            </div>
+	        </div>
+	</script> 
 
         <!-- ============================== -->
         <!--  regions list  scroller template  -->

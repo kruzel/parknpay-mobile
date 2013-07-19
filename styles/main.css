@@ -65,8 +65,8 @@
     /*margin: .5em 0;*/
     /*margin: 3.1% 5%; */
     margin: 8% 3% 10% 5%;
-    -webkit-box-shadow: 0 1px 3px #333;
-    box-shadow: 0 1px 3px #333;
+    -webkit-box-shadow: 0 0px 0px #333;
+    box-shadow: 0 0px 0px #333;
     -webkit-border-radius: 8px;
     border-radius: 0px;
 }
@@ -734,4 +734,8 @@ border-radius: 0px;
 .km-ios, .km-ios .km-content {
 background: rgb(255, 255, 255);
 color: rgb(255, 255, 255);
+}
+
+#view-delCar .i-txt{
+ visibility:hidden;!important;
 }

@@ -24,6 +24,12 @@ function OnDocumentReady()
 		window.isphone = true;
 	} 
 
+         $('.center_div').css({
+		position:'absolute',
+		left: ($(window).width() - $('.className').outerWidth())/2,
+		top: ($(window).height() - $('.className').outerHeight())/2
+    	});
+
 
     if(window.isphone) 
     {
@@ -48,6 +54,20 @@ function onDeviceReadyCamera() {
 function onDeviceReady() 
 {
 	console.log("onDeviceReady");
+	
+	// remove back button functionality
+	/*
+	 document.addEventListener("backbutton", function(e){
+	       if($.mobile.activePage.is('#homepage')){
+		   e.preventDefault();
+		   navigator.app.exitApp();
+	       }
+	       else {
+		   navigator.app.backHistory()
+	       }
+	    }, false);
+    	*/
+	
 	if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) 
 	{
 		onDeviceReadyCamera();
@@ -80,8 +100,6 @@ function id(element)
 // camera stuff       //  
 // ================== //
         
-
- 
 
 function cameraApp(){}
 
@@ -223,9 +241,31 @@ cameraApp.prototype =
     }
 }
 
-// GENERAL UI CALLBACKS
-// ===================
+// =======================
+// SIGNI/UP UI CALLBACKS
+// =======================
 
+
+ function settingsViewInit() 
+ {  
+
+    console.log("settingsViewInit");
+    $('#scanView').click(function() 
+    {
+	window.plugins.barcodeScanner.scan(function(result) {
+		alert("We got a barcode\n" +
+			  "Result: " + result.text + "\n" +
+			  "Format: " + result.format + "\n" +
+			  "Cancelled: " + result.cancelled);
+		}, function(error) {
+			alert("Scanning failed: " + error);
+		}
+		);
+
+		return false;
+	});
+ }
+ 
 function afterShowSignin(e) 
 {
 
@@ -277,6 +317,11 @@ function closeViewSignIn()
 }
 
  
+	function cancellViewSignIn() 
+	{
+		app.navigate("#login");
+	}
+
 
     function closeViewSignUp() 
     {
@@ -291,7 +336,8 @@ function closeViewSignIn()
         app.showLoading();
 
         //TODO: add phone and credit_card_number to server, add as accessible attr
-        user_data = {user: {email: email, password: password, password_confirmation: password, firstname: firstname, lastname: lastname } } //, phone: phone, credit_card_number: credit_card_number, id_card_number: id_card_number
+        //, phone: phone, credit_card_number: credit_card_number, id_card_number: id_card_number
+        user_data = {user: {email: email, password: password, password_confirmation: password, firstname: firstname, lastname: lastname } } 
         user_data_str = JSON.stringify(user_data);
         window.localStorage.setItem("user_data",user_data_str);
 
@@ -300,6 +346,7 @@ function closeViewSignIn()
             success: function(response)  {
                 app.hideLoading();
                 $("#modalview-signup").kendoMobileView("close");
+                app.navigate("#modalview-addCar"); 
                 app.navigate("views/homeView.html");
             },
             error: function(errorThrown)  {
@@ -311,26 +358,8 @@ function closeViewSignIn()
     }
  
  
-     function closeModalAddCarCancel() 
-    {
-        console.log("closeModalAddCarCancel");
-        $("#modalview-addCar").data("kendoMobileModalView").close();
-    }
-    
-    function chooseCarToDelete() 
-    {                 
-        console.log("chooseCarToDelete");
-	    $('#CarsListScroller').mobiscroll('show');
-        // ofer delete the car denoted by chosen car in the local storage 
-		return false;
-	}
-    
-    function updateAccountDetails()
-    {
-        app.navigate("#view-update-account");
-    }
-    
-    function prefillAccountDetails()
+ 
+     function prefillAccountDetails()
     {
         
             console.log("prefill");
@@ -352,6 +381,13 @@ function closeViewSignIn()
         //app.navigate("../index.html");
     }
        
+         
+// =======================
+// CAR MANAGEMENT CALLBACKS
+// =======================
+ 
+// CAR addition
+
          function win(r) 
          {
 		 console.log("Code = " + r.responseCode);
@@ -371,7 +407,17 @@ function closeViewSignIn()
 	{
 		 _serverApi.upload_car_image(car_id, imageURI, win, fail);
 	}
-         
+	
+	
+    function closeModalAddCarCancel() 
+    {
+        console.log("closeModalAddCarCancel");
+        $("#modalview-addCar").data("kendoMobileModalView").close();
+    }
+    
+
+    
+ 
    function closeModalAddCar() 
     {
         console.log("closeModalAddCar");
@@ -399,32 +445,69 @@ function closeViewSignIn()
 		}});
     }
          
- function settingsViewInit() 
- {  
-
-    console.log("settingsViewInit");
-    $('#scanView').click(function() 
-    {
-			window.plugins.barcodeScanner.scan(function(result) {
-			alert("We got a barcode\n" +
-				  "Result: " + result.text + "\n" +
-				  "Format: " + result.format + "\n" +
-				  "Cancelled: " + result.cancelled);
-		}, function(error) {
-			alert("Scanning failed: " + error);
+// CAR delete
+/*
+	function prepare_car_to_delete_template()
+	{
+		var data = {};
+		user_cars_str = window.localStorage.getItem("user_cars");
+		if(user_cars_str!=null) 
+		{
+		    user_cars = JSON.parse(user_cars_str);
 		}
-		);
+		var result = template(data); //Execute the template
+		$("#DeleteCarsListScrollerTemplateResults").html(result);
+	}
+*/
 
-		return false;
-	});
+	function init_del_car_view()
+	{
+		$('#DelCarsListScroller').mobiscroll('show');
+	}
+    function closeDelCarCancel() 
+    {
+        console.log("closeDelCarCancel");
+        app.navigate("#accountSettingsView");
+    }
+    function closeDelCar() 
+    {
+        console.log("closeDelCar");
+	app.showLoading();
+	var data = {car: {id: 1, archive: true}};
+	
+	_serverApi.update_cars({ data: data, 
+		success: function(response) 
+		{
+			var car_id = response.id;
+			console.log(response);
+			app.hideLoading();
+			app.navigate("#accountSettingsView");	
+		},
+		error: function(error) 
+		{
+			console.log(error);
+			app.hideLoading();
+			app.navigate("#accountSettingsView");	
+		}});
+    }    
 
-
- }
     
+// =======================
+// ACCOUNT MANAGEMENT CALLBACKS
+// =======================
+ 
+   
+    function updateAccountDetails()
+    {
+        app.navigate("#view-update-account");
+    }
+    
+
 //////////////////////////
 // APP DAta             //
 //////////////////////////
 
+/*
 var parkyAppData = function() {
 	var _endpoints,
     	_initialCars,
@@ -517,11 +600,6 @@ var parkyAppData = function() {
         
         signin: function(email, password)
         {
-            /*
-            curl -H "Accept: application/json" -H "Content-type: application/json" 
-            -X POST -d '{"user":{"email":"email@gmail.com", "password":"pass"}}' 
-            'http://localhost:3000/users.json
-            */
                 //Get fresh data
 				$.ajax({
 					type: 'POST',
@@ -566,3 +644,4 @@ var parkyAppData = function() {
 		}
 	};
 }
+*/
