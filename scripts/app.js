@@ -473,12 +473,11 @@ function closeViewSignIn()
     {
         console.log("closeDelCar");
 	app.showLoading();
-	var data = {car: {id: 1, archive: true}};
+	var data = {car: {archive: true}};
 	
-	_serverApi.update_cars({ data: data, 
+	_serverApi.update_cars({ id: 1, data: data,
 		success: function(response) 
 		{
-			var car_id = response.id;
 			console.log(response);
 			app.hideLoading();
 			app.navigate("#accountSettingsView");	
