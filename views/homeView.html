@@ -168,7 +168,7 @@
 					if ( response[i].archive == false ) // keep only undelete cars
 					{
 						jsonObj.push({
-							"ID": i,
+							"ID": response[i].id,
 							"registration": response[i].license_plate, 
 							"PictureUrl": "http://"+response[i].image_url, 
 							"Name": response[i].car_description});
@@ -246,10 +246,7 @@
 			},
 			onChange: function (v, inst) 
 			{
-				//$("#car_selection_item_title").html(cars_data[v].registration);
-				//$("#car_selection_item_description").html(cars_data[v].Name);
-				/* save the car selected in persistent storage */
-				//localStorage.setItem("chosen_car", v);
+				
 			},
 		});	
 
@@ -346,8 +343,9 @@
     	$('#parking_selection').click(function() 
         {
     	
-    	    status = localStorage.getItem("ParkingActive");
-            pid = localStorage.getItem("chosen_car");
+    		debugger;
+    	    	status = localStorage.getItem("ParkingActive");
+            	pid = 	cars_data[localStorage.getItem("chosen_car")].ID;
     		pid1 = localStorage.getItem("chosen_region_city");
     		pid2 = localStorage.getItem("chosen_region_suburb");
     		if ((pid == null) || (pid1 == null) || (pid2 == null)) 
