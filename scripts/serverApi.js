@@ -158,7 +158,7 @@ serverApi.prototype = {
     },
     update_cars: function(params) {
         $.ajax({
-            url: this.serverUrl + "/api/v1/users/0/cars.json?auth_token=" + this.auth_token,
+            url: this.serverUrl + "/api/v1/users/0/cars/" + params['car_id'] + ".json?auth_token=" + this.auth_token,
             dataType: "json",
             type: "put",
             data: params['data'],
