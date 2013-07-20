@@ -490,29 +490,32 @@ $('.icc').css({position:'absolute'});
     function closeDelCar() 
     {
         console.log("closeDelCar");
-	app.showLoading();
-	var data = {car: { archive: true}};
-	
-	_serverApi.update_cars({ id: cars_data[localStorage.getItem("chosen_car_to_delete")].ID, data: data, 
-		success: function(response) 
-		{
-			console.log(response);
-			var chosen_car =  localStorage.getItem("chosen_car");
-			if ( chosen_car > 0) 
-			{
-				localStorage.setItem("chosen_car") = chosen_car - 1;
-			}
-			// in success - update the car list in the storage
-			
-			app.hideLoading();
-			app.navigate("#accountSettingsView");	
-		},
-		error: function(error) 
-		{
-			console.log(error);
-			app.hideLoading();
-			app.navigate("#accountSettingsView");	
-		}});
+        app.showLoading();
+        var data = {car: { archive: true}};
+        var car_ind = localStorage.getItem("chosen_car_to_delete");
+
+        if(car_ind!=null) {
+            _serverApi.update_cars({ id: cars_data[car_ind].ID, data: data,
+                success: function(response)
+                {
+                    console.log(response);
+                    var chosen_car =  localStorage.getItem("chosen_car");
+                    if ( chosen_car > 0)
+                    {
+                        localStorage.setItem("chosen_car") = chosen_car - 1;
+                    }
+                    // in success - update the car list in the storage
+
+                    app.hideLoading();
+                    app.navigate("#accountSettingsView");
+                },
+                error: function(error)
+                {
+                    console.log(error);
+                    app.hideLoading();
+                    app.navigate("#accountSettingsView");
+                }});
+        }
     }    
 
     
