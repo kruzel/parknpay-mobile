@@ -1,6 +1,6 @@
 function serverApi() {
-    //this.serverUrl = "http://ozpark.com.au";
-    this.serverUrl = "http://localhost:3000"
+    this.serverUrl = "http://ozpark.com.au";
+    //this.serverUrl = "http://localhost:3000"
     this.auth_token = null;
 
     this.init();

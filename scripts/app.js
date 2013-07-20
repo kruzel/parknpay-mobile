@@ -498,6 +498,8 @@ $('.icc').css({position:'absolute'});
 			{
 				localStorage.setItem("chosen_car") = chosen_car - 1;
 			}
+			// in success - update the car list in the storage
+			
 			app.hideLoading();
 			app.navigate("#accountSettingsView");	
 		},
