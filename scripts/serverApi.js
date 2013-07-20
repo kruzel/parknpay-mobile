@@ -211,11 +211,12 @@ serverApi.prototype = {
         });
     },
     // params should include success, error callback function
-    // params['data']  include { payment: { id: id, end_time: end_time}}
+    // params['data']  include { payment: { end_time: end_time}}
+    // params['id'] include { id: <the payment id> }
     // returned value on success:
     update_payment: function(params) {
         $.ajax({
-            url: this.serverUrl + "/api/v1/payments.json?auth_token=" + this.auth_token,
+            url: this.serverUrl + "/api/v1/payments/" + params['id'] + ".json?auth_token=" + this.auth_token,
             dataType: "json",
             type: "put",
             data: params['data'],
