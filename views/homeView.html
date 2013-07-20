@@ -168,6 +168,7 @@
 					if ( response[i].archive == false ) // keep only undelete cars
 					{
 						jsonObj.push({
+							"index": i,
 							"ID": response[i].id,
 							"registration": response[i].license_plate, 
 							"PictureUrl": "http://"+response[i].image_url, 
@@ -228,10 +229,13 @@
 			},
 			onChange: function (v, inst) 
 			{
-				$("#car_selection_item_title").html(cars_data[v].registration);
-				$("#car_selection_item_description").html(cars_data[v].Name);
-				/* save the car selected in persistent storage */
-				localStorage.setItem("chosen_car", v);
+				if (v != 'undefined')
+				{
+					$("#car_selection_item_title").html(cars_data[v].registration);
+					$("#car_selection_item_description").html(cars_data[v].Name);
+					/* save the car selected in persistent storage */
+					localStorage.setItem("chosen_car", v);
+				}
 			},
 		});
      
@@ -239,13 +243,17 @@
 			theme: 'android',
 			display: 'inline',
 			mode: 'scroller',
+			labels: ['Car'],
 			inputClass: 'i-txt',
-			setText: 'OK',
 			onSelect: function (v, inst) 
 			{
 			},
 			onChange: function (v, inst) 
 			{
+				if (v != 'undefined')
+				{
+					localStorage.setItem("chosen_car_to_delete", v);
+				}
 				
 			},
 		});	

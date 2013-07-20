@@ -24,12 +24,7 @@ function OnDocumentReady()
 		window.isphone = true;
 	} 
 
-         $('.center_div').css({
-		position:'absolute',
-		left: ($(window).width() - $('.className').outerWidth())/2,
-		top: ($(window).height() - $('.className').outerHeight())/2
-    	});
-
+ 
 
     if(window.isphone) 
     {
@@ -56,17 +51,21 @@ function onDeviceReady()
 	console.log("onDeviceReady");
 	
 	// remove back button functionality
-	/*
+	
 	 document.addEventListener("backbutton", function(e){
+		e.preventDefault();
+		/*
 	       if($.mobile.activePage.is('#homepage')){
 		   e.preventDefault();
 		   navigator.app.exitApp();
 	       }
-	       else {
+	       else 
+	       {
 		   navigator.app.backHistory()
 	       }
+	       */
 	    }, false);
-    	*/
+    	
 	
 	if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) 
 	{
@@ -85,6 +84,13 @@ function onDeviceReady()
 			smallImage.src = "images/car123456.jpg";
 			return false;
 		});
+	}
+	
+	// if user is already logged in - go direcly to home screen
+	if (_serverApi.auth_token != null )
+	{
+	    console.log("(auth_token != null )");
+	    //app.navigate("views/homeView.html#home"); 
 	}
 
 } 
@@ -246,8 +252,8 @@ cameraApp.prototype =
 // =======================
 
 
- function settingsViewInit() 
- {  
+function settingsViewInit() 
+{  
 
     console.log("settingsViewInit");
     $('#scanView').click(function() 
@@ -264,7 +270,7 @@ cameraApp.prototype =
 
 		return false;
 	});
- }
+}
  
 function afterShowSignin(e) 
 {
@@ -305,7 +311,6 @@ function closeViewSignIn()
 	    success: function(response)  {
 		app.hideLoading();
 		app.navigate("views/homeView.html");
-		//app.navigate("#start");
 		console.log('navigate: ' + _serverApi.auth_token);
 	    },
 	    error: function(errorThrown)  {
@@ -317,10 +322,10 @@ function closeViewSignIn()
 }
 
  
-	function cancellViewSignIn() 
-	{
-		app.navigate("#login");
-	}
+function cancellViewSignIn() 
+{
+	app.navigate("#login");
+}
 
 
     function closeViewSignUp() 
@@ -460,10 +465,19 @@ function closeViewSignIn()
 	}
 */
 
-	function init_del_car_view()
-	{
-		$('#DelCarsListScroller').mobiscroll('show');
-	}
+function init_del_car_view()
+{
+
+$('.icc').css({position:'absolute'});
+
+	var v_left = ($(window).width() - $('.icc').outerWidth())/2;
+	var v_top = ($(window).height() - $('.icc').outerHeight())/2;
+
+	$('.icc').css({left: v_left});
+	$('.icc').css({top: v_top});
+
+	$('#DelCarsListScroller').mobiscroll('show');
+}
     function closeDelCarCancel() 
     {
         console.log("closeDelCarCancel");
@@ -473,13 +487,18 @@ function closeViewSignIn()
     {
         console.log("closeDelCar");
 	app.showLoading();
-	var data = {car: {id: 1, archive: true}};
+	var data = {car: { archive: true}};
 	
-	_serverApi.update_cars({ data: data, 
+	_serverApi.update_cars({ car_id: cars_data[localStorage.getItem("chosen_car_to_delete")].ID, data: data, 
 		success: function(response) 
 		{
 			var car_id = response.id;
 			console.log(response);
+			var chosen_car =  localStorage.getItem("chosen_car");
+			if ( chosen_car > 0) 
+			{
+				localStorage.setItem("chosen_car") = chosen_car - 1;
+			}
 			app.hideLoading();
 			app.navigate("#accountSettingsView");	
 		},
