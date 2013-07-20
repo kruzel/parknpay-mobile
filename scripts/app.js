@@ -489,10 +489,9 @@ $('.icc').css({position:'absolute'});
 	app.showLoading();
 	var data = {car: { archive: true}};
 	
-	_serverApi.update_cars({ car_id: cars_data[localStorage.getItem("chosen_car_to_delete")].ID, data: data, 
+	_serverApi.update_cars({ id: cars_data[localStorage.getItem("chosen_car_to_delete")].ID, data: data, 
 		success: function(response) 
 		{
-			var car_id = response.id;
 			console.log(response);
 			var chosen_car =  localStorage.getItem("chosen_car");
 			if ( chosen_car > 0) 

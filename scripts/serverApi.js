@@ -1,5 +1,6 @@
 function serverApi() {
-    this.serverUrl = "http://ozpark.com.au";
+    //this.serverUrl = "http://ozpark.com.au";
+    this.serverUrl = "http://localhost:3000"
     this.auth_token = null;
 
     this.init();
@@ -158,7 +159,7 @@ serverApi.prototype = {
     },
     update_cars: function(params) {
         $.ajax({
-            url: this.serverUrl + "/api/v1/users/0/cars/" + params['car_id'] + ".json?auth_token=" + this.auth_token,
+            url: this.serverUrl + "/api/v1/users/0/cars/" + params['id'] + ".json?auth_token=" + this.auth_token,
             dataType: "json",
             type: "put",
             data: params['data'],
