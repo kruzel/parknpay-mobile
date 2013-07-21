@@ -936,109 +936,79 @@ var parkyAppData = function() {
     		return false;
     	});
     }
+
     function update_regions_and_rates_from_server()
     {
-	_serverApi.get_rates({ 
-		success: function(response) {
-			console.log(response);
-			var jsonObj = [];
-			var i = 0;
-			for (i= 0; i< response.length; i++)
-			{
-				jsonObj.push({
-					"ID": response[i].city_id,
-					"Name": response[i].name});
-			}
-			localStorage.setItem('cities_data', JSON.stringify(jsonObj) );
-			regions_data = JSON.parse(localStorage.getItem('cities_data'));
-		},
-		error: function(error) 
-		{
-			console.log(error);
-			app.hideLoading();
-		}});
+        _serverApi.get_rates({
+            success: function(response) {
+                console.log(response);
+                var jsonObj = [];
+                var i = 0;
+                for (i= 0; i< response.length; i++)
+                {
+                    jsonObj.push({
+                        "ID": response[i].id,
+                        "Name": response[i].name});
+                }
+                localStorage.setItem('cities_data', JSON.stringify(jsonObj) );
+                regions_data = JSON.parse(localStorage.getItem('cities_data'));
+            },
+            error: function(error)
+            {
+                console.log(error);
+                app.hideLoading();
+            }
+        });
 
-
-
-    		// TODO - replace that with call to server
-    		regions_data = [
-			{
-				ID: "0", City: "Sydney", Suburb:[
-					{ID: "0", sub: "Badgerys Creek", info:"", rate: 0.1},
-					{ID: "1", sub: "Balgowlah", info:"", rate: 0.2},
-					{ID: "2", sub: "Balgowlah Heights", info:"", rate: 0.3},
-					{ID: "3", sub: "Balmain", info:"", rate: 0.4},
-					{ID: "4", sub: "Balmain East", info:"", rate: 0.5},
-					{ID: "5", sub: "Banksia", info:"", rate: 0.6},
-					{ID: "6", sub: "Banksmeadow", info:"", rate: 0.7},
-					{ID: "7", sub: "Bankstown",info:"", rate: 0.8}
-				]
-			},{
-				ID: "1", City: "Newcastle", Suburb:[
-					{ID: "0", sub: "Adamstown", info:"", rate: 0.15},
-					{ID: "1", sub: "Adamstown Heights",info:"", rate: 0.25},
-					{ID: "2", sub: "Bar Beach", info:"", rate: 0.35},
-					{ID: "3", sub: "Beresfield", info:"", rate: 0.45},
-					{ID: "4", sub: "Birmingham Gardens", info:"", rate: 0.55},
-					{ID: "5", sub: "Black Hill", info:"", rate: 0.65},
-					{ID: "6", sub: "Banksmeadow",info:"", rate: 0.75},
-					{ID: "7", sub: "Callaghan", info:"", rate: 0.85}
-				]
-			}
-		];
-
-		set_up_regions_scrollers();
-		done_with_regions_from_server  = true;
-		if (done_with_cars_from_server)
-		{
-			app.hideLoading();
-		}				
-
-
+        set_up_regions_scrollers();
+        done_with_regions_from_server  = true;
+        if (done_with_cars_from_server)
+        {
+            app.hideLoading();
+        }
     }
+
     function update_cars_list_from_server()
     {
-   
-    		_serverApi.get_cars({ 
-			success: function(response) {
-				console.log(response);
-				_cars_data = response; //JSON.stringify(response);
-				
-				var jsonObj = [];
-				var i = 0;
-				var index = 0;
-				for (i= 0; i< response.length; i++)
-				{
-					if ( response[i].archive == false ) // keep only undelete cars
-					{
-						jsonObj.push({
-							"index": index,
-							"ID": response[i].id,
-							"registration": response[i].license_plate, 
-							"PictureUrl": "http://"+response[i].image_url, 
-							"Name": response[i].car_description});
-						index++; // index of archived cars is not incremented
-					}
-				}
-				localStorage.setItem('cars_data', JSON.stringify(jsonObj) );
-				cars_data = JSON.parse(localStorage.getItem('cars_data'));
-				if (cars_data == null)
-				{
-					cars_data = [];
-				}
-				set_up_cars_scrollers();
-				done_with_cars_from_server  = true;
-				if (done_with_regions_from_server)
-				{
-					app.hideLoading();
-				}				
-			},
-			error: function(error) 
-			{
-				console.log(error);
-				app.hideLoading();
-			}});
+        _serverApi.get_cars({
+        success: function(response) {
+            console.log(response);
+            _cars_data = response; //JSON.stringify(response);
 
+            var jsonObj = [];
+            var i = 0;
+            var index = 0;
+            for (i= 0; i< response.length; i++)
+            {
+                if ( response[i].archive == false ) // keep only undelete cars
+                {
+                    jsonObj.push({
+                        "index": index,
+                        "ID": response[i].id,
+                        "registration": response[i].license_plate,
+                        "PictureUrl": "http://"+response[i].image_url,
+                        "Name": response[i].car_description});
+                    index++; // index of archived cars is not incremented
+                }
+            }
+            localStorage.setItem('cars_data', JSON.stringify(jsonObj) );
+            cars_data = JSON.parse(localStorage.getItem('cars_data'));
+            if (cars_data == null)
+            {
+                cars_data = [];
+            }
+            set_up_cars_scrollers();
+            done_with_cars_from_server  = true;
+            if (done_with_regions_from_server)
+            {
+                app.hideLoading();
+            }
+        },
+        error: function(error)
+        {
+            console.log(error);
+            app.hideLoading();
+        }});
     }
     
     // this is called ONLY ONCE before the firt time the home screen is shown
