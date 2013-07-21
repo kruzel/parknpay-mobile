@@ -6,6 +6,8 @@ var user_data_str;
 var user_data;
 var ParkingActive;
 var uriOfImageOfCarToAdd;
+var user_id;
+
 function OnDocumentReady() 
 {
 	_serverApi = new serverApi();
@@ -90,7 +92,7 @@ function onDeviceReady()
 	if (_serverApi.auth_token != null )
 	{
 	    console.log("(auth_token != null )");
-	    //app.navigate("views/homeView.html#home"); 
+	    //app.navigate("#home"); 
 	}
 
 } 
@@ -276,6 +278,16 @@ function settingsViewInit()
 	
 }
  
+function beforeShowLogin(e) 
+{
+	console.log("beforeShowLogin");
+	if (_serverApi.auth_token != null )
+	{
+	    console.log("(auth_token != null )");
+	    app.navigate("#home"); 
+	}
+}
+
 function afterShowSignin(e) 
 {
 
@@ -810,6 +822,7 @@ var parkyAppData = function() {
 				// just put something there - the first one will do
 				document.getElementById("car_selection_item_title").innerHTML = cars_data[0].registration;
 				document.getElementById("car_selection_item_description").innerHTML = cars_data[0].Name;
+				localStorage.setItem("chosen_car", 0);
 			}
 			else
 			{
@@ -935,18 +948,20 @@ var parkyAppData = function() {
 				localStorage.setItem("chosen_region_city", inst.temp[0]);
 				localStorage.setItem("chosen_region_suburb", inst.temp[1]);
 				rate_array = regions_data[inst.temp[0]].areas[inst.temp[1]].rates;
-				rate = get_rate_at_curent_time(rate_array);
+				rate = get_rate_at_current_time(rate_array);
 				localStorage.setItem("chosen_region_rate", rate);
 				$("#region_selection_item_description").html(rate + "$/h");
 			}
 		}); 
 		
+		// this is the predefined values when the screen first show up 
 		if ((pid1 != null) && (pid2 != null)) {
 			$("#region_selection_item_title").html(regions_data[pid1].areas[pid2].name + ", " + regions_data[pid1].name);
 			//$("#region_selection_item_title").html(pid2 + ", " + pid1);
 			$('#RegionsListScroller').mobiscroll('setValue', [pid1, pid2 ], true, .2);
 			var rate_array = regions_data[pid1].areas[pid2].rates;
 			var rate = get_rate_at_current_time(rate_array); 
+			localStorage.setItem("chosen_region_rate", rate);
 			$("#region_selection_item_description").html(rate + "$/h");
 		}
 
@@ -1037,11 +1052,16 @@ var parkyAppData = function() {
         }});
     }
     
+    
     // this is called ONLY ONCE before the firt time the home screen is shown
     function init_home_view()  
     {
 	 
          	console.log("calling init_home_view");   
+         	
+ 
+         	user_data = JSON.parse(localStorage.getItem('user_data'));
+         	user_id = user_data.user.id;
          	
 		done_with_cars_from_server = false;
 		done_with_regions_from_server = false;
@@ -1076,32 +1096,22 @@ var parkyAppData = function() {
     		 
              	pid  = 	cars_data[chosen_car].ID;
    		status = localStorage.getItem("ParkingActive");
+   		var dt = new Date(); 
     		if ((status == null) || (status == 0)) 
             	{
-    			var dt = new Date(); 
-    			ParkingActive = true;
-    			localStorage.setItem("ParkingActive", "1");
-    			localStorage.setItem("ParkingStartTime", dt);
-    			digitized();
-    			console.log('parking started');
-    			document.getElementById('parking_selection_item-title').innerHTML = 'Starting...';
-    			return false;
+    			
+    			start_payment(dt);
+     			return false;
     		}
     		else 
             	{
-    			ParkingActive = false;
-    			localStorage.setItem("ParkingActive", "0");
-    			console.log('parking stoped');
-    			document.getElementById('parking_selection_item-title').innerHTML = 'Start';
-    			document.getElementById('parking_selection_item-info').innerHTML = '';
-    			return false;  
+	            	stop_payment(dt);
+      			return false;  
     		}
     		
     		if ((localStorage.getItem("ParkingActive") == undefined) || (localStorage.getItem("ParkingActive") == "0")) 
             	{
     			document.getElementById('parking_selection_item-title').innerHTML = 'Start';
-    			// document.getElementById('dc_second').innerHTML = '';
-    			//document.getElementById('cost').innerHTML = '';
     			ParkingActive = false;
     		}
     		else 
@@ -1115,4 +1125,64 @@ var parkyAppData = function() {
     		} 
         });	
 }
+
+   function start_payment(start_time)
+    {
+	var x_pos = 0;
+	var y_pos = 0;
+	
+	app.showLoading();
+	
+
+	var rate_id = localStorage.getItem("chosen_region_rate");
+	var area_id = localStorage.getItem("chosen_region_suburb");
+	
+	var data = {payment: { x_pos: x_pos, y_pos: y_pos, area_id: area_id, rate_id: rate_id, user_id: user_id, start_time: start_time}};
+	_serverApi.add_payment({
+			data: data, 
+			success: function(response) {
+				console.log(response);
+				localStorage.setItem("payment_id", response.id);
+	   			ParkingActive = true;
+	    			localStorage.setItem("ParkingActive", "1");
+	    			localStorage.setItem("ParkingStartTime", dt);
+	    			digitized();
+	    			console.log('parking started');
+	    			document.getElementById('parking_selection_item-title').innerHTML = 'Starting...';
+				app.hideLoading();
+			},
+			error: function(error) 
+			{
+				app.hideLoading();
+				console.log(error);
+				localStorage.setItem("payment_id", -1);
+			}});
+
+    }
+    
+    function stop_payment(end_time)
+    {
+  	    app.showLoading();
+	    var payment_id = localStorage.getItem("payment_id");
+	    var data = { payment: { id: payment_id, end_time: end_time}}
+	    _serverApi.update_payment({ 
+			data: data, 
+			success: function(response) 
+			{
+				console.log(response);
+	    			ParkingActive = false;
+	    			localStorage.setItem("ParkingActive", "0");
+	    			console.log('parking stoped');
+	    			document.getElementById('parking_selection_item-title').innerHTML = 'Start';
+	    			document.getElementById('parking_selection_item-info').innerHTML = '';
+ 				app.hideLoading();
+			},
+			error: function(error) 
+			{
+				console.log(error);
+				app.hideLoading();
+			}});
+
+    }
+
 	
