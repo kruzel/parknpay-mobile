@@ -141,9 +141,9 @@ cameraApp.prototype =
           
     },
     _capturePhoto: function() {
-        var that = this;
-        // Take picture using device camera and retrieve image as base64-encoded string.
-        navigator.camera.getPicture(function(){
+		var that = this;
+		// Take picture using device camera and retrieve image as base64-encoded string.
+		navigator.camera.getPicture(function(){
             that._onPhotoURISuccess.apply(that,arguments);
         },function(){
             that._onFail.apply(that,arguments);
@@ -399,8 +399,8 @@ function cancellViewSignIn()
 
          function win(r) 
          {
-		 console.log("Code = " + r.responseCode);
-		 console.log("Response = " + r.response);
+		 //console.log("Code = " + r.responseCode);
+		 //console.log("Response = " + r.response);
 		 console.log("Sent = " + r.bytesSent);
 		 app.hideLoading();
          }
@@ -444,6 +444,11 @@ function cancellViewSignIn()
 			//alert("uploadPhoto:"+car_image_data);
 			uploadPhoto(car_id, car_image_data);
 			//console.log(response);
+			update_cars_list_from_server();
+			if (localStorage.getItem("chosen_car") == "undefined")
+			{
+				localStorage.setItem("chosen_car",0); // this will be the default chosen car in case there is only one car
+			}
 			app.hideLoading();
 			$("#modalview-addCar").data("kendoMobileModalView").close();	
 		},
@@ -498,14 +503,27 @@ $('.icc').css({position:'absolute'});
             _serverApi.update_cars({ id: cars_data[car_ind].ID, data: data,
                 success: function(response)
                 {
-                    console.log(response);
-                    var chosen_car =  localStorage.getItem("chosen_car");
-                    if ( chosen_car > 0)
-                    {
-                        localStorage.setItem("chosen_car") = chosen_car - 1;
-                    }
-                    // in success - update the car list in the storage
+               
+                    	// in success - update the car list in the storage
+			update_cars_list_from_server();
+			if (cars_data.length == 0)
+			{
+				localStorage.setItem("chosen_car", undefined);
+			}
+			else if (cars_data.length == 1)
+			{
+				localStorage.setItem("chosen_car", 0);
+			}
+			else
+			{
+				var chosen_car =  localStorage.getItem("chosen_car");
+				if (chosen_car > car_ind) // lower index than the one chosen is deleted - got to update the index to reflect the right chosen one now that one weas deleted
+				{
+				        localStorage.setItem("chosen_car", chosen_car - 1);
+				}
+  			}	
 
+			 
                     app.hideLoading();
                     app.navigate("#accountSettingsView");
                 },
@@ -707,7 +725,7 @@ var parkyAppData = function() {
 			el1.innerHTML = hrs + ":" + min + ":" + sec; 
 			//document.getElementById('dc_second').innerHTML = sec;
 			var rate = localStorage.getItem("chosen_region_rate");
-			document.getElementById('parking_selection_item-info').innerHTML = parseInt(sec * rate / 3600) + '$';   
+			document.getElementById('parking_selection_item-info').innerHTML = parseInt(sec * rate ) + '$';   
 			//document.getElementById('cost').innerHTML = parseInt( sec * rate / 3600)+'$';        
 		}
 
@@ -773,11 +791,19 @@ var parkyAppData = function() {
 		/* this will put on the home screen the last chosen car*/
 		pid = localStorage.getItem("chosen_car");
     
-		if ((pid != null) && (cars_data.length > 0) && (cars_data[pid] != 'undefined'))
+		if (cars_data.length > 0) // there is at least one car 
         	{
-        
-			document.getElementById("car_selection_item_title").innerHTML = cars_data[pid].registration;
-			document.getElementById("car_selection_item_description").innerHTML = cars_data[pid].Name;
+			if (pid == "undefined")
+			{
+				// just put something there - the first one will do
+				document.getElementById("car_selection_item_title").innerHTML = cars_data[0].registration;
+				document.getElementById("car_selection_item_description").innerHTML = cars_data[0].Name;
+			}
+			else
+			{
+				document.getElementById("car_selection_item_title").innerHTML = cars_data[pid].registration;
+				document.getElementById("car_selection_item_description").innerHTML = cars_data[pid].Name;
+			}
 		}
 		else 
        		{
@@ -785,57 +811,67 @@ var parkyAppData = function() {
 			document.getElementById("car_selection_item_description").innerHTML = "registered yet...";
 		}
         
-		$('#CarsListScroller').mobiscroll().image({
-			theme: 'android',
-			display: 'modal',
-			mode: 'scroller',
-			labels: ['My Car'],
-			inputClass: 'i-txt',
-			setText: 'OK',
-			onSelect: function (v, inst) 
-			{
-			},
-			onChange: function (v, inst) 
-			{
-				if (v != 'undefined')
+        	if (cars_data.length > 0)
+        	{
+			$('#CarsListScroller').mobiscroll().image({
+				theme: 'android',
+				display: 'modal',
+				mode: 'scroller',
+				labels: ['My Car'],
+				inputClass: 'i-txt',
+				setText: 'OK',
+				onSelect: function (v, inst) 
 				{
-					$("#car_selection_item_title").html(cars_data[v].registration);
-					$("#car_selection_item_description").html(cars_data[v].Name);
-					/* save the car selected in persistent storage */
-					localStorage.setItem("chosen_car", v);
-				}
-			},
-		});
-     
-		$('#DelCarsListScroller').mobiscroll().image({
-			theme: 'android',
-			display: 'inline',
-			mode: 'scroller',
-			labels: ['Car'],
-			inputClass: 'i-txt',
-			onSelect: function (v, inst) 
-			{
-			},
-			onChange: function (v, inst) 
-			{
-				if (v != 'undefined')
+				},
+				onChange: function (v, inst) 
 				{
-					localStorage.setItem("chosen_car_to_delete", v);
-				}
+					if (v != undefined)
+					{
+						$("#car_selection_item_title").html(cars_data[v[0]].registration);
+						$("#car_selection_item_description").html(cars_data[v[0]].Name);
+						/* save the car selected in persistent storage */
+						localStorage.setItem("chosen_car", v[0]);
+					}
+				},
+			});
+	     
+			$('#DelCarsListScroller').mobiscroll().image({
+				theme: 'android',
+				display: 'inline',
+				mode: 'scroller',
+				labels: ['Car'],
+				inputClass: 'i-txt',
+				onSelect: function (v, inst) 
+				{
+				},
+				onChange: function (v, inst) 
+				{
+					if (v != 'undefined')
+					{
+						localStorage.setItem("chosen_car_to_delete", v[0]);
+					}
 				
-			},
-		});	
+				},
+			});	
 
 		
-		$('#car_selection').click(function() 
-        	{                 
-    			if (cars_data[pid] != null) 
-		    	{
-	    			$('#CarsListScroller').mobiscroll('setValue', [pid, cars_data[pid].registration , cars_data[pid].PictureUrl ], true, .2);    
-	    		}
-    	    		$('#CarsListScroller').mobiscroll('show');
-			return false;
-		});
+			$('#car_selection').click(function() 
+			{      
+				if (cars_data.length>0)
+				{           
+		    			if (cars_data[pid] != null) 
+				    	{
+			    			$('#CarsListScroller').mobiscroll('setValue', [pid, cars_data[pid].registration , cars_data[pid].PictureUrl ], true, .2);    
+			    		}
+	    	    			$('#CarsListScroller').mobiscroll('show');
+	    	    		}
+				return false;
+			});
+		}
+		else // no cars, no scroller and no click option ... 
+		{
+			localStorage.setItem("chosen_car",undefined);
+		}
 		
     }
     
@@ -890,6 +926,28 @@ var parkyAppData = function() {
     }
     function update_regions_and_rates_from_server()
     {
+	_serverApi.get_rates({ 
+		success: function(response) {
+			console.log(response);
+			var jsonObj = [];
+			var i = 0;
+			for (i= 0; i< response.length; i++)
+			{
+				jsonObj.push({
+					"ID": response[i].city_id,
+					"Name": response[i].name});
+			}
+			localStorage.setItem('cities_data', JSON.stringify(jsonObj) );
+			regions_data = JSON.parse(localStorage.getItem('cities_data'));
+		},
+		error: function(error) 
+		{
+			console.log(error);
+			app.hideLoading();
+		}});
+
+
+
     		// TODO - replace that with call to server
     		regions_data = [
 			{
@@ -916,6 +974,7 @@ var parkyAppData = function() {
 				]
 			}
 		];
+
 		set_up_regions_scrollers();
 		done_with_regions_from_server  = true;
 		if (done_with_cars_from_server)
@@ -935,16 +994,18 @@ var parkyAppData = function() {
 				
 				var jsonObj = [];
 				var i = 0;
+				var index = 0;
 				for (i= 0; i< response.length; i++)
 				{
 					if ( response[i].archive == false ) // keep only undelete cars
 					{
 						jsonObj.push({
-							"index": i,
+							"index": index,
 							"ID": response[i].id,
 							"registration": response[i].license_plate, 
 							"PictureUrl": "http://"+response[i].image_url, 
 							"Name": response[i].car_description});
+						index++; // index of archived cars is not incremented
 					}
 				}
 				localStorage.setItem('cars_data', JSON.stringify(jsonObj) );
@@ -996,18 +1057,19 @@ var parkyAppData = function() {
     	
     		//debugger;
     	    	status = localStorage.getItem("ParkingActive");
-            	pid = 	cars_data[localStorage.getItem("chosen_car")].ID;
+    	    	var chosen_car = localStorage.getItem("chosen_car");
     		pid1 = localStorage.getItem("chosen_region_city");
     		pid2 = localStorage.getItem("chosen_region_suburb");
-    		if ((pid == null) || (pid1 == null) || (pid2 == null)) 
-            {
+    		if ((chosen_car == "undefined") || (pid1 == null) || (pid2 == null)) 
+            	{
     			alert("Please set the car and the location first");
     			return false;
     		}
-    		
-    		status = localStorage.getItem("ParkingActive");
+    		 
+             	pid  = 	cars_data[chosen_car].ID;
+   		status = localStorage.getItem("ParkingActive");
     		if ((status == null) || (status == 0)) 
-            {
+            	{
     			var dt = new Date(); 
     			ParkingActive = true;
     			localStorage.setItem("ParkingActive", "1");
@@ -1018,7 +1080,7 @@ var parkyAppData = function() {
     			return false;
     		}
     		else 
-            {
+            	{
     			ParkingActive = false;
     			localStorage.setItem("ParkingActive", "0");
     			console.log('parking stoped');
@@ -1028,21 +1090,21 @@ var parkyAppData = function() {
     		}
     		
     		if ((localStorage.getItem("ParkingActive") == undefined) || (localStorage.getItem("ParkingActive") == "0")) 
-            {
+            	{
     			document.getElementById('parking_selection_item-title').innerHTML = 'Start';
     			// document.getElementById('dc_second').innerHTML = '';
     			//document.getElementById('cost').innerHTML = '';
     			ParkingActive = false;
     		}
     		else 
-            {
+            	{
     			ParkingActive = true;
     		}
             
     		if (ParkingActive) 
-            {
+           	{
     			digitized();
     		} 
         });	
-	}
+}
 	
