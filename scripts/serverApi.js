@@ -101,7 +101,7 @@ serverApi.prototype = {
     // returned value on success: json with cities->areas->rates
     get_rates: function(params) {
         $.ajax({
-            url: this.serverUrl + "api/v1/cities/get_rates.json?auth_token=" + this.auth_token,
+            url: this.serverUrl + "/api/v1/cities/get_rates.json?auth_token=" + this.auth_token,
             dataType: "json",
             type: "get",
             cache: false,
