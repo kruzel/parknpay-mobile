@@ -313,14 +313,26 @@ function closeViewSignIn()
 	_serverApi.sign_in({
 	    data: user_data,
 	    success: function(response)  {
-		app.hideLoading();
-		app.navigate("#home");
-		console.log('navigate: ' + _serverApi.auth_token);
+            //get the full user info and store locally
+            _serverApi.get_user({
+                success: function(response)  {
+                    console.log('_serverApi.get_user: response' + response);
+                    user_data = response;
+                    user_data_str = JSON.stringify(user_data);
+                    window.localStorage.setItem("user_data",user_data_str);
+                },
+                error: function(errorThrown)  {
+                    console.log('_serverApi.get_user failed: ' + errorThrown);
+                }
+            });
+            app.hideLoading();
+            app.navigate("#home");
+            console.log('navigate: ' + _serverApi.auth_token);
 	    },
 	    error: function(errorThrown)  {
-		app.hideLoading();
-		alert('Sign in failed');
-		app.navigate("#login");
+            app.hideLoading();
+            alert('Sign in failed');
+            app.navigate("#login");
 	    }
 	});
 }
