@@ -399,13 +399,21 @@
                         <ul id="RegionsListScroller">
                          # for (var i = 0; i < data.length; i++) 
                             { #
-                            <li data-val="#= data[i].ID #">
-                                  #= data[i].City #
+                            <li data-val="#= i #">
+                                  #= data[i].name #
                                   <ul>
-                                     # for (var j = 0; j < data[i].Suburb.length; j++) 
+                                     # for (var j = 0; j < data[i].areas.length; j++)
                                         { #
-                                        <li data-val="#= data[i].Suburb[j].ID #">
-                                           #= data[i].Suburb[j].sub #
+                                        <li data-val="#= j #">
+                                           #= data[i].areas[j].name #
+                                            <ul>
+                                                # for (var k = 0; k < data[i].areas.length; k++)
+                                                { #
+                                                <li data-val="#= k #">
+                                                    #= data[i].areas[j].rates[k] #
+                                                </li>
+                                                # } #
+                                            </ul>
                                         </li>
                                       # } #       
                                   </ul> 

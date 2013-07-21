@@ -805,7 +805,7 @@ var parkyAppData = function() {
     
 		if (cars_data.length > 0) // there is at least one car 
         	{
-			if (pid == "undefined")
+			if (pid == "undefined" || pid == null)
 			{
 				// just put something there - the first one will do
 				document.getElementById("car_selection_item_title").innerHTML = cars_data[0].registration;
@@ -941,66 +941,64 @@ var parkyAppData = function() {
     {
         _serverApi.get_rates({
             success: function(response) {
-                console.log(response);
-                var jsonObj = [];
-                var i = 0;
-                for (i= 0; i< response.length; i++)
-                {
-                    jsonObj.push({
-                        "ID": response[i].id,
-                        "Name": response[i].name});
+                if(response!=null) {
+                    localStorage.setItem('cities_data', JSON.stringify(response) );
+                    regions_data = JSON.parse(localStorage.getItem('cities_data'));
+                    set_up_regions_scrollers();
+                    done_with_regions_from_server  = true;
+                    app.hideLoading();
+                } else {
+                    console.log('Empty rates list received');
+                    app.hideLoading();
                 }
-                localStorage.setItem('cities_data', JSON.stringify(jsonObj) );
-                regions_data = JSON.parse(localStorage.getItem('cities_data'));
             },
             error: function(error)
             {
                 console.log(error);
                 app.hideLoading();
+                alert('Failed fetching rates');
             }
         });
-
-        set_up_regions_scrollers();
-        done_with_regions_from_server  = true;
-        if (done_with_cars_from_server)
-        {
-            app.hideLoading();
-        }
     }
 
     function update_cars_list_from_server()
     {
         _serverApi.get_cars({
         success: function(response) {
-            console.log(response);
-            _cars_data = response; //JSON.stringify(response);
+            if(response!=null){
+                console.log(response);
+                _cars_data = response; //JSON.stringify(response);
 
-            var jsonObj = [];
-            var i = 0;
-            var index = 0;
-            for (i= 0; i< response.length; i++)
-            {
-                if ( response[i].archive == false ) // keep only undelete cars
+                var jsonObj = [];
+                var i = 0;
+                var index = 0;
+                for (i= 0; i< response.length; i++)
                 {
-                    jsonObj.push({
-                        "index": index,
-                        "ID": response[i].id,
-                        "registration": response[i].license_plate,
-                        "PictureUrl": "http://"+response[i].image_url,
-                        "Name": response[i].car_description});
-                    index++; // index of archived cars is not incremented
+                    if ( response[i].archive == false ) // keep only undelete cars
+                    {
+                        jsonObj.push({
+                            "index": index,
+                            "ID": response[i].id,
+                            "registration": response[i].license_plate,
+                            "PictureUrl": "http://"+response[i].image_url,
+                            "Name": response[i].car_description});
+                        index++; // index of archived cars is not incremented
+                    }
                 }
-            }
-            localStorage.setItem('cars_data', JSON.stringify(jsonObj) );
-            cars_data = JSON.parse(localStorage.getItem('cars_data'));
-            if (cars_data == null)
-            {
-                cars_data = [];
-            }
-            set_up_cars_scrollers();
-            done_with_cars_from_server  = true;
-            if (done_with_regions_from_server)
-            {
+                localStorage.setItem('cars_data', JSON.stringify(jsonObj) );
+                cars_data = JSON.parse(localStorage.getItem('cars_data'));
+                if (cars_data == null)
+                {
+                    cars_data = [];
+                }
+                set_up_cars_scrollers();
+                done_with_cars_from_server  = true;
+                if (done_with_regions_from_server)
+                {
+                    app.hideLoading();
+                }
+            } else {
+                console.log('Empty car list received');
                 app.hideLoading();
             }
         },
