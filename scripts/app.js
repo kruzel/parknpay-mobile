@@ -911,19 +911,19 @@ var parkyAppData = function() {
 			onSelect: function (v, inst) {
 			},
 			onChange: function (v, inst) {
-				$("#region_selection_item_title").html(regions_data[inst.temp[0]].Suburb[inst.temp[1]].sub + ", " + regions_data[inst.temp[0]].City);
+				$("#region_selection_item_title").html(regions_data[inst.temp[0]].areas[inst.temp[1]].name + ", " + regions_data[inst.temp[0]].name);
 				localStorage.setItem("chosen_region_city", inst.temp[0]);
 				localStorage.setItem("chosen_region_suburb", inst.temp[1]);
-				localStorage.setItem("chosen_region_rate", regions_data[inst.temp[0]].Suburb[inst.temp[1]].rate);
-				$("#region_selection_item_description").html(regions_data[inst.temp[0]].Suburb[inst.temp[1]].rate + "$/h");
-			},
+				localStorage.setItem("chosen_region_rate", regions_data[inst.temp[0]].areas[inst.temp[1]].rate);
+				$("#region_selection_item_description").html(regions_data[inst.temp[0]].areas[inst.temp[1]].rate + "$/h");
+			}
 		}); 
 		
 		if ((pid1 != null) && (pid2 != null)) {
-			$("#region_selection_item_title").html(regions_data[pid1].Suburb[pid2].sub + ", " + regions_data[pid1].City);
+			$("#region_selection_item_title").html(regions_data[pid1].areas[pid2].sub + ", " + regions_data[pid1].name);
 			//$("#region_selection_item_title").html(pid2 + ", " + pid1);
 			$('#RegionsListScroller').mobiscroll('setValue', [pid1, pid2 ], true, .2);   
-			$("#region_selection_item_description").html(regions_data[pid1].Suburb[pid2].rate + "$/h");
+			$("#region_selection_item_description").html(regions_data[pid1].areas[pid2].rate + "$/h");
 		}
 
         
