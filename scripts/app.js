@@ -869,14 +869,18 @@ var parkyAppData = function() {
 		
 			$('#car_selection').click(function() 
 			{      
-				if (cars_data.length>0)
-				{           
-		    			if (cars_data[pid] != null) 
-				    	{
-			    			$('#CarsListScroller').mobiscroll('setValue', [pid, cars_data[pid].registration , cars_data[pid].PictureUrl ], true, .2);    
-			    		}
-	    	    			$('#CarsListScroller').mobiscroll('show');
-	    	    		}
+				status = localStorage.getItem("ParkingActive");
+				if (status == 0) // allow car selection only if parking is inactive
+				{
+					if (cars_data.length>0)
+					{           
+			    			if (cars_data[pid] != null) 
+					    	{
+				    			$('#CarsListScroller').mobiscroll('setValue', [pid, cars_data[pid].registration , cars_data[pid].PictureUrl ], true, .2);    
+				    		}
+		    	    			$('#CarsListScroller').mobiscroll('show');
+		    	    		}
+		    	    	}
 				return false;
 			});
 		}
@@ -886,7 +890,23 @@ var parkyAppData = function() {
 		}
 		
     }
-    
+    function get_rate_at_current_time(rate_array)
+    {
+	var d = new Date();
+    	var day = d.getDay();
+    	var hours = d.getHours();
+    	var minutes = d.getMinutes();
+    	var rate = 0;
+    	var time = parseInt(hours.toString()+minutes.toString());
+    	for (i = 0; i < rate_array.length; i++)
+    	{
+    		if ((rate_array[i].day_a_week == day) && (time > rate_array[i].start_time_int) && (time <= rate_array[i].end_time_int))
+		{
+			rate = rate_array[i].rate;
+		}
+    	}
+    	return rate;
+    }
     function set_up_regions_scrollers()
     {
     
@@ -914,25 +934,33 @@ var parkyAppData = function() {
 				$("#region_selection_item_title").html(regions_data[inst.temp[0]].areas[inst.temp[1]].name + ", " + regions_data[inst.temp[0]].name);
 				localStorage.setItem("chosen_region_city", inst.temp[0]);
 				localStorage.setItem("chosen_region_suburb", inst.temp[1]);
-				localStorage.setItem("chosen_region_rate", regions_data[inst.temp[0]].areas[inst.temp[1]].rate);
-				$("#region_selection_item_description").html(regions_data[inst.temp[0]].areas[inst.temp[1]].rate + "$/h");
+				rate_array = regions_data[inst.temp[0]].areas[inst.temp[1]].rates;
+				rate = get_rate_at_curent_time(rate_array);
+				localStorage.setItem("chosen_region_rate", rate);
+				$("#region_selection_item_description").html(rate + "$/h");
 			}
 		}); 
 		
 		if ((pid1 != null) && (pid2 != null)) {
-			$("#region_selection_item_title").html(regions_data[pid1].areas[pid2].sub + ", " + regions_data[pid1].name);
+			$("#region_selection_item_title").html(regions_data[pid1].areas[pid2].name + ", " + regions_data[pid1].name);
 			//$("#region_selection_item_title").html(pid2 + ", " + pid1);
-			$('#RegionsListScroller').mobiscroll('setValue', [pid1, pid2 ], true, .2);   
-			$("#region_selection_item_description").html(regions_data[pid1].areas[pid2].rate + "$/h");
+			$('#RegionsListScroller').mobiscroll('setValue', [pid1, pid2 ], true, .2);
+			var rate_array = regions_data[pid1].areas[pid2].rates;
+			var rate = get_rate_at_current_time(rate_array); 
+			$("#region_selection_item_description").html(rate + "$/h");
 		}
 
         
         $('#region_selection').click(function() 
         {
-    		var result = regions_template(regions_data); //Execute the template
-    		// console.log(result);
-    		$("#RegionsListScrollerTemplateResults").html(result);
-    		$('#RegionsListScroller').mobiscroll('show');
+		status = localStorage.getItem("ParkingActive");
+		if (status == 0) // allow car selection only if parking is inactive
+		{
+	   		var result = regions_template(regions_data); //Execute the template
+	    		// console.log(result);
+	    		$("#RegionsListScrollerTemplateResults").html(result);
+	    		$('#RegionsListScroller').mobiscroll('show');
+	    	}
     		return false;
     	});
     }
