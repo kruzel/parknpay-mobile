@@ -410,7 +410,9 @@
                                                 # for (var k = 0; k < data[i].areas.length; k++)
                                                 { #
                                                 <li data-val="#= k #">
-                                                    #= data[i].areas[j].rates[k] #
+                                                    #= data[i].areas[j].rates[k].day #
+                                                    #= data[i].areas[j].rates[k].start_time #
+                                                    #= data[i].areas[j].rates[k].end_time #
                                                 </li>
                                                 # } #
                                             </ul>
