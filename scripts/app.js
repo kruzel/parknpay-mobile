@@ -4,8 +4,14 @@
 var _serverApi;
 var user_data_str;
 var user_data;
+var cities_data;
 var ParkingActive;
 var uriOfImageOfCarToAdd;
+var cars_data;
+var regions_data;
+var done_with_cars_from_server;
+var done_with_regions_from_server;
+    
 
 function OnDocumentReady() 
 {
@@ -715,11 +721,6 @@ var parkyAppData = function() {
 */
 
 
-    var cars_data;
-    var regions_data;
-    var done_with_cars_from_server;
-    var done_with_regions_from_server;
-    
     
     function digitized() 
     {
@@ -910,11 +911,13 @@ var parkyAppData = function() {
     	var minutes = d.getMinutes();
     	var rate = 0;
     	var time = parseInt(hours.toString()+minutes.toString());
+    	localStorage.setItem("chosen_rate_id", 0);
     	for (i = 0; i < rate_array.length; i++)
     	{
     		if ((rate_array[i].day_a_week == day) && (time > rate_array[i].start_time_int) && (time <= rate_array[i].end_time_int))
 		{
 			rate = rate_array[i].rate;
+			localStorage.setItem("chosen_rate_id", rate_array[i].id);
 		}
     	}
     	return rate;
@@ -984,7 +987,7 @@ var parkyAppData = function() {
         _serverApi.get_rates({
             success: function(response) {
                 if(response!=null) {
-                    localStorage.setItem('cities_data', JSON.stringify(response) );
+                    localStorage.setItem('cities_data', JSON.stringify(response));
                     regions_data = JSON.parse(localStorage.getItem('cities_data'));
                     set_up_regions_scrollers();
                     done_with_regions_from_server  = true;
@@ -1131,12 +1134,19 @@ var parkyAppData = function() {
 	var y_pos = 0;
 	
 	app.showLoading();
+	 
+	// 2013-07-01T20:19:18Z
+	var st=start_time.getFullYear()+"-"+start_time.getMonth()+"-"+start_time.getDate()+"T"+start_time.getHours()+":"+start_time.getMinutes()+":"+start_time.getSeconds()+"Z";
 	
 
-	var rate_id = parseInt(localStorage.getItem("chosen_region_rate"),10);
-	var area_id = parseInt(localStorage.getItem("chosen_region_suburb"),10);
+ 	//var rate_index = parseInt(localStorage.getItem("chosen_region_rate"),10);
+	var city_index = parseInt(localStorage.getItem("chosen_region_city"),10);
+	var area_index = parseInt(localStorage.getItem("chosen_region_suburb"),10);
 	
-	var data = {payment: { x_pos: x_pos, y_pos: y_pos, area_id: area_id, rate_id: rate_id, user_id: user_data.user.id, start_time: start_time}};
+	var area_id = regions_data[city_index].areas[area_index].id;
+	var rate_id = parseInt(localStorage.getItem("chosen_rate_id"),10);;
+	
+	var data = {payment: { x_pos: x_pos, y_pos: y_pos, area_id: area_id, rate_id: rate_id, user_id: user_data.user.id, start_time: st}};
 	_serverApi.add_payment({
 			data: data, 
 			success: function(response) {
@@ -1144,7 +1154,7 @@ var parkyAppData = function() {
 				localStorage.setItem("payment_id", response.id);
 	   			ParkingActive = true;
 	    			localStorage.setItem("ParkingActive", "1");
-	    			localStorage.setItem("ParkingStartTime", dt);
+	    			localStorage.setItem("ParkingStartTime", start_time);
 	    			digitized();
 	    			console.log('parking started');
 	    			document.getElementById('parking_selection_item-title').innerHTML = 'Starting...';
@@ -1162,10 +1172,11 @@ var parkyAppData = function() {
     function stop_payment(end_time)
     {
   	    app.showLoading();
-	    var payment_id = localStorage.getItem("payment_id");
-	    var data = { payment: { id: payment_id, end_time: end_time}}
+	    var payment_id = parseInt(localStorage.getItem("payment_id"),10);
+	    var et=end_time.getFullYear()+"-"+end_time.getMonth()+"-"+end_time.getDate()+"T"+end_time.getHours()+":"+end_time.getMinutes()+":"+end_time.getSeconds()+"Z";
+	    var data = { end_time: et};
 	    _serverApi.update_payment({ 
-			data: data, 
+			id:payment_id,data: data, 
 			success: function(response) 
 			{
 				console.log(response);
