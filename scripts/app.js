@@ -6,7 +6,6 @@ var user_data_str;
 var user_data;
 var ParkingActive;
 var uriOfImageOfCarToAdd;
-var user_id;
 
 function OnDocumentReady() 
 {
@@ -1134,10 +1133,10 @@ var parkyAppData = function() {
 	app.showLoading();
 	
 
-	var rate_id = localStorage.getItem("chosen_region_rate");
-	var area_id = localStorage.getItem("chosen_region_suburb");
+	var rate_id = parseInt(localStorage.getItem("chosen_region_rate"),10);
+	var area_id = parseInt(localStorage.getItem("chosen_region_suburb"),10);
 	
-	var data = {payment: { x_pos: x_pos, y_pos: y_pos, area_id: area_id, rate_id: rate_id, user_id: user_id, start_time: start_time}};
+	var data = {payment: { x_pos: x_pos, y_pos: y_pos, area_id: area_id, rate_id: rate_id, user_id: user_data.user.id, start_time: start_time}};
 	_serverApi.add_payment({
 			data: data, 
 			success: function(response) {
