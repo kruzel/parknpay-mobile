@@ -957,7 +957,21 @@ var parkyAppData = function() {
 		}); 
 		
 		// this is the predefined values when the screen first show up 
-		if ((pid1 != null) && (pid2 != null)) {
+		if ((pid1 >= 0) && (pid2 >= 0)) 
+		{
+			if (pid1 > regions_data.length )
+			{
+				pid1 = 0;
+				pid2 = 0;
+			}
+			else
+			{	
+				if (pid2> regions_data[pid1].areas.length)
+				{
+					pid2 = 0;
+				}
+			}
+			
 			$("#region_selection_item_title").html(regions_data[pid1].areas[pid2].name + ", " + regions_data[pid1].name);
 			//$("#region_selection_item_title").html(pid2 + ", " + pid1);
 			$('#RegionsListScroller').mobiscroll('setValue', [pid1, pid2 ], true, .2);
