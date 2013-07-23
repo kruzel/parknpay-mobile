@@ -296,9 +296,6 @@ function beforeShowLogin(e)
 function afterShowSignin(e) 
 {
 
-	//window.localStorage.setItem("last_email_signin","alior101@gmail.com" );
-	//window.localStorage.setItem("last_password_signin", "kellogskellogs");
-
 	console.log(e.view);
 
 	//var auth_token = window.localStorage.getItem("auth_token");
@@ -415,6 +412,7 @@ function cancellViewSignIn()
     {
         console.log("closeViewSignOut");
         _serverApi.sign_out();
+        localStorage.clear();
         app.navigate("#login");
         //app.navigate("../index.html");
     }
@@ -955,10 +953,17 @@ var parkyAppData = function() {
 				$("#region_selection_item_description").html(rate + "$/h");
 			}
 		}); 
-		
-		// this is the predefined values when the screen first show up 
-		if ((pid1 >= 0) && (pid2 >= 0)) 
+		if (((pid1 == null )||(pid2 == null)) && (regions_data.length > 0))
 		{
+			pid1 = 0;
+			pid2 = 0;
+		}
+		// this is the predefined values when the screen first show up 
+		if ((pid1 >= 0) && (pid2 >= 0) && (regions_data.length > 0)) 
+		{
+			console.log("pid1 ="+pid1);
+			console.log("pid2 ="+pid2);
+			console.log("regions_data.length =" + regions_data.length);
 			if (pid1 > regions_data.length )
 			{
 				pid1 = 0;
@@ -988,7 +993,7 @@ var parkyAppData = function() {
 		if (status == 0) // allow car selection only if parking is inactive
 		{
 	   		var result = regions_template(regions_data); //Execute the template
-	    		// console.log(result);
+	    		console.log('$(#region_selection).click(function())');
 	    		$("#RegionsListScrollerTemplateResults").html(result);
 	    		$('#RegionsListScroller').mobiscroll('show');
 	    	}
@@ -1025,7 +1030,7 @@ var parkyAppData = function() {
         _serverApi.get_cars({
         success: function(response) {
             if(response!=null){
-                console.log(response);
+                //console.log(response);
                 _cars_data = response; //JSON.stringify(response);
 
                 var jsonObj = [];
@@ -1159,13 +1164,14 @@ var parkyAppData = function() {
 	
 	var area_id = regions_data[city_index].areas[area_index].id;
 	var rate_id = parseInt(localStorage.getItem("chosen_rate_id"),10);;
-	
+	console.log("start_payment: st="+st+",area="+area_id+",rate="+rate_id+",user="+user_id);
 	var data = {payment: { x_pos: x_pos, y_pos: y_pos, area_id: area_id, rate_id: rate_id, user_id: user_data.user.id, start_time: st}};
 	_serverApi.add_payment({
 			data: data, 
 			success: function(response) {
 				console.log(response);
 				localStorage.setItem("payment_id", response.id);
+				console.log("payment_id="+response.id);
 	   			ParkingActive = true;
 	    			localStorage.setItem("ParkingActive", "1");
 	    			localStorage.setItem("ParkingStartTime", start_time);
@@ -1188,6 +1194,7 @@ var parkyAppData = function() {
   	    app.showLoading();
 	    var payment_id = parseInt(localStorage.getItem("payment_id"),10);
 	    var et=end_time.getFullYear()+"-"+end_time.getMonth()+"-"+end_time.getDate()+"T"+end_time.getHours()+":"+end_time.getMinutes()+":"+end_time.getSeconds()+"Z";
+		console.log("stop_payment: et="+et+",payment_id="+payment_id);
 	    var data = { end_time: et};
 	    _serverApi.update_payment({ 
 			id:payment_id,data: data, 
