@@ -1160,7 +1160,7 @@ var parkyAppData = function() {
 	var area_id = regions_data[city_index].areas[area_index].id;
 	var rate_id = parseInt(localStorage.getItem("chosen_rate_id"),10);;
 	
-	var data = {payment: { x_pos: x_pos, y_pos: y_pos, area_id: area_id, rate_id: rate_id, user_id: user_data.user.id, start_time: st}};
+	var data = { x_pos: x_pos, y_pos: y_pos, area_id: area_id, rate_id: rate_id, user_id: user_data.user.id, start_time: st};
 	_serverApi.add_payment({
 			data: data, 
 			success: function(response) {
