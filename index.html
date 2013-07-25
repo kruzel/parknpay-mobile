@@ -28,7 +28,7 @@
 
 		<!-- app globals -->
 		<script type="text/javascript" src="scripts/serverApi.js"></script>
-		<!-- <script type="text/javascript" src="scripts/geolocation.js"></script>  -->
+		<script type="text/javascript" src="scripts/geolocation.js"></script> 
 		<!-- <script type="text/javascript" src="scripts/camera.js"></script>  -->
 		<script type="text/javascript" src="scripts/app.js"></script>
         
@@ -163,18 +163,23 @@
         			<li>
         				<a id="sign_out" data-rel="modalview">Sign Out</a>
         			</li>                        
-        		</ul>
-                <ul data-role="listview" id="updateView" data-style="inset" data-inset="true" >
-        			<li>
-        				<a href="#accountSettingsView" data-rel="view">Account</a>
-        			</li>
-        		</ul>
-        		<!--
-        		<ul data-role="listview" id="scanView" data-style="inset" data-inset="true"  >
-        			<li>
-        				<a href="#modalview-scan" data-rel="modalview">Scan</a>
-        			</li>                        
-        		</ul>
+		</ul>
+        	<ul data-role="listview" id="updateView" data-style="inset" data-inset="true" >
+			<li>
+				<a href="#accountSettingsView" data-rel="view">Account</a>
+			</li>
+		</ul>
+        	<ul data-role="listview" id="updateView" data-style="inset" data-inset="true" >
+			<li>
+				<a href="#preferencesView" data-rel="view">Preferences</a>
+			</li>
+		</ul>
+		<!--
+		<ul data-role="listview" id="scanView" data-style="inset" data-inset="true"  >
+			<li>
+				<a href="#modalview-scan" data-rel="modalview">Scan</a>
+			</li>                        
+		</ul>
                  <ul data-role="listview" id="remindersView" data-style="inset" data-inset="true" >
         			<li>
         				<a href="#settings" data-rel="modalview">Reminders</a>
@@ -224,7 +229,39 @@
             </div>
            
         </div>
-               
+  
+          <!-- ========== PREFERENCES VIEW ============= -->
+        
+        <div data-role="view" id="preferencesView"  data-title="Preferences" data-style="inset" >
+            
+		<div data-role="header">
+			<div data-role="navbar">
+			    <span>Preferences</span>
+			 </div>
+		</div>
+            
+		<ul data-role="listview" id="signoutView" data-style="inset" data-inset="true" data-click="updateGeolocationPreferences">
+		
+		 	 <li>
+		    		<label>
+					<input id="use_geolocation"  type="checkbox" />
+					Use Geolocation
+			   	</label>
+	       		 </li>
+        
+		</ul>
+
+             
+		<div data-role="footer">
+			<div data-role="navbar">
+			    <span></span>
+			    <!-- <a data-click="#settingsView" data-role="button" data-align="left">Cancel</a> -->
+			    <a href="#settingsView" data-role="button" data-align="right">Done</a>
+			</div>
+		</div>
+   
+        </div>
+              
         <!-- ========== SETTINGS|ACCOUNT|ACCOUNT UPDATE STUFF ============= -->
         
         <div data-role="view" id="view-update-account"  data-show="prefillAccountDetails">
