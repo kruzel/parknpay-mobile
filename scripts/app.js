@@ -5,7 +5,7 @@ var _serverApi;
 var user_data_str;
 var user_data;
 var cities_data;
-var ParkingActive;
+var gParkingActive;
 var uriOfImageOfCarToAdd;
 var cars_data;
 var regions_data;
@@ -16,9 +16,23 @@ var geolocation_result;
 function prefill_local_storage()
 {
 	new_install = window.localStorage.getItem("new_install");
-	if (null)  // new install - initialize all non volatile params
+	if (new_install == null)  // new install - initialize all non volatile params
 	{
 		localStorage.setItem('use_geolocation',false);
+		localStorage.setItem('ParkingActive', false);
+		localStorage.setItem('geolocation', "");
+		localStorage.setItem('chosen_car', 0 );
+		localStorage.setItem('chosen_region_city', 0 );
+		localStorage.setItem('chosen_region_suburb', 0 );
+		localStorage.setItem('ParkingStartTime', "");
+		localStorage.setItem('auth_token', "");
+		localStorage.setItem('cars_data', "");
+		localStorage.setItem('chosen_car_to_delete', 0 );
+		localStorage.setItem('chosen_rate_id', 0 );
+		localStorage.setItem('chosen_region_city', 0 );
+		localStorage.setItem('cities_data', "");
+		localStorage.setItem('payment_id', 0 );
+		localStorage.setItem('user_data', "");
 		localStorage.setItem('new_install',false);
 	}
 }
@@ -45,20 +59,34 @@ function set_callbacks()
         {
     	
     		//debugger;
-    	    	status = localStorage.getItem("ParkingActive");
     	    	var chosen_car = localStorage.getItem("chosen_car");
     		pid1 = localStorage.getItem("chosen_region_city");
     		pid2 = localStorage.getItem("chosen_region_suburb");
-    		if ((chosen_car == "undefined") || (pid1 == null) || (pid2 == null)) 
-            	{
-    			alert("Please set the car and the location first");
-    			return false;
-    		}
-    		 
+    		if (use_geolocation == false)
+    		{
+	    		if ((chosen_car == "undefined") || (pid1 == null) || (pid2 == null)) 
+		    	{
+	    			alert("Please set the car and the location first");
+	    			return false;
+	    		}
+	    	}
+	    	else
+	    	{
+	    		if (chosen_car == "undefined")  
+		    	{
+	    			alert("Please set the car first");
+	    			return false;
+	    		}
+	    		if  ((pid1 == null) || (pid2 == null)) 
+		    	{
+	    			alert("Location not in database. Please call support");
+	    			//return false;
+	    		}
+	    	}	 
              	pid  = 	cars_data[chosen_car].ID;
    		status = localStorage.getItem("ParkingActive");
    		var dt = new Date(); 
-    		if ((status == null) || (status == 0)) 
+    		if ((status == "false")) 
             	{
     			
     			start_payment(dt);
@@ -70,17 +98,17 @@ function set_callbacks()
       			return false;  
     		}
     		
-    		if ((localStorage.getItem("ParkingActive") == undefined) || (localStorage.getItem("ParkingActive") == "0")) 
+    		if (status == "false")
             	{
     			document.getElementById('parking_selection_item-title').innerHTML = 'Start';
-    			ParkingActive = false;
+    			gParkingActive = false;
     		}
     		else 
             	{
-    			ParkingActive = true;
+    			gParkingActive = true;
     		}
             
-    		if (ParkingActive) 
+    		if (gParkingActive) 
            	{
     			digitized();
     		} 
@@ -96,7 +124,7 @@ function OnDocumentReady()
 
 	user_data_str = window.localStorage.getItem("user_data");
 	user_data = null;
-	if(user_data_str!=null) {
+	if(user_data_str!="") {
 	    user_data = JSON.parse(user_data_str);
 	}
     
@@ -363,7 +391,7 @@ function settingsViewInit()
 function beforeShowLogin(e) 
 {
 	console.log("beforeShowLogin");
-	if (_serverApi.auth_token != null )
+	if (_serverApi.auth_token != "" )
 	{
 	    console.log("(auth_token != null )");
 	    app.navigate("#home"); 
@@ -377,7 +405,7 @@ function afterShowSignin(e)
 
 	//var auth_token = window.localStorage.getItem("auth_token");
 	console.log("auth_token = "+ _serverApi.auth_token);
-	if (_serverApi.auth_token != null )
+	if (_serverApi.auth_token != "" )
 	{
 	    console.log("(auth_token != null )");
 	    app.navigate("#home"); 
@@ -820,7 +848,7 @@ var parkyAppData = function() {
 		//var el1 = document.getElementById('dc');
 		var el1 = document.getElementById('parking_selection_item-title');
 		
-		if (ParkingActive) {
+		if (gParkingActive) {
 			el1.innerHTML = hrs + ":" + min + ":" + sec; 
 			//document.getElementById('dc_second').innerHTML = sec;
 			var rate = localStorage.getItem("chosen_region_rate");
@@ -831,7 +859,7 @@ var parkyAppData = function() {
 		var time;
 		
 		// THE ALL IMPORTANT PRE DEFINED JAVASCRIPT METHOD.
-		if (ParkingActive) {
+		if (gParkingActive) {
 			time = setTimeout('digitized()', 1000);      
 		}
 	}
@@ -852,17 +880,17 @@ var parkyAppData = function() {
     {
         
         var status = localStorage.getItem("ParkingActive");
-	if (status == 1)
+	if (status == "true")
         {
-			ParkingActive = true;
+			gParkingActive = true;
 			digitized();
 			document.getElementById('parking_selection_item-title').innerHTML = 'Active';
 			return false;
 	}
 	else 
         {
-			ParkingActive = false;
-			localStorage.setItem("ParkingActive", "0");
+			gParkingActive = false;
+			localStorage.setItem("ParkingActive", false);
 			console.log('parking stoped');
 			document.getElementById('parking_selection_item-title').innerHTML = 'Start';
 			document.getElementById('parking_selection_item-info').innerHTML = '';
@@ -958,7 +986,7 @@ var parkyAppData = function() {
 			$('#car_selection').click(function() 
 			{      
 				status = localStorage.getItem("ParkingActive");
-				if (status == 0) // allow car selection only if parking is inactive
+				if (status == "false") // allow car selection only if parking is inactive
 				{
 					if (cars_data.length>0)
 					{           
@@ -974,7 +1002,7 @@ var parkyAppData = function() {
 		}
 		else // no cars, no scroller and no click option ... 
 		{
-			localStorage.setItem("chosen_car",undefined);
+			localStorage.setItem("chosen_car","");
 		}
 		
     }
@@ -989,7 +1017,7 @@ var parkyAppData = function() {
     	localStorage.setItem("chosen_rate_id", 0);
     	for (i = 0; i < rate_array.length; i++)
     	{
-    		if ((rate_array[i].day_a_week == day) && (time > rate_array[i].start_time_int) && (time <= rate_array[i].end_time_int))
+    		if ((day >= rate_array[i].start_day_a_week) && (day < rate_array[i].end_day_a_week) &&  (time >= rate_array[i].start_time_int) && (time < rate_array[i].end_time_int))
 		{
 			rate = rate_array[i].rate;
 			localStorage.setItem("chosen_rate_id", rate_array[i].id);
@@ -1081,7 +1109,7 @@ function set_up_regions_scrollers()
         {
 		status = localStorage.getItem("ParkingActive");
 		var use_geolocation = localStorage.getItem("use_geolocation");
-		if ((status == 0) && (use_geolocation == false)) // allow car selection only if parking is inactive
+		if ((status == "false") && (use_geolocation == "false")) // allow car selection only if parking is inactive
 		{
 	   		var result = regions_template(regions_data); //Execute the template
 	    		console.log('$(#region_selection).click(function())');
@@ -1232,8 +1260,8 @@ function set_up_regions_scrollers()
 				console.log(response);
 				localStorage.setItem("payment_id", response.id);
 				console.log("payment_id="+response.id);
-	   			ParkingActive = true;
-	    			localStorage.setItem("ParkingActive", "1");
+	   			gParkingActive = true;
+	    			localStorage.setItem("ParkingActive", true);
 	    			localStorage.setItem("ParkingStartTime", start_time);
 	    			digitized();
 	    			console.log('parking started');
@@ -1261,8 +1289,8 @@ function set_up_regions_scrollers()
 			success: function(response) 
 			{
 				console.log(response);
-	    			ParkingActive = false;
-	    			localStorage.setItem("ParkingActive", "0");
+	    			gParkingActive = false;
+	    			localStorage.setItem("ParkingActive", false);
 	    			console.log('parking stoped');
 	    			document.getElementById('parking_selection_item-title').innerHTML = 'Start';
 	    			document.getElementById('parking_selection_item-info').innerHTML = '';

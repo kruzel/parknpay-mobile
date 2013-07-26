@@ -2350,13 +2350,13 @@ pre.prettyprint
 /* Fruits */
 .fruit {width:30px;height:30px;position:absolute;top:50%;left:50%;margin:-15px 0 0 -15px;}
 
-/* Cars */
-.car img{height:28px;margin:6px auto;}
-.wp .car img{height:30px;margin:20px auto;}
+/* carCars */
+.car img{height:50px;margin:6px auto;}
+.wp .car img{height:60px;margin:20px auto;}
 .ios .car img{margin:1px auto;}
-.car .img-cont{ width:80px;height :28px;float:left;text-align:center;}
-.car span {float:left; margin: 0 10px;}
-.car {height:40px;}
+.car .img-cont{ width:80px;height :48px;float:left;text-align:center;}
+.car span {float:left; margin: 5px 10px;}
+.car {height:100px;}
 
 /* Chocolate */
 .demo-stars.demo-iframe { padding: 0; }
