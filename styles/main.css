@@ -103,7 +103,7 @@
 }
 
 /* for the parking time/cost panel */
-
+/*
 #announcements-listview .parking_total-time {
 	float: left;
 	font-size: 3em;
@@ -112,12 +112,21 @@
     width: 40%;
     text-shadow: white 0px 0px 0px;
 }
+*/
+#announcements-listview .parking_total-time {
+	float: left;
+	font-size: 1.8em;
+    line-height: 1.2em;
+    margin: 6.5% 0 0 .5em;
+    width: 61%;
+    text-shadow: white 0px 0px 0px;
+}
 #announcements-listview .parking_total-cost {
 	float: left;
 	font-size: 1.1em;
     font-weight: 100;
 	line-height: 1em;
-    margin: 0 0 0 1em;
+    margin: 2% 0 0 1em;
     width: 50%;
     text-shadow: white 0px 0px 0px;
 }
