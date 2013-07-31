@@ -183,7 +183,7 @@ function onDeviceReady()
 	{
 		onDeviceReadyCamera();
 		getLocation();
-    		navigator.splashscreen.hide();
+    		//navigator.splashscreen.hide();
 	}
 	else
 	{

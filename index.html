@@ -161,11 +161,6 @@
           
         <div data-role="view" id="settingsView" data-layout="tabbed-layout_default"  data-style="inset" data-title="Settings" data-init="settingsViewInit" >
         	<div id="settingsViewContent" data-role="content">
-                <ul data-role="listview" id="signoutView" data-style="inset" data-inset="true" data-click="closeViewSignOut">
-        			<li>
-        				<a id="sign_out" data-rel="modalview">Sign Out</a>
-        			</li>                        
-		</ul>
         	<ul data-role="listview" id="updateView" data-style="inset" data-inset="true" >
 			<li>
 				<a href="#accountSettingsView" data-rel="view">Account</a>
@@ -206,11 +201,21 @@
                  </div>
             </div>
             
-            <ul data-role="listview" id="signoutView" data-style="inset" data-inset="true" data-click="updateAccountDetails">
-			<li>
+                       <ul data-role="listview" id="infoView" data-style="inset" data-inset="true" data-click="infoView">
+        			<li>
+        				<a id="#view-account-info" data-rel="view">Account's info</a>
+        			</li>                        
+			</ul>
+			
+
+            		<ul data-role="listview" id="signoutView" data-style="inset" data-inset="true" data-click="updateAccountDetails">
+            		<li>
 				<a id="#view-update-account" data-rel="view">Update account</a>
 			</li>                        
         		</ul>
+        		
+        		
+        		
                 	<ul data-role="listview" id="addACarView" data-style="inset" data-inset="true" >
         			<li>
         				<a href="#modalview-addCar" data-rel="modalview">Add a car</a>
@@ -221,6 +226,12 @@
         				<a href="#view-delCar" data-rel="view">Remove a car</a>
         			</li>
         		</ul>
+        		
+                        <ul data-role="listview" id="signoutView" data-style="inset" data-inset="true" data-click="closeViewSignOut">
+        			<li>
+        				<a id="sign_out" data-rel="modalview">Sign Out</a>
+        			</li>                        
+			</ul>
             
             <div data-role="footer">
                 <div data-role="navbar">
@@ -303,10 +314,10 @@
                  </div>
             </div>
         	<div id='registration'>		
-        		<input type="text" id="license_registration_number" value="Car Number" style="display:block;margin: 8% auto 0px auto;width:80%;"/>
+        		<input type="text" id="license_registration_number" placeholder="Car Number" style="display:block;margin: 8% auto 0px auto;width:80%;"/>
         	</div>
         	<div id='description'>		
-        		<input type="text" id="car_description" value="car description" style="display:block;margin: 8% auto 0px auto;width:80%;"/>
+        		<input type="text" id="car_description" placeholder="car description" style="display:block;margin: 8% auto 0px auto;width:80%;"/>
         	</div>
             <div id='car_image_placeholder'>
                 <img style="display:block;margin: 10% auto 5% auto; width:50%; height:40%;" id="smallImage" src="images/car.png"  /> 
