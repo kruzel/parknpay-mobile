@@ -391,9 +391,9 @@ function settingsViewInit()
 function beforeShowLogin(e) 
 {
 	console.log("beforeShowLogin");
-	if (_serverApi.auth_token != "" )
+	if ((_serverApi.auth_token != "" ) && (_serverApi.auth_token != null ))
 	{
-	    console.log("(auth_token != null )");
+	    console.log("(auth_token != null && != \"\" - going to #home )");
 	    app.navigate("#home"); 
 	}
 }
@@ -405,9 +405,13 @@ function afterShowSignin(e)
 
 	//var auth_token = window.localStorage.getItem("auth_token");
 	console.log("auth_token = "+ _serverApi.auth_token);
-	if (_serverApi.auth_token != "" )
+	if (_serverApi.auth_token != ""  && (_serverApi.auth_token != null ))
 	{
 	    console.log("(auth_token != null )");
+	    
+	    	var softkeyboard = window.cordova.plugins.SoftKeyBoard;
+		softkeyboard.hide();
+		
 	    app.navigate("#home"); 
 	}
 	else if (user_data!=null)
@@ -517,7 +521,7 @@ function cancellViewSignIn()
     {
         console.log("closeViewSignOut");
         _serverApi.sign_out();
-        localStorage.clear();
+        window.localStorage.clear();
         app.navigate("#login");
         //app.navigate("../index.html");
     }
@@ -1206,8 +1210,9 @@ function set_up_regions_scrollers()
 	 
          	console.log("calling init_home_view");   
          	
- 
-         	user_data = JSON.parse(localStorage.getItem('user_data'));
+		var ud = localStorage.getItem('user_data');
+		 
+         	user_data = JSON.parse(ud);
          	user_id = user_data.user.id;
          	
 		done_with_cars_from_server = false;
