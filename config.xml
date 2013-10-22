@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="io.cordova.parknpay" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>ParkNPay</name>
+    <description>
+        A simple application to allow you to easily pay for parking in supported municipalities.
+    </description>
+    <author email="dev@callback.apache.org" href="http://cordova.io">
+        ParkNPay Team
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <preference name="fullscreen" value="true" />
+    <preference name="webviewbounce" value="true" />
+</widget>
