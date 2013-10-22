@@ -1,0 +1,6 @@
+.mapview .map-area .map {
+	height: 80%; 
+	width: 80%; 
+	margin: 50px auto;
+	border: 3px solid #DDD;
+}
